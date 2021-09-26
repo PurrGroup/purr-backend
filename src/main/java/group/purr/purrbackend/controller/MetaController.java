@@ -1,7 +1,6 @@
 package group.purr.purrbackend.controller;
 
-import group.purr.purrbackend.dto.BlogmetaDTO;
-import group.purr.purrbackend.service.impl.MetaServiceImpl;
+import group.purr.purrbackend.service.MetaService;
 import group.purr.purrbackend.utils.ResultVOUtil;
 import group.purr.purrbackend.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MetaController {
 
     @Autowired
-    MetaServiceImpl metaService;
+    MetaService metaService;
 
     /**
      * 判断系统是否已安装
