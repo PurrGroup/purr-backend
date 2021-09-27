@@ -20,7 +20,7 @@ import java.util.Date;
 public class Article {
 
     @Id
-    @Column(name = "id", columnDefinition = "BIGINT UNSIGEND")
+    @Column(name = "id", columnDefinition = "BIGINT UNSIGNED")
     private Long ID;
 
     @Column(columnDefinition = "TINYTEXT")
