@@ -16,9 +16,9 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @DynamicUpdate
 @DynamicInsert
-public class ContentArticle {
+public class ArticleContentRelation {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "BIGINT UNSIGNED")
     private Long ID;
 
@@ -35,7 +35,7 @@ public class ContentArticle {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        ContentArticle that = (ContentArticle) o;
+        ArticleContentRelation that = (ArticleContentRelation) o;
         return Objects.equals(ID, that.ID);
     }
 

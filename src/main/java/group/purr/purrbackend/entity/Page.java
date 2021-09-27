@@ -1,21 +1,25 @@
 package group.purr.purrbackend.entity;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @DynamicUpdate
 @DynamicInsert
 public class Page {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "id", columnDefinition = "BIGINT UNSIGNED")
     private Long ID;
 
@@ -41,7 +45,7 @@ public class Page {
 
     private String backgroundUrl;
 
-    @Column(columnDefinition = "INTEGER UNSIGNED")
+    @Column(nullable = false, columnDefinition = "INTEGER UNSIGNED")
     private Integer commentCount;
 
     @Column(nullable = false, columnDefinition = "INTEGER UNSIGNED")
@@ -67,4 +71,17 @@ public class Page {
 
     @Column(columnDefinition = "LONGTEXT")
     private String content;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Page page = (Page) o;
+        return Objects.equals(ID, page.ID);
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 }

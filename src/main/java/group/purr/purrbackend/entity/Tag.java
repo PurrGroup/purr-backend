@@ -22,24 +22,26 @@ public class Tag {
     @Column(name = "id", columnDefinition = "BIGINT UNSIGNED")
     private Long ID;
 
+    @Column(nullable = false)
     private String url;
 
-    @Column(columnDefinition = "TINYTEXT")
+    @Column(nullable = false, columnDefinition = "TINYTEXT")
     private String name;
 
+    @Column(nullable = false)
     private String linkName;
 
     private String backgroundUrl;
 
-    @Column(length = 25)
+    @Column(nullable = false, length = 25)
     private String target;
 
     private String description;
 
-    @Column(columnDefinition = "INT UNSIGNED")
+    @Column(nullable = false, columnDefinition = "INT UNSIGNED")
     private Integer visitCount;
 
-    @Column(columnDefinition = "INT UNSIGNED")
+    @Column(nullable = false, columnDefinition = "INT UNSIGNED")
     private Integer citeCount;
 
     @Column(nullable = false, columnDefinition = "DATETIME")
@@ -51,11 +53,12 @@ public class Tag {
     @Column(columnDefinition = "DATETIME")
     private Date deleteTime;
 
+    @Column(nullable = false)
     private String linkRel;
 
     private String linkRss;
 
-    @Column(columnDefinition = "TINYINT UNSIGNED")
+    @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Integer color;
 
     @Override

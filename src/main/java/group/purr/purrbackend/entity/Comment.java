@@ -1,21 +1,25 @@
 package group.purr.purrbackend.entity;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @DynamicInsert
 @DynamicUpdate
 public class Comment {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "id", columnDefinition = "BIGINT UNSIGNED")
     private Long ID;
 
@@ -25,11 +29,11 @@ public class Comment {
     @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Integer postCategory;
 
-    @Column(columnDefinition = "TINYTEXT")
-    private String author;
-
     @Column(nullable = false, columnDefinition = "TINYTEXT")
     private String authorName;
+
+    @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
+    private Integer isAnonymous;
 
     @Column(name = "author_QQ", length = 15)
     private String authorQQ;
@@ -39,7 +43,7 @@ public class Comment {
     @Column(length = 100)
     private String authorEmail;
 
-    @Column(name = "author_IP")
+    @Column(nullable = false, name = "author_IP")
     private String authorIP;
 
     @Column(nullable = false, columnDefinition = "DATETIME")
@@ -51,8 +55,22 @@ public class Comment {
     @Column(nullable = false, columnDefinition = "TINYINT")
     private Integer approved;
 
+    @Column(nullable = false)
     private String userAgent;
 
-    @Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    @Column(nullable = false, name = "parent_id", columnDefinition = "BIGINT UNSIGNED")
     private Long parentID;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Comment comment = (Comment) o;
+        return Objects.equals(ID, comment.ID);
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 }

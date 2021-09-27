@@ -2,6 +2,8 @@ package group.purr.purrbackend.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -12,20 +14,22 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class ArticleTag {
+@DynamicUpdate
+@DynamicInsert
+public class MenuContainRelation {
     @EmbeddedId
-    ArticleTagKey articleTagKey;
+    MenuContainRelationKey menuContainRelationKey;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        ArticleTag that = (ArticleTag) o;
-        return Objects.equals(articleTagKey, that.articleTagKey);
+        MenuContainRelation that = (MenuContainRelation) o;
+        return Objects.equals(menuContainRelationKey, that.menuContainRelationKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(articleTagKey);
+        return Objects.hash(menuContainRelationKey);
     }
 }

@@ -1,11 +1,16 @@
 package group.purr.purrbackend.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author whalien
@@ -17,7 +22,6 @@ import java.util.Date;
 @Entity
 @DynamicUpdate
 @DynamicInsert
-@EqualsAndHashCode
 public class LockdownIP {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,4 +36,17 @@ public class LockdownIP {
 
     @Column(name="lockdown_IP", nullable = false)
     private String lockdownIP;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        LockdownIP that = (LockdownIP) o;
+        return Objects.equals(lockdownID, that.lockdownID);
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 }

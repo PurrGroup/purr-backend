@@ -1,12 +1,14 @@
 package group.purr.purrbackend.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
@@ -15,12 +17,12 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@EqualsAndHashCode
 @DynamicUpdate
 @DynamicInsert
 public class Article {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "BIGINT UNSIGNED")
     private Long ID;
 
@@ -53,10 +55,10 @@ public class Article {
     @Column(columnDefinition = "INTEGER UNSIGNED")
     private Integer viewCount;
 
-    @Column(columnDefinition = "TINYINT UNSIGNED")
+    @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Integer status;
 
-    @Column(columnDefinition = "TINYINT UNSIGNED")
+    @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Integer commentStatus;
 
     @Column(length = 20)
@@ -68,10 +70,10 @@ public class Article {
     @Column(columnDefinition = "TEXT")
     private String pinged;
 
-    @Column(columnDefinition = "TINYINT UNSIGNED")
+    @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Integer isOriginal;
 
-    @Column(columnDefinition = "TINYINT UNSIGNED")
+    @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Integer isPinned;
 
     @Column(name = "abstract", columnDefinition = "TEXT")

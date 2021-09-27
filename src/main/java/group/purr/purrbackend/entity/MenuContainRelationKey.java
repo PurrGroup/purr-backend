@@ -15,22 +15,21 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Embeddable
-public class ArticleTagKey implements Serializable {
-
-    private Long articleID;
-    private Long tagID;
+public class MenuContainRelationKey implements Serializable {
+    private Long menuID;
+    private Long menuItemID;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        ArticleTagKey that = (ArticleTagKey) o;
-        return Objects.equals(articleID, that.articleID)
-                && Objects.equals(tagID, that.tagID);
+        MenuContainRelationKey that = (MenuContainRelationKey) o;
+        return Objects.equals(menuID, that.menuID)
+                && Objects.equals(menuItemID, that.menuItemID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(articleID, tagID);
+        return Objects.hash(menuID, menuItemID);
     }
 }
