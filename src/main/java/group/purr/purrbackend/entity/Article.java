@@ -1,21 +1,27 @@
 package group.purr.purrbackend.entity;
 
 import lombok.*;
+import org.hibernate.Hibernate;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
+@DynamicInsert
+@DynamicUpdate
 public class Article {
 
     @Id
-    @Column(name = "id", columnDefinition = "BIGINT UNSIGEND")
+    @Column(name = "id", columnDefinition = "BIGINT UNSIGNED")
     private Long ID;
 
     @Column(columnDefinition = "TINYTEXT")
@@ -74,4 +80,16 @@ public class Article {
     @Column(columnDefinition = "DATETIME")
     private Date deleteTime;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Article article = (Article) o;
+        return Objects.equals(ID, article.ID);
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 }
