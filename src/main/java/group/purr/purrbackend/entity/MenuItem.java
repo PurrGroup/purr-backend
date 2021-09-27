@@ -1,9 +1,6 @@
 package group.purr.purrbackend.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -11,35 +8,39 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.util.Objects;
 
-/**
- * @author whalien
- * @since 2021-09-27 19:20
- */
 @Entity
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-@DynamicInsert
 @DynamicUpdate
-public class LoginFailed {
+@DynamicInsert
+public class MenuItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="login_attempt_id", columnDefinition = "BIGINT UNSIGNED")
-    private Long loginAttemptID;
+    @Column(name = "id", columnDefinition = "BIGINT UNSIGNED")
+    private Long ID;
 
-    @Column(nullable = false, columnDefinition = "DATETIME")
-    private String loginAttemptDate;
+    @Column(columnDefinition = "TINYTEXT", nullable = false)
+    private String name;
 
-    @Column(nullable = false, name = "login_attempt_IP")
-    private String loginAttemptIP;
+    private String url;
+
+    private String icon;
+
+    @Column(length = 25, nullable = false)
+    private String target;
+
+    @Column(columnDefinition = "TINYINT UNSIGNED", nullable = false)
+    private Integer isParent;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        LoginFailed that = (LoginFailed) o;
-        return Objects.equals(loginAttemptID, that.loginAttemptID);
+        MenuItem menuItem = (MenuItem) o;
+        return Objects.equals(ID, menuItem.ID);
     }
 
     @Override

@@ -3,8 +3,8 @@ package group.purr.purrbackend.entity;
 import lombok.*;
 import org.hibernate.Hibernate;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
@@ -12,23 +12,20 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Blogmeta {
-
-    @Id
-    private String optionKey;
-
-    private String optionValue;
+public class ArticleTagRelation {
+    @EmbeddedId
+    ArticleTagKey articleTagKey;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Blogmeta blogmeta = (Blogmeta) o;
-        return Objects.equals(optionKey, blogmeta.optionKey);
+        ArticleTagRelation that = (ArticleTagRelation) o;
+        return Objects.equals(articleTagKey, that.articleTagKey);
     }
 
     @Override
     public int hashCode() {
-        return 0;
+        return Objects.hash(articleTagKey);
     }
 }

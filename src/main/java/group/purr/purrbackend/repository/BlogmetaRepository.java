@@ -1,6 +1,5 @@
 package group.purr.purrbackend.repository;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import group.purr.purrbackend.entity.Blogmeta;
 import org.springframework.data.jpa.repository.JpaRepository;
 

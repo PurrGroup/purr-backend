@@ -31,14 +31,17 @@ public class Moment {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column(columnDefinition = "INTEGER UNSIGNED")
+    @Column(nullable = false, columnDefinition = "INTEGER UNSIGNED")
     private Integer thumbCount;
 
-    @Column(columnDefinition = "INTEGER UNSIGNED")
+    @Column(nullable = false, columnDefinition = "INTEGER UNSIGNED")
     private Integer backgroundColor;
 
-    @Column(columnDefinition = "TINYTEXT")
+    @Column(nullable = false, columnDefinition = "TINYTEXT")
     private String annotation;
+
+    @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
+    private Integer visible;
 
     @Override
     public boolean equals(Object o) {

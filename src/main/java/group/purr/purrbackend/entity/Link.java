@@ -1,21 +1,25 @@
 package group.purr.purrbackend.entity;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @DynamicInsert
 @DynamicUpdate
 public class Link {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "id", columnDefinition = "BIGINT UNSIGNED")
     private Long ID;
 
@@ -28,7 +32,6 @@ public class Link {
     @Column(nullable = false)
     private String linkName;
 
-    @Column(nullable = false)
     private String imageUrl;
 
     @Column(length = 25, nullable = false)
@@ -54,6 +57,18 @@ public class Link {
     @Column(nullable = false)
     private String linkRel;
 
-    @Column(nullable = false)
     private String linkRss;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Link link = (Link) o;
+        return Objects.equals(ID, link.ID);
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 }

@@ -7,6 +7,7 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,22 +16,21 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Embeddable
-public class ArticleTagKey implements Serializable {
-
-    private Long articleID;
-    private Long tagID;
+public class MenuItemContainRelationKey implements Serializable {
+    private Long menuItemID;
+    private Long subMenuItemID;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        ArticleTagKey that = (ArticleTagKey) o;
-        return Objects.equals(articleID, that.articleID)
-                && Objects.equals(tagID, that.tagID);
+        MenuItemContainRelationKey that = (MenuItemContainRelationKey) o;
+        return Objects.equals(menuItemID, that.menuItemID)
+                && Objects.equals(subMenuItemID, that.subMenuItemID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(articleID, tagID);
+        return Objects.hash(menuItemID, subMenuItemID);
     }
 }
