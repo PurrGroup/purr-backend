@@ -17,10 +17,8 @@ import java.util.Objects;
 public class Blogmeta {
 
     @Id
-    @Column(name = "option_name")
     private String optionName;
 
-    @Column(name = "value")
     private String value;
 
     @Override
