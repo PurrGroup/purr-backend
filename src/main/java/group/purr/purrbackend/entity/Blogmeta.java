@@ -17,7 +17,7 @@ import java.util.Objects;
 public class Blogmeta {
 
     @Id
-    @Column(name = "optionName")
+    @Column(name = "option_name")
     private String optionName;
 
     @Column(name = "value")
