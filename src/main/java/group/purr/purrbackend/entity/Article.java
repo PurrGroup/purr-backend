@@ -1,6 +1,8 @@
 package group.purr.purrbackend.entity;
 
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +14,9 @@ import java.util.Date;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@EqualsAndHashCode
+@DynamicUpdate
+@DynamicInsert
 public class Article {
 
     @Id
