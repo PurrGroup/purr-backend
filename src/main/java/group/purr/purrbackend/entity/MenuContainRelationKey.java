@@ -13,7 +13,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Embeddable
 public class MenuContainRelationKey implements Serializable {
     private Long menuID;

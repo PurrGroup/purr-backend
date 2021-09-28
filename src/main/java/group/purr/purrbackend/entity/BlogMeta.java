@@ -12,7 +12,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Blogmeta {
+public class BlogMeta {
 
     @Id
     private String optionKey;
@@ -23,7 +23,7 @@ public class Blogmeta {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Blogmeta blogmeta = (Blogmeta) o;
+        BlogMeta blogmeta = (BlogMeta) o;
         return Objects.equals(optionKey, blogmeta.optionKey);
     }
 

@@ -1,4 +1,4 @@
-package group.purr.purrbackend.constants;
+package group.purr.purrbackend.enumerate;
 
 import lombok.Getter;
 

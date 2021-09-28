@@ -14,7 +14,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Embeddable
 public class MenuItemContainRelationKey implements Serializable {
     private Long menuItemID;
