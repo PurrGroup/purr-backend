@@ -1,8 +1,8 @@
 package group.purr.purrbackend.constant;
 
 public class BlogMetaConstants {
-    private static final String blogTitle = "blog_title";
-    private static final String domain = "domain";
-    private static final String createTime = "create_time";
-    private static final String favicon = "favicon";
+    public static final String blogTitle = "blog_title";
+    public static final String domain = "domain";
+    public static final String createTime = "create_time";
+    public static final String favicon = "favicon";
 }

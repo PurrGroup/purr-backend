@@ -61,6 +61,9 @@ public class Comment {
     @Column(nullable = false, name = "parent_id", columnDefinition = "BIGINT UNSIGNED")
     private Long parentID;
 
+    @Column(nullable = false, name = "parent_author_id", columnDefinition = "TINYTEXT")
+    private String parentAuthorID;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
