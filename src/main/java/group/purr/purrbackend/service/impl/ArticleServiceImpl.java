@@ -15,6 +15,7 @@ import java.util.Date;
 public class ArticleServiceImpl implements ArticleService {
     @Autowired
     ArticleRepository articleRepository;
+    @Autowired
     ContentRepository contentRepository;
 
     @Override
