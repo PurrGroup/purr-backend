@@ -31,22 +31,22 @@ public class MetaServiceImpl implements MetaService {
         Assert.notNull(favicon, "Favicon cannot be null.");
 
         BlogMeta titleMeta = new BlogMeta();
-        titleMeta.setOptionKey(BlogMetaConstants.blogTitle);
+        titleMeta.setOptionKey(BlogMetaConstants.BLOG_TITLE);
         titleMeta.setOptionValue(blogTitle);
         blogmetaRepository.save(titleMeta);
 
         BlogMeta domainMeta = new BlogMeta();
-        domainMeta.setOptionKey(BlogMetaConstants.domain);
+        domainMeta.setOptionKey(BlogMetaConstants.DOMAIN);
         domainMeta.setOptionValue(domain);
         blogmetaRepository.save(domainMeta);
 
         BlogMeta timeMeta = new BlogMeta();
-        timeMeta.setOptionKey(BlogMetaConstants.createTime);
+        timeMeta.setOptionKey(BlogMetaConstants.CREATE_TIME);
         timeMeta.setOptionValue(createTime);
         blogmetaRepository.save(timeMeta);
 
         BlogMeta faviconMeta = new BlogMeta();
-        faviconMeta.setOptionKey(BlogMetaConstants.favicon);
+        faviconMeta.setOptionKey(BlogMetaConstants.FAVICON);
         faviconMeta.setOptionValue(favicon);
         blogmetaRepository.save(faviconMeta);
 
