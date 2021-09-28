@@ -1,6 +1,6 @@
 package group.purr.purrbackend.utils;
 
-import group.purr.purrbackend.constants.ResultEnum;
+import group.purr.purrbackend.enumerate.ResultEnum;
 import group.purr.purrbackend.vo.ResultVO;
 
 /**
