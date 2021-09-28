@@ -1,8 +1,8 @@
 package group.purr.purrbackend.constant;
 
 public class AuthorMetaConstants {
-    private static final String userName = "user_name";
-    private static final String email = "email";
-    private static final String password = "password";
-    private static final String description = "description";
+    public static final String userName = "user_name";
+    public static final String email = "email";
+    public static final String password = "password";
+    public static final String description = "description";
 }

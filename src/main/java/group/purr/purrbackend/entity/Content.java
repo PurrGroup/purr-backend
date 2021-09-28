@@ -16,7 +16,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @DynamicUpdate
 @DynamicInsert
-public class ArticleContentRelation {
+public class Content {
 
     @Id
     @Column(name = "id", columnDefinition = "BIGINT UNSIGNED")
@@ -35,7 +35,7 @@ public class ArticleContentRelation {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        ArticleContentRelation that = (ArticleContentRelation) o;
+        Content that = (Content) o;
         return Objects.equals(ID, that.ID);
     }
 
