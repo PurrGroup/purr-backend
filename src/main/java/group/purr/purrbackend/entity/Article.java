@@ -38,6 +38,9 @@ public class Article {
     @Column(length = 50)
     private String linkName;
 
+    @Column(length = 25, nullable = false)
+    private String target;
+
     private String backgroundUrl;
 
     @Column(columnDefinition = "TINYTEXT")
@@ -73,7 +76,7 @@ public class Article {
     @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Integer isOriginal;
 
-    @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
+    @Column(columnDefinition = "TINYINT UNSIGNED")
     private Integer isPinned;
 
     @Column(name = "abstract", columnDefinition = "TEXT")

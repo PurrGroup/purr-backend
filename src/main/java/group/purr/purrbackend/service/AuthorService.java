@@ -8,5 +8,5 @@ public interface AuthorService {
      * @param email
      * @return true/false 是否创建成功
      */
-    boolean createBy(String username, String password, String email);
+    Boolean createBy(String username, String password, String email);
 }

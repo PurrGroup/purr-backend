@@ -23,13 +23,11 @@ public class Link {
     @Column(nullable = false, name = "id", columnDefinition = "BIGINT UNSIGNED")
     private Long ID;
 
-    @Column(nullable = false)
     private String url;
 
     @Column(nullable = false, columnDefinition = "TINYTEXT")
     private String name;
 
-    @Column(nullable = false)
     private String linkName;
 
     private String imageUrl;
@@ -54,7 +52,6 @@ public class Link {
     @Column(columnDefinition = "DATETIME")
     private Date deleteTime;
 
-    @Column(nullable = false)
     private String linkRel;
 
     private String linkRss;

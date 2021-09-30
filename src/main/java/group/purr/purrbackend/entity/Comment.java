@@ -58,11 +58,11 @@ public class Comment {
     @Column(nullable = false)
     private String userAgent;
 
-    @Column(nullable = false, name = "parent_id", columnDefinition = "BIGINT UNSIGNED")
+    @Column(name = "parent_id", columnDefinition = "BIGINT UNSIGNED")
     private Long parentID;
 
-    @Column(nullable = false, name = "parent_author_id", columnDefinition = "TINYTEXT")
-    private String parentAuthorID;
+    @Column(columnDefinition = "TINYTEXT")
+    private String parentAuthorName;
 
     @Override
     public boolean equals(Object o) {

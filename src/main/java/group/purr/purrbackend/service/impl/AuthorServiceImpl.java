@@ -17,7 +17,7 @@ public class AuthorServiceImpl implements AuthorService {
     AuthorRepository authorRepository;
 
     @Override
-    public boolean createBy(String username, String password, String email) {
+    public Boolean createBy(String username, String password, String email) {
         Assert.notNull(username, "Username cannot be null.");
         Assert.notNull(password, "Password cannot be null.");
         Assert.notNull(email, "Email cannot be null.");

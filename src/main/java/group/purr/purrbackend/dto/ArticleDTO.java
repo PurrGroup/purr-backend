@@ -1,10 +1,11 @@
 package group.purr.purrbackend.dto;
 
-import group.purr.purrbackend.entity.Article;
-
+import lombok.Data;
 import java.util.Date;
 
+@Data
 public class ArticleDTO {
+
     public Long ID;
 
     public String name;
@@ -14,6 +15,8 @@ public class ArticleDTO {
     public Date updateTime;
 
     public String linkName;
+
+    public String target;
 
     public String backgroundUrl;
 
@@ -47,9 +50,4 @@ public class ArticleDTO {
 
     public String content;
 
-    // TODO
-    public Article convertTo(){
-        Article article = null;
-        return article;
-    }
 }

@@ -22,9 +22,6 @@ public class Tag {
     @Column(name = "id", columnDefinition = "BIGINT UNSIGNED")
     private Long ID;
 
-    @Column(nullable = false)
-    private String url;
-
     @Column(nullable = false, columnDefinition = "TINYTEXT")
     private String name;
 
@@ -53,13 +50,12 @@ public class Tag {
     @Column(columnDefinition = "DATETIME")
     private Date deleteTime;
 
-    @Column(nullable = false)
     private String linkRel;
 
     private String linkRss;
 
-    @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
-    private Integer color;
+    @Column(nullable = false)
+    private String color;
 
     @Override
     public boolean equals(Object o) {

@@ -6,6 +6,7 @@ import group.purr.purrbackend.dto.SubMenuItemDTO;
 import group.purr.purrbackend.entity.*;
 import group.purr.purrbackend.repository.*;
 import group.purr.purrbackend.service.MenuService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,17 +28,20 @@ public class MenuServiceImpl implements MenuService {
     @Autowired
     MenuItemContainRelationRepository menuItemContainRelationRepository;
 
-    @Override
-    public Menu createMenu(MenuDTO menuDTO) {
-        Menu menu = menuDTO.convertTo();
-        Menu result = menuRepository.saveAndFlush(menu);
+    @Autowired
+    ModelMapper modelMapper;
 
+    @Override
+    public MenuDTO createMenu(MenuDTO menuDTO) {
+        Menu menu = modelMapper.map(menuDTO, Menu.class);
+        Menu saveMenu = menuRepository.saveAndFlush(menu);
+        MenuDTO result = modelMapper.map(saveMenu, MenuDTO.class);
         return result;
     }
 
     @Override
-    public boolean createMenuItem(MenuItemDTO menuItemDTO, Long parentID) {
-        MenuItem menuItem = menuItemDTO.convertTo();
+    public Long createMenuItem(MenuItemDTO menuItemDTO, Long parentID) {
+        MenuItem menuItem = modelMapper.map(menuItemDTO, MenuItem.class);
         MenuItem result = menuItemRepository.saveAndFlush(menuItem);
 
         MenuContainRelationKey menuContainRelationKey = new MenuContainRelationKey();
@@ -50,12 +54,12 @@ public class MenuServiceImpl implements MenuService {
         // 关联表插入对应record
         menuContainRelationRepository.save(menuContainRelation);
 
-        return true;
+        return result.getID();
     }
 
     @Override
-    public boolean createSubMenuItem(SubMenuItemDTO subMenuItemDTO, Long parentID) {
-        SubMenuItem subMenuItem = subMenuItemDTO.convertTo();
+    public Boolean createSubMenuItem(SubMenuItemDTO subMenuItemDTO, Long parentID) {
+        SubMenuItem subMenuItem = modelMapper.map(subMenuItemDTO, SubMenuItem.class);
         SubMenuItem result = subMenuItemRepository.saveAndFlush(subMenuItem);
 
         MenuItemContainRelationKey menuItemContainRelationKey = new MenuItemContainRelationKey();

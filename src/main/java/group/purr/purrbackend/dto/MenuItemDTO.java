@@ -1,11 +1,19 @@
 package group.purr.purrbackend.dto;
 
-import group.purr.purrbackend.entity.MenuItem;
+import lombok.Data;
 
+@Data
 public class MenuItemDTO {
-    // TODO
-    public MenuItem convertTo(){
-        MenuItem menuItem = null;
-        return menuItem;
-    }
+
+    private Long ID;
+
+    private String name;
+
+    private String url;
+
+    private String icon;
+
+    private String target;
+
+    private Integer isParent;
 }

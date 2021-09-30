@@ -1,12 +1,42 @@
 package group.purr.purrbackend.dto;
 
-import group.purr.purrbackend.entity.Comment;
 
+import lombok.Data;
+
+import javax.persistence.Column;
+import java.util.Date;
+
+@Data
 public class CommentDTO {
 
-    // TODO
-    public Comment convertTo(){
-        Comment comment = null;
-        return comment;
-    }
+    private Long ID;
+
+    private Long postID;
+
+    private Integer postCategory;
+
+    private String authorName;
+
+    private Integer isAnonymous;
+
+    private String authorQQ;
+
+    private String authorUrl;
+
+    private String authorEmail;
+
+    private String authorIP;
+
+    private Date date;
+
+    private String content;
+
+    private Integer approved;
+
+    private String userAgent;
+
+    private Long parentID;
+
+    private String parentAuthorName;
+
 }
