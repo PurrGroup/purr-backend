@@ -3,88 +3,99 @@ package group.purr.purrbackend.controller;
 import com.alibaba.fastjson.JSONObject;
 import group.purr.purrbackend.constant.MagicConstants;
 import group.purr.purrbackend.dto.*;
-import group.purr.purrbackend.entity.MenuItem;
-import group.purr.purrbackend.entity.SubMenuItem;
 import group.purr.purrbackend.enumerate.PostCategoryEnum;
-import group.purr.purrbackend.service.LinkService;
-import group.purr.purrbackend.service.impl.*;
+import group.purr.purrbackend.service.*;
 import group.purr.purrbackend.utils.ResultVOUtil;
 import group.purr.purrbackend.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.*;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/install/")
+@RequestMapping("/api/install")
 @Slf4j
 public class InstallController {
 
-    @Autowired
-    MetaServiceImpl metaService;
+    final
+    MetaService metaService;
 
-    @Autowired
-    AuthorServiceImpl authorService;
+    final
+    AuthorService authorService;
 
-    @Autowired
-    MenuServiceImpl menuService;
+    final
+    MenuService menuService;
 
-    @Autowired
-    ArticleServiceImpl articleService;
+    final
+    ArticleService articleService;
 
-    @Autowired
-    TagServiceImpl tagService;
+    final
+    TagService tagService;
 
-    @Autowired
-    CommentServiceImpl commentService;
+    final
+    CommentService commentService;
 
-    @Autowired
-    PageServiceImpl pageService;
+    final
+    PageService pageService;
 
-    @Autowired
-    LinkServiceImpl linkService;
+    final
+    LinkService linkService;
+
+    public InstallController(MetaService metaService,
+                             AuthorService authorService,
+                             MenuService menuService,
+                             ArticleService articleService,
+                             TagService tagService,
+                             CommentService commentService,
+                             PageService pageService,
+                             LinkService linkService) {
+        this.metaService = metaService;
+        this.authorService = authorService;
+        this.menuService = menuService;
+        this.articleService = articleService;
+        this.tagService = tagService;
+        this.commentService = commentService;
+        this.pageService = pageService;
+        this.linkService = linkService;
+    }
 
 
     @PostMapping
     public ResultVO install(@RequestBody JSONObject installJSON) {
-
-        //get initial information
+        // get initial information
         String userName = installJSON.getString("username");
         String email = installJSON.getString("email");
         String psd = installJSON.getString("password");
         String hostname = installJSON.getString("hostname");
         String blogName = installJSON.getString("blogName");
 
-        //initialize meta information
+        // initialize meta information
         initializeMeta(blogName, hostname);
 
-        //initialize user information
+        // initialize user information
         createAdmin(userName, psd, email);
 
-        //initialize article information
+        // initialize article information
         ArticleDTO defaultArticle = createArticle(userName);
         Long articleID = defaultArticle.getID();
 
-        //initialize tag information
-        TagDTO defaultTag = createTag();
+        // initialize tag information
+        createTag();
 
-        //initialize comment information
-        CommentDTO defaultComment = createComment(articleID);
+        // initialize comment information
+        createComment(articleID);
 
-        //initialize menu information
+        // initialize menu information
         MenuDTO defaultMenu = createMenu();
         Long menuID = defaultMenu.getID();
 
-        //initialize menuItem information
+        // initialize menuItem information
         Long aboutID = createMenuItem(menuID);
 
-        //initialize subMenuItem information
+        // initialize subMenuItem information
         createSubMenu(aboutID);
 
         return ResultVOUtil.success(true);
-
     }
 
     private void initializeMeta(String blogName, String hostname){
