@@ -8,5 +8,5 @@ public interface CommentService {
      * @param commentDTO
      * @return 是否创建成功
      */
-    boolean createComment(CommentDTO commentDTO);
+    Boolean createComment(CommentDTO commentDTO);
 }

@@ -1,11 +1,22 @@
 package group.purr.purrbackend.dto;
 
-import group.purr.purrbackend.entity.SubMenuItem;
+import lombok.Data;
 
+import javax.persistence.Column;
+
+@Data
 public class SubMenuItemDTO {
-    // TODO
-    public SubMenuItem convertTo(){
-        SubMenuItem subMenuItem = null;
-        return subMenuItem;
-    }
+
+    private Long ID;
+
+    private String name;
+
+    private String url;
+
+    private String icon;
+
+    private String target;
+
+    private Long parentID;
+
 }

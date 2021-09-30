@@ -1,6 +1,7 @@
 package group.purr.purrbackend.controller;
 
 import group.purr.purrbackend.service.MetaService;
+import group.purr.purrbackend.service.impl.MetaServiceImpl;
 import group.purr.purrbackend.utils.ResultVOUtil;
 import group.purr.purrbackend.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MetaController {
 
     @Autowired
-    MetaService metaService;
+    MetaServiceImpl metaService;
 
     /**
      * 判断系统是否已安装
@@ -25,7 +26,7 @@ public class MetaController {
      */
     @GetMapping("/isInstalled")
     public ResultVO isInstalled(){
-        boolean isInstalled = metaService.isInstalled();
+        Boolean isInstalled = metaService.isInstalled();
         return ResultVOUtil.success(isInstalled);
     }
 }
