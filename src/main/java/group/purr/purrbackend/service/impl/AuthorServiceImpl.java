@@ -13,8 +13,12 @@ import org.springframework.util.Assert;
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
-    @Autowired
+    final
     AuthorRepository authorRepository;
+
+    public AuthorServiceImpl(AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
+    }
 
     @Override
     public Boolean createBy(String username, String password, String email) {
@@ -43,5 +47,10 @@ public class AuthorServiceImpl implements AuthorService {
         authorRepository.save(descriptionRecord);
 
         return true;
+    }
+
+    @Override
+    public void deleteAll() {
+        authorRepository.deleteAll();
     }
 }

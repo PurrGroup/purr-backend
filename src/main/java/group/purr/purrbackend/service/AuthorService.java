@@ -9,4 +9,6 @@ public interface AuthorService {
      * @return true/false 是否创建成功
      */
     Boolean createBy(String username, String password, String email);
+
+    void deleteAll();
 }

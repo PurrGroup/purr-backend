@@ -12,15 +12,19 @@ import java.util.Date;
 
 @Service
 public class MetaServiceImpl implements MetaService {
-    @Autowired
+    final
     BlogMetaRepository blogmetaRepository;
+
+    public MetaServiceImpl(BlogMetaRepository blogmetaRepository) {
+        this.blogmetaRepository = blogmetaRepository;
+    }
 
     /**
      * 判断是否已安装博客
      * @return 返回一个布尔值，若为true则已安装
      */
     @Override
-    public Boolean isInstalled() {
+    public Boolean queryInstalled() {
         Long count = blogmetaRepository.countAllByOptionKey("blog_title");
         return count != 0;
     }
@@ -53,5 +57,10 @@ public class MetaServiceImpl implements MetaService {
         blogmetaRepository.save(faviconMeta);
 
         return true;
+    }
+
+    @Override
+    public void deleteAll() {
+        blogmetaRepository.deleteAll();
     }
 }

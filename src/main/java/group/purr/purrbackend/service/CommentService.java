@@ -9,4 +9,6 @@ public interface CommentService {
      * @return 是否创建成功
      */
     Boolean createComment(CommentDTO commentDTO);
+
+    void deleteAll();
 }

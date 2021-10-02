@@ -13,23 +13,32 @@ import org.springframework.stereotype.Service;
 @Service
 public class MenuServiceImpl implements MenuService {
 
-    @Autowired
+    final
     MenuRepository menuRepository;
 
-    @Autowired
+    final
     MenuItemRepository menuItemRepository;
 
-    @Autowired
+    final
     SubMenuItemRepository subMenuItemRepository;
 
-    @Autowired
+    final
     MenuContainRelationRepository menuContainRelationRepository;
 
-    @Autowired
+    final
     MenuItemContainRelationRepository menuItemContainRelationRepository;
 
-    @Autowired
+    final
     ModelMapper modelMapper;
+
+    public MenuServiceImpl(MenuRepository menuRepository, MenuItemRepository menuItemRepository, SubMenuItemRepository subMenuItemRepository, MenuContainRelationRepository menuContainRelationRepository, MenuItemContainRelationRepository menuItemContainRelationRepository, ModelMapper modelMapper) {
+        this.menuRepository = menuRepository;
+        this.menuItemRepository = menuItemRepository;
+        this.subMenuItemRepository = subMenuItemRepository;
+        this.menuContainRelationRepository = menuContainRelationRepository;
+        this.menuItemContainRelationRepository = menuItemContainRelationRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public MenuDTO createMenu(MenuDTO menuDTO) {
@@ -72,5 +81,15 @@ public class MenuServiceImpl implements MenuService {
         menuItemContainRelationRepository.save(menuItemContainRelation);
 
         return true;
+    }
+
+    @Override
+    public void deleteAll() {
+        menuRepository.deleteAll();
+        menuItemRepository.deleteAll();
+        menuContainRelationRepository.deleteAll();
+
+        subMenuItemRepository.deleteAll();
+        menuItemContainRelationRepository.deleteAll();
     }
 }

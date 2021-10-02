@@ -14,11 +14,16 @@ import java.util.Date;
 @Service
 public class LinkServiceImpl implements LinkService {
 
-    @Autowired
+    final
     ModelMapper modelMapper;
 
-    @Autowired
+    final
     LinkRepository linkRepository;
+
+    public LinkServiceImpl(ModelMapper modelMapper, LinkRepository linkRepository) {
+        this.modelMapper = modelMapper;
+        this.linkRepository = linkRepository;
+    }
 
     @Override
     public Boolean createBy(LinkDTO linkDTO){
@@ -27,6 +32,11 @@ public class LinkServiceImpl implements LinkService {
         link.setCreateTime(currentTime);
         linkRepository.saveAndFlush(link);
         return true;
+    }
+
+    @Override
+    public void deleteAll() {
+        linkRepository.deleteAll();
     }
 
 }
