@@ -4,7 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import group.purr.purrbackend.constant.MagicConstants;
 import group.purr.purrbackend.dto.*;
 import group.purr.purrbackend.enumerate.PostCategoryEnum;
-import group.purr.purrbackend.enumerate.ResultEnum;
+import group.purr.purrbackend.exception.AlreadyInstalledException;
+import group.purr.purrbackend.exception.AlreadyUninstalledException;
 import group.purr.purrbackend.service.*;
 import group.purr.purrbackend.utils.ResultVOUtil;
 import group.purr.purrbackend.vo.ResultVO;
@@ -59,8 +60,8 @@ public class InstallController {
     public ResultVO install(@RequestBody JSONObject installJSON) {
 
         Boolean isInstalled = metaService.queryInstalled();
-        if(isInstalled){
-            return ResultVOUtil.success("true");
+        if (isInstalled) {
+            throw new AlreadyInstalledException();
         }
 
         // get initial information
@@ -103,10 +104,10 @@ public class InstallController {
     }
 
     @GetMapping("/uninstall")
-    public ResultVO uninstall(){
+    public ResultVO uninstall() {
         Boolean isInstalled = metaService.queryInstalled();
-        if(!isInstalled){
-            return ResultVOUtil.success("true");
+        if (!isInstalled) {
+            throw new AlreadyUninstalledException();
         }
 
         metaService.deleteAll();
@@ -119,16 +120,16 @@ public class InstallController {
         return ResultVOUtil.success("true");
     }
 
-    private void initializeMeta(String blogName, String hostname){
+    private void initializeMeta(String blogName, String hostname) {
         String favicon = MagicConstants.DEFAULT_FAVICON;
         metaService.createBy(blogName, hostname, favicon);
     }
 
-    private void createAdmin(String userName, String psd, String email){
+    private void createAdmin(String userName, String psd, String email) {
         authorService.createBy(userName, psd, email);
     }
 
-    private ArticleDTO createArticle(String userName){
+    private ArticleDTO createArticle(String userName) {
         ArticleDTO defaultArticle = new ArticleDTO();
 
         defaultArticle.setName(MagicConstants.DEFAULT_ARTICLE_NAME);
@@ -161,7 +162,7 @@ public class InstallController {
         return defaultArticle;
     }
 
-    private Long createTag(){
+    private Long createTag() {
         TagDTO defaultTag = new TagDTO();
 
         defaultTag.setName(MagicConstants.DEFAULT_TAG_NAME);
@@ -187,7 +188,7 @@ public class InstallController {
         return tagID;
     }
 
-    private void createComment(Long articleID){
+    private void createComment(Long articleID) {
         CommentDTO defaultComment = new CommentDTO();
         defaultComment.setPostID(articleID);
         defaultComment.setPostCategory(PostCategoryEnum.ARTICLE.getPostCategory());
@@ -200,7 +201,7 @@ public class InstallController {
         commentService.createComment(defaultComment);
     }
 
-    private MenuDTO createMenu(){
+    private MenuDTO createMenu() {
         MenuDTO defaultMenu = new MenuDTO();
         defaultMenu.setName(MagicConstants.DEFAULT_MENU_NAME);
         defaultMenu.setIsDefault(MagicConstants.DEFAULT_MENU);
@@ -210,7 +211,7 @@ public class InstallController {
         return defaultMenu;
     }
 
-    private Long createMenuItem(Long menuID){
+    private Long createMenuItem(Long menuID) {
         //create homepage
         MenuItemDTO homePage = new MenuItemDTO();
         homePage.setName(MagicConstants.DEFAULT_MENUITEM_HOMEPAGE_NAME);
@@ -328,7 +329,7 @@ public class InstallController {
         return aboutID;
     }
 
-    private void createSubMenu(Long aboutID){
+    private void createSubMenu(Long aboutID) {
         //create me
         SubMenuItemDTO me = new SubMenuItemDTO();
         me.setName(MagicConstants.DEFAULT_SUBMENU_ME_NAME);

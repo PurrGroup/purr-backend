@@ -5,12 +5,11 @@ import group.purr.purrbackend.entity.Article;
 import group.purr.purrbackend.entity.ArticleTagKey;
 import group.purr.purrbackend.entity.ArticleTagRelation;
 import group.purr.purrbackend.entity.Content;
+import group.purr.purrbackend.repository.ArticleRepository;
 import group.purr.purrbackend.repository.ArticleTagRepository;
 import group.purr.purrbackend.repository.ContentRepository;
-import group.purr.purrbackend.repository.ArticleRepository;
 import group.purr.purrbackend.service.ArticleService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

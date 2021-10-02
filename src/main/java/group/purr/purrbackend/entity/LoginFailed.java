@@ -25,7 +25,7 @@ import java.util.Objects;
 public class LoginFailed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="login_attempt_id", columnDefinition = "BIGINT UNSIGNED")
+    @Column(name = "login_attempt_id", columnDefinition = "BIGINT UNSIGNED")
     private Long loginAttemptID;
 
     @Column(nullable = false, columnDefinition = "DATETIME")

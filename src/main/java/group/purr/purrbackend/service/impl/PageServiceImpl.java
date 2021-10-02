@@ -5,7 +5,6 @@ import group.purr.purrbackend.entity.Page;
 import group.purr.purrbackend.repository.PageRepository;
 import group.purr.purrbackend.service.PageService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

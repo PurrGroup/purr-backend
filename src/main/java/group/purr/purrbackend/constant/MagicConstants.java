@@ -35,7 +35,7 @@ public class MagicConstants {
     public static final String DEFAULT_PAGE_URL_NAME = "";
     public static final String DEFAULT_PAGE_DESCRIPTION = "默认页面";
     public static final Integer DEFAULT_PAGE_COMMENT_STATUS = 1;
-//    public static final String DEFAULT_PAGE_BACKGROUND_URL = "https://images.unsplash.com/photo-1632829754530-d94a588e2dde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80";
+    //    public static final String DEFAULT_PAGE_BACKGROUND_URL = "https://images.unsplash.com/photo-1632829754530-d94a588e2dde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80";
     public static final String DEFAULT_PAGE_BACKGROUND_URL = "";
     public static final Integer DEFAULT_PAGE_COMMENT_COUNT = 0;
     public static final Integer DEFAULT_PAGE_THUMB_COUNT = 0;
