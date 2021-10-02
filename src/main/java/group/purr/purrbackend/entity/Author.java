@@ -18,7 +18,9 @@ import java.util.Objects;
  * @since 2021-09-27 20:20
  */
 @RequiredArgsConstructor
-@Getter@Setter@ToString
+@Getter
+@Setter
+@ToString
 @DynamicInsert
 @DynamicUpdate
 @Entity

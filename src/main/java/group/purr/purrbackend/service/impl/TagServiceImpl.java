@@ -24,7 +24,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Long createBy(TagDTO tagDTO){
+    public Long createBy(TagDTO tagDTO) {
         Tag tag = modelMapper.map(tagDTO, Tag.class);
         Date currentTime = new Date();
         tag.setCreateTime(currentTime);

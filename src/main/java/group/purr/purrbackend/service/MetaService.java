@@ -5,6 +5,7 @@ public interface MetaService {
 
     /**
      * 下载时创建网站元信息
+     *
      * @param blogTitle
      * @param domain
      * @param favicon

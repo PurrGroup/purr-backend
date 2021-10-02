@@ -1,6 +1,7 @@
 package group.purr.purrbackend.dto;
 
 import lombok.Data;
+
 import java.util.Date;
 
 @Data
@@ -45,7 +46,7 @@ public class ArticleDTO {
     public Integer isPinned;
 
     public String articleAbstract;
-    
+
     public Date deleteTime;
 
     public String content;

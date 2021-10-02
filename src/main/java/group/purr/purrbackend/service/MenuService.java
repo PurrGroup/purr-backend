@@ -6,7 +6,9 @@ import group.purr.purrbackend.dto.SubMenuItemDTO;
 
 public interface MenuService {
     MenuDTO createMenu(MenuDTO menuDTO);
+
     Long createMenuItem(MenuItemDTO menuItemDTO, Long parentID);
+
     Boolean createSubMenuItem(SubMenuItemDTO subMenuItemDTO, Long parentID);
 
     void deleteAll();
