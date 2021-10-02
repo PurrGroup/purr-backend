@@ -5,6 +5,7 @@ import group.purr.purrbackend.dto.PageDTO;
 public interface PageService {
     /**
      * 创建新页面
+     *
      * @param pageDTO
      * @return 返回页面ID
      */

@@ -17,7 +17,8 @@ import java.util.Objects;
  * @since 2021-09-27 20:00
  */
 @RequiredArgsConstructor
-@Getter@Setter
+@Getter
+@Setter
 @ToString
 @Entity
 @DynamicUpdate
@@ -34,7 +35,7 @@ public class LockdownIP {
     @Column(columnDefinition = "DATETIME")
     private Date releaseDate;
 
-    @Column(name="lockdown_IP", nullable = false)
+    @Column(name = "lockdown_IP", nullable = false)
     private String lockdownIP;
 
     @Override

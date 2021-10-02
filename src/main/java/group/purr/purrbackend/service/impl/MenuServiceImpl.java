@@ -7,7 +7,6 @@ import group.purr.purrbackend.entity.*;
 import group.purr.purrbackend.repository.*;
 import group.purr.purrbackend.service.MenuService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
