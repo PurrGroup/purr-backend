@@ -12,11 +12,16 @@ import java.util.Date;
 
 @Service
 public class PageServiceImpl implements PageService {
-    @Autowired
+    final
     PageRepository pageRepository;
 
-    @Autowired
+    final
     ModelMapper modelMapper;
+
+    public PageServiceImpl(PageRepository pageRepository, ModelMapper modelMapper) {
+        this.pageRepository = pageRepository;
+        this.modelMapper = modelMapper;
+    }
 
 
     @Override

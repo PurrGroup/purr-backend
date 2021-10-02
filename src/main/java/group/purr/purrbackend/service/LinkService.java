@@ -4,4 +4,6 @@ import group.purr.purrbackend.dto.LinkDTO;
 
 public interface LinkService {
     Boolean createBy(LinkDTO linkDTO);
+
+    void deleteAll();
 }

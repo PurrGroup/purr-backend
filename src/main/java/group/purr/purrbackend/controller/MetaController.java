@@ -17,8 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class MetaController {
 
-    @Autowired
-    MetaServiceImpl metaService;
+    final
+    MetaService metaService;
+
+    public MetaController(MetaService metaService) {
+        this.metaService = metaService;
+    }
 
     /**
      * 判断系统是否已安装
@@ -26,7 +30,7 @@ public class MetaController {
      */
     @GetMapping("/isInstalled")
     public ResultVO isInstalled(){
-        Boolean isInstalled = metaService.isInstalled();
+        Boolean isInstalled = metaService.queryInstalled();
         return ResultVOUtil.success(isInstalled);
     }
 }

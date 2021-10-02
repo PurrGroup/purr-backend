@@ -4,16 +4,16 @@ import com.alibaba.fastjson.JSONObject;
 import group.purr.purrbackend.constant.MagicConstants;
 import group.purr.purrbackend.dto.*;
 import group.purr.purrbackend.enumerate.PostCategoryEnum;
+import group.purr.purrbackend.enumerate.ResultEnum;
 import group.purr.purrbackend.service.*;
 import group.purr.purrbackend.utils.ResultVOUtil;
 import group.purr.purrbackend.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-
 @CrossOrigin
 @RestController
-@RequestMapping("/api/install")
+@RequestMapping("/api")
 @Slf4j
 public class InstallController {
 
@@ -36,9 +36,6 @@ public class InstallController {
     CommentService commentService;
 
     final
-    PageService pageService;
-
-    final
     LinkService linkService;
 
     public InstallController(MetaService metaService,
@@ -47,7 +44,6 @@ public class InstallController {
                              ArticleService articleService,
                              TagService tagService,
                              CommentService commentService,
-                             PageService pageService,
                              LinkService linkService) {
         this.metaService = metaService;
         this.authorService = authorService;
@@ -55,13 +51,18 @@ public class InstallController {
         this.articleService = articleService;
         this.tagService = tagService;
         this.commentService = commentService;
-        this.pageService = pageService;
         this.linkService = linkService;
     }
 
 
-    @PostMapping
+    @PostMapping("/install")
     public ResultVO install(@RequestBody JSONObject installJSON) {
+
+        Boolean isInstalled = metaService.queryInstalled();
+        if(isInstalled){
+            return ResultVOUtil.success("true");
+        }
+
         // get initial information
         String userName = installJSON.getString("username");
         String email = installJSON.getString("email");
@@ -80,7 +81,10 @@ public class InstallController {
         Long articleID = defaultArticle.getID();
 
         // initialize tag information
-        createTag();
+        Long tagID = createTag();
+
+        //band tag to article
+        bandTag(articleID, tagID);
 
         // initialize comment information
         createComment(articleID);
@@ -96,6 +100,23 @@ public class InstallController {
         createSubMenu(aboutID);
 
         return ResultVOUtil.success(true);
+    }
+
+    @GetMapping("/uninstall")
+    public ResultVO uninstall(){
+        Boolean isInstalled = metaService.queryInstalled();
+        if(!isInstalled){
+            return ResultVOUtil.success("true");
+        }
+
+        metaService.deleteAll();
+        authorService.deleteAll();
+        articleService.deleteAll();
+        tagService.deleteAll();
+        commentService.deleteAll();
+        menuService.deleteAll();
+        linkService.deleteAll();
+        return ResultVOUtil.success("true");
     }
 
     private void initializeMeta(String blogName, String hostname){
@@ -140,7 +161,7 @@ public class InstallController {
         return defaultArticle;
     }
 
-    private TagDTO createTag(){
+    private Long createTag(){
         TagDTO defaultTag = new TagDTO();
 
         defaultTag.setName(MagicConstants.DEFAULT_TAG_NAME);
@@ -151,7 +172,7 @@ public class InstallController {
         defaultTag.setVisitCount(MagicConstants.DEFAULT_TAG_VISIT_COUNT);
         defaultTag.setCiteCount(MagicConstants.DEFAULT_TAG_CITE_COUNT);
         defaultTag.setColor(MagicConstants.DEFAULT_TAG_COLOR);
-        tagService.createBy(defaultTag);
+        Long tagID = tagService.createBy(defaultTag);
 
         LinkDTO tagLink = new LinkDTO();
         tagLink.setName(defaultTag.getName());
@@ -163,10 +184,10 @@ public class InstallController {
         tagLink.setCiteCount(MagicConstants.DEFAULT_LINK_CITE_COUNT);
         linkService.createBy(tagLink);
 
-        return defaultTag;
+        return tagID;
     }
 
-    private CommentDTO createComment(Long articleID){
+    private void createComment(Long articleID){
         CommentDTO defaultComment = new CommentDTO();
         defaultComment.setPostID(articleID);
         defaultComment.setPostCategory(PostCategoryEnum.ARTICLE.getPostCategory());
@@ -177,7 +198,6 @@ public class InstallController {
         defaultComment.setApproved(MagicConstants.DEFAULT_COMMENT_APPROVED);
         defaultComment.setUserAgent(MagicConstants.DEFAULT_COMMENT_AGENT);
         commentService.createComment(defaultComment);
-        return defaultComment;
     }
 
     private MenuDTO createMenu(){
@@ -368,4 +388,7 @@ public class InstallController {
 
     }
 
+    private void bandTag(Long articleID, Long tagID) {
+        articleService.addTag(articleID, tagID);
+    }
 }

@@ -9,4 +9,8 @@ public interface ArticleService {
      * @return 返回文章ID
      */
     Long createArticle(ArticleDTO articleDTO);
+
+    void deleteAll();
+
+    void addTag(Long articleID, Long tagID);
 }
