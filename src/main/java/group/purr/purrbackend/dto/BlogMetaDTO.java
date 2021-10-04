@@ -11,6 +11,8 @@ public class BlogMetaDTO {
 
     private String domain;
 
+    private String apiUrl;
+
     private Date createTime;
 
     private String favicon;

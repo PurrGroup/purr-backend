@@ -1,13 +1,11 @@
 package group.purr.purrbackend.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import group.purr.purrbackend.service.MetaService;
 import group.purr.purrbackend.utils.ResultVOUtil;
 import group.purr.purrbackend.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
@@ -31,5 +29,13 @@ public class MetaController {
     public ResultVO isInstalled() {
         Boolean isInstalled = metaService.queryInstalled();
         return ResultVOUtil.success(isInstalled);
+    }
+
+    @PostMapping("/apiUrl/update")
+    public ResultVO updateApiUrl(@RequestBody JSONObject jsonObject){
+        String apiUrl = jsonObject.getString("apiUrl");
+        metaService.updateApiUrl(apiUrl);
+        return ResultVOUtil.success(true);
+
     }
 }
