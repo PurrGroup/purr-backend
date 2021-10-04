@@ -2,12 +2,15 @@ package group.purr.purrbackend.service.impl;
 
 import group.purr.purrbackend.constant.AuthorMetaConstants;
 import group.purr.purrbackend.constant.MagicConstants;
+import group.purr.purrbackend.dto.AuthorDTO;
 import group.purr.purrbackend.entity.Author;
 import group.purr.purrbackend.repository.AuthorRepository;
 import group.purr.purrbackend.service.AuthorService;
 import group.purr.purrbackend.utils.JwtUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
+import java.util.Optional;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -51,5 +54,20 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void deleteAll() {
         authorRepository.deleteAll();
+    }
+
+    @Override
+    public AuthorDTO getProfile() {
+
+        Author userName = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.USER_NAME);
+        Author email = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.EMAIL);
+        Author description = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.DESCRIPTION);
+
+        AuthorDTO result = new AuthorDTO();
+        result.setUserName(userName.getOptionValue());
+        result.setEmail(email.getOptionValue());
+        result.setDescription(description.getOptionValue());
+
+        return result;
     }
 }

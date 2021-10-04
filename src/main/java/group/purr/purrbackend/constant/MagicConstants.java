@@ -14,6 +14,7 @@ public class MagicConstants {
     public static final Integer DEFAULT_ARTICLE_SHARE_COUNT = 0;
     public static final Integer DEFAULT_ARTICLE_VIEW_COUNT = 0;
     public static final Integer DEFAULT_ARTICLE_STATUS = 1;
+    public static final Integer DEFAULT_IS_PINNED = 0;
     public static final Integer DEFAULT_ARTICLE_COMMENT_STATUS = 1;
     public static final Integer DEFAULT_ARTICLE_ORIGINAL = 1;
     public static final String DEFAULT_ARTICLE_ABSTRACT = "默认文章";

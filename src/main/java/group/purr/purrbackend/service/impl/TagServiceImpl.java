@@ -28,6 +28,7 @@ public class TagServiceImpl implements TagService {
         Tag tag = modelMapper.map(tagDTO, Tag.class);
         Date currentTime = new Date();
         tag.setCreateTime(currentTime);
+        tag.setUpdateTime(currentTime);
         Tag result = tagRepository.saveAndFlush(tag);
         return result.getID();
     }

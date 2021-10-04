@@ -146,6 +146,7 @@ public class InstallController {
         defaultArticle.setArticleAbstract(MagicConstants.DEFAULT_ARTICLE_ABSTRACT);
         defaultArticle.setContent(MagicConstants.DEFAULT_ARTICLE_CONTENT);
         defaultArticle.setTarget(MagicConstants.DEFAULT_ARTICLE_TARGET);
+        defaultArticle.setIsPinned(MagicConstants.DEFAULT_IS_PINNED);
         Long articleID = articleService.createArticle(defaultArticle);
         defaultArticle.setID(articleID);
 

@@ -28,6 +28,7 @@ public class LinkServiceImpl implements LinkService {
         Link link = modelMapper.map(linkDTO, Link.class);
         Date currentTime = new Date();
         link.setCreateTime(currentTime);
+        link.setUpdateTime(currentTime);
         linkRepository.saveAndFlush(link);
         return true;
     }

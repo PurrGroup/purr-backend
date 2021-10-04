@@ -1,5 +1,7 @@
 package group.purr.purrbackend.service;
 
+import group.purr.purrbackend.dto.AuthorDTO;
+
 public interface AuthorService {
     /**
      * 下载时创建用户信息
@@ -12,4 +14,6 @@ public interface AuthorService {
     Boolean createBy(String username, String password, String email);
 
     void deleteAll();
+
+    AuthorDTO getProfile();
 }

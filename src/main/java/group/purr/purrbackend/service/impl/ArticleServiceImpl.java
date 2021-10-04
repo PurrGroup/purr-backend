@@ -10,9 +10,13 @@ import group.purr.purrbackend.repository.ArticleTagRepository;
 import group.purr.purrbackend.repository.ContentRepository;
 import group.purr.purrbackend.service.ArticleService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -42,12 +46,14 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = modelMapper.map(articleDTO, Article.class);
         Date currentTime = new Date();
         article.setCreateTime(currentTime);
+        article.setUpdateTime(currentTime);
         Article result = articleRepository.saveAndFlush(article);
 
         Content content = new Content();
         content.setID(result.getID());
         content.setContent(articleDTO.getContent());
         content.setCreateTime(currentTime);
+        content.setUpdateTime(currentTime);
         contentRepository.save(content);
 
         return result.getID();
@@ -68,5 +74,35 @@ public class ArticleServiceImpl implements ArticleService {
         articleTagKey.setTagID(tagID);
         articleTagRelation.setArticleTagKey(articleTagKey);
         articleTagRepository.save(articleTagRelation);
+    }
+
+    @Override
+    public List<ArticleDTO> findRecentArticle(Pageable pageable) {
+
+        Page<Article> articles = articleRepository.findAll(pageable);
+
+        List<ArticleDTO> result = new ArrayList<>();
+        for (Article article : articles.getContent()) {
+            article.setCommentStatus(null);
+            article.setPingStatus(null);
+            article.setToPing(null);
+            article.setPinged(null);
+            article.setArticleAbstract(null);
+            article.setDeleteTime(null);
+            ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
+            result.add(articleDTO);
+        }
+
+        return result;
+    }
+
+    @Override
+    public Long getTotal() {
+        return articleRepository.count();
+    }
+
+    @Override
+    public Long getTotalExceptDeleted() {
+        return articleRepository.countByDeleteTimeNotNull();
     }
 }

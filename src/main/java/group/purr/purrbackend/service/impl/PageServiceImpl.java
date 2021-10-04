@@ -28,6 +28,7 @@ public class PageServiceImpl implements PageService {
         Page page = modelMapper.map(pageDTO, Page.class);
         Date currentTime = new Date();
         page.setCreateTime(currentTime);
+        page.setUpdateTime(currentTime);
         Page result = pageRepository.save(page);
         return result.getID();
     }
