@@ -39,8 +39,9 @@ public class LoginController {
         // 获取用户信息
         String username = loginJSON.getString("username");
         String password = loginJSON.getString("password");
-        String IPAddress = IPUtil.getIP(request);
-
+//        String IPAddress = IPUtil.getIP(request);
+        String ip = request.getRemoteAddr();
+        String ua = request.getHeader("User-Agent");
         // 检验密码是否正确
 
         // 如果登陆失败，检验IP封禁次数

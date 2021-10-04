@@ -1,5 +1,6 @@
 package group.purr.purrbackend.security;
 
+import group.purr.purrbackend.exception.DenialOfServiceException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.apache.commons.lang3.StringUtils;
@@ -7,6 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import group.purr.purrbackend.config.TokenProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,7 +32,7 @@ public class TokenAuthenticateFilter extends OncePerRequestFilter {
 
     private final TokenProperties tokenProperties;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
+    private static final Logger logger = LoggerFactory.getLogger(TokenAuthenticateFilter.class);
     /**
      * 判断是否为系统签发的token
      * @param authorizationHeader
@@ -92,19 +95,22 @@ public class TokenAuthenticateFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = httpServletRequest.getHeader(tokenProperties.getAuthorizationHeaderName());
+//        logger.error("doFilterInternal");
         if(!checkTokenAuthorizationHeader(authorizationHeader)){
-            log.debug("非系统签发token");
+//            log.error("非系统签发token");
             filterChain.doFilter(httpServletRequest, httpServletResponse);
+//            throw new DenialOfServiceException();
             return;
         }
 
         String token = getTokenContent(authorizationHeader);
         Jws<Claims> jws = JwtUtils.parserToken(token, tokenProperties.getSecretKey());
         if(jws == null){
+            logger.debug("filter");
             // TODO: throw jwsIllegalException???
-
-//            JsonResponse(httpServletResponse, "token不合法");
-            return;
+//            throw new DenialOfServiceException();
+            JsonResponse(httpServletResponse, "token不合法");
+//            return;
         }
 
         if(JwtUtils.checkIsExpired(jws)){
