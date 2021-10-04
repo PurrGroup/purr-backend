@@ -11,4 +11,12 @@ public class AuthorDTO {
 
     public String description;
 
+    @Override
+    public String toString() {
+        return "AuthorDTO{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
