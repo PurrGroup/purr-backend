@@ -31,7 +31,7 @@ public class MetaController {
         return ResultVOUtil.success(isInstalled);
     }
 
-    @PostMapping("/apiUrl/update")
+    @PostMapping("/apiUrl")
     public ResultVO updateApiUrl(@RequestBody JSONObject jsonObject){
         String apiUrl = jsonObject.getString("apiUrl");
         metaService.updateApiUrl(apiUrl);
