@@ -18,12 +18,16 @@ public enum ResultEnum {
     /**
      * 安装失败，系统已安装
      */
-    ALREADY_INSTALLED("A1006", "系统已安装", "系统已经安装好啦"),
+    ALREADY_INSTALLED("A1006", "系统已安装", "(・∀・(・∀・(・∀・*)？系统已经安装过啦"),
 
     /**
      * 卸载失败，系统已卸载
      */
-    ALREADY_UNINSTALLED("A1007", "系统已卸载", "系统已经卸载好啦，期待你的下次使用");
+    ALREADY_UNINSTALLED("A1007", "系统已卸载", "系统已经卸载好啦，期待你的下次使用"),
+
+    DENIAL_OF_SERVICE("A1100", "请求不合法，服务器拒绝服务", "服务端出了点小问题，拒绝了你的请求"),
+
+    DENIAL_OF_AUTHENTICATION("A1101", "请求频率过高，服务器拒绝服务", "请求频率过高，请稍后再试");
 
 
     /**
