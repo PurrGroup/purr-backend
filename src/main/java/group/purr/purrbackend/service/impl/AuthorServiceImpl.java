@@ -10,8 +10,6 @@ import group.purr.purrbackend.utils.JwtUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.Optional;
-
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
@@ -64,7 +62,7 @@ public class AuthorServiceImpl implements AuthorService {
         Author description = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.DESCRIPTION);
 
         AuthorDTO result = new AuthorDTO();
-        result.setUserName(userName.getOptionValue());
+        result.setUsername(userName.getOptionValue());
         result.setEmail(email.getOptionValue());
         result.setDescription(description.getOptionValue());
 

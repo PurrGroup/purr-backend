@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class AuthorDTO {
 
-    public String userName;
+    public String username;
 
     public String email;
 
