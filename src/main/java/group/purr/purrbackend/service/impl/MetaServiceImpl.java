@@ -46,6 +46,11 @@ public class MetaServiceImpl implements MetaService {
         domainMeta.setOptionValue(domain);
         blogmetaRepository.save(domainMeta);
 
+        BlogMeta apiUrlMeta = new BlogMeta();
+        apiUrlMeta.setOptionKey(BlogMetaConstants.API_URL);
+        apiUrlMeta.setOptionValue(domain);
+        blogmetaRepository.save(apiUrlMeta);
+
         BlogMeta timeMeta = new BlogMeta();
         timeMeta.setOptionKey(BlogMetaConstants.CREATE_TIME);
         Date currentTime = new Date();
@@ -57,6 +62,15 @@ public class MetaServiceImpl implements MetaService {
         faviconMeta.setOptionValue(favicon);
         blogmetaRepository.save(faviconMeta);
 
+        return true;
+    }
+
+    @Override
+    public Boolean updateApiUrl(String apiUrl) {
+        BlogMeta apiUrlMeta = new BlogMeta();
+        apiUrlMeta.setOptionKey(BlogMetaConstants.API_URL);
+        apiUrlMeta.setOptionValue(apiUrl);
+        blogmetaRepository.save(apiUrlMeta);
         return true;
     }
 
