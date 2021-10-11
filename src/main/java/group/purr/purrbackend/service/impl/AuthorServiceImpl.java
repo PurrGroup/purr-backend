@@ -10,6 +10,10 @@ import group.purr.purrbackend.utils.JwtUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
@@ -46,6 +50,10 @@ public class AuthorServiceImpl implements AuthorService {
         descriptionRecord.setOptionValue(MagicConstants.DEFAULT_DESCRIPTION);
         authorRepository.save(descriptionRecord);
 
+        Author qqRecord = new Author();
+        qqRecord.setOptionKey(AuthorMetaConstants.QQ);
+        qqRecord.setOptionValue("");
+
         return true;
     }
 
@@ -60,12 +68,36 @@ public class AuthorServiceImpl implements AuthorService {
         Author userName = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.USER_NAME);
         Author email = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.EMAIL);
         Author description = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.DESCRIPTION);
+        Author qq = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.QQ);
+
+        String avatar = "https://www.gravatar.com/avatar/" + md5Hex(email.getOptionValue());
 
         AuthorDTO result = new AuthorDTO();
         result.setUsername(userName.getOptionValue());
         result.setEmail(email.getOptionValue());
         result.setDescription(description.getOptionValue());
+        result.setQq("");
+        result.setAvatar(avatar);
 
         return result;
     }
+
+    public static String hex(byte[] array) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < array.length; ++i) {
+            sb.append(Integer.toHexString((array[i]
+                    & 0xFF) | 0x100).substring(1,3));
+        }
+        return sb.toString();
+    }
+    public static String md5Hex (String message) {
+        try {
+            MessageDigest md =
+                    MessageDigest.getInstance("MD5");
+            return hex (md.digest(message.getBytes("CP1252")));
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ignored) {
+        }
+        return null;
+    }
+
 }

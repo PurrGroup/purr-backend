@@ -29,6 +29,12 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    /**
+     * TO DO
+     * 在这里没有排除被删除的文章
+     * 初步设想抽取出一张表DeletedArticle用于存放被删除的文章，Article只用于存放可展示的文章
+     * 因此分页查询只需查询Article即可。
+     */
     @PostMapping("/recent")
     public ResultVO getRecentArticle(@RequestParam(value = "page") Integer pageNum,
                                      @RequestParam(value = "num") Integer pageSize){
@@ -38,12 +44,7 @@ public class ArticleController {
         if((pageNum-1)>maxNum){
             pageNum = maxNum;
         }
-        else if(pageNum-1<0){
-            pageNum = 0;
-        }
-        else{
-            pageNum = pageNum - 1;
-        }
+        else pageNum = Math.max(pageNum - 1, 0);
 
         Sort sort = Sort.by(Sort.Direction.DESC, "updateTime");
         Pageable pageable = PageRequest.of(pageNum, pageSize, sort);

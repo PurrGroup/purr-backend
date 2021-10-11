@@ -11,6 +11,10 @@ public class AuthorDTO {
 
     public String description;
 
+    public String avatar;
+
+    public String qq;
+
     @Override
     public String toString() {
         return "AuthorDTO{" +

@@ -76,6 +76,7 @@ public class ArticleServiceImpl implements ArticleService {
         articleTagRepository.save(articleTagRelation);
     }
 
+
     @Override
     public List<ArticleDTO> findRecentArticle(Pageable pageable) {
 
@@ -95,6 +96,9 @@ public class ArticleServiceImpl implements ArticleService {
 
         return result;
     }
+
+
+
 
     @Override
     public Long getTotal() {
