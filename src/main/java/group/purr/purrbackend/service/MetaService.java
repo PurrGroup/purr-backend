@@ -1,7 +1,5 @@
 package group.purr.purrbackend.service;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 public interface MetaService {
     Boolean queryInstalled();
 
