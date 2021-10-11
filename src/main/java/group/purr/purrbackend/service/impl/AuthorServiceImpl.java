@@ -70,7 +70,8 @@ public class AuthorServiceImpl implements AuthorService {
         Author description = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.DESCRIPTION);
         Author qq = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.QQ);
 
-        String avatar = "https://www.gravatar.com/avatar/" + md5Hex(email.getOptionValue());
+//        String avatar = "https://www.gravatar.com/avatar/" + md5Hex(email.getOptionValue());
+        String avatar = "https://sdn.geekzu.org/avatar/" + md5Hex(email.getOptionValue());
 
         AuthorDTO result = new AuthorDTO();
         result.setUsername(userName.getOptionValue());
