@@ -1,19 +1,19 @@
 package group.purr.purrbackend.security;
 
+import group.purr.purrbackend.constant.TokenConstants;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultJws;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class JwtUtils {
+
     public static Jws<Claims> parserToken(String token, String secretKey){
         try{
             final Jws<Claims> jws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
@@ -43,5 +43,10 @@ public class JwtUtils {
         TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(userId, null, new ArrayList<>(0));
         SecurityContextHolder.getContext().setAuthentication(testingAuthenticationToken);
         return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    public static Date getExpiredTimeFromToken(String token){
+        Claims claims = Jwts.parser().setSigningKey(TokenConstants.secretKey).parseClaimsJws(token).getBody();
+        return claims.getExpiration();
     }
 }

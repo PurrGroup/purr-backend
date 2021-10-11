@@ -27,7 +27,11 @@ public enum ResultEnum {
 
     DENIAL_OF_SERVICE("A1100", "请求不合法，服务器拒绝服务", "服务端出了点小问题，拒绝了你的请求"),
 
-    DENIAL_OF_AUTHENTICATION("A1101", "请求频率过高，服务器拒绝服务", "请求频率过高，请稍后再试");
+    DENIAL_OF_AUTHENTICATION("A1101", "请求频率过高，服务器拒绝服务", "请求频率过高，请稍后再试"),
+
+    TOKEN_EXPIRED("A1102", "登录凭证已过期", "登录凭证已经过期啦，请重新登录"),
+
+    WRONG_PASSWORD("A1103", "密码错误", "密码输入错误，请重新输入密码");
 
 
     /**

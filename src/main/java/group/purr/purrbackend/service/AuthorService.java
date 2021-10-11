@@ -16,4 +16,6 @@ public interface AuthorService {
     void deleteAll();
 
     AuthorDTO getProfile();
+
+    String getEncryptedPassword();
 }

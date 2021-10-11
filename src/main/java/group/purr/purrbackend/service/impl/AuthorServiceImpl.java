@@ -6,7 +6,7 @@ import group.purr.purrbackend.dto.AuthorDTO;
 import group.purr.purrbackend.entity.Author;
 import group.purr.purrbackend.repository.AuthorRepository;
 import group.purr.purrbackend.service.AuthorService;
-import group.purr.purrbackend.utils.JwtUtil;
+import group.purr.purrbackend.utils.EncryptUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -33,7 +33,7 @@ public class AuthorServiceImpl implements AuthorService {
 
         Author passwordRecord = new Author();
         passwordRecord.setOptionKey(AuthorMetaConstants.PASSWORD);
-        passwordRecord.setOptionValue(JwtUtil.tokenGeneration(password)); //加密后的password
+        passwordRecord.setOptionValue(EncryptUtil.encryptPassword(password)); //加密后的password
         authorRepository.save(passwordRecord);
 
         Author emailRecord = new Author();
@@ -67,5 +67,12 @@ public class AuthorServiceImpl implements AuthorService {
         result.setDescription(description.getOptionValue());
 
         return result;
+    }
+
+    @Override
+    public String getEncryptedPassword(){
+        Author encryptedPassword = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.PASSWORD);
+
+        return encryptedPassword.getOptionValue();
     }
 }
