@@ -3,9 +3,9 @@ package group.purr.purrbackend.security;
 import group.purr.purrbackend.constant.TokenConstants;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultJws;
-import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.authentication.TestingAuthenticationToken;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -38,12 +38,12 @@ public class JwtUtils {
                 signWith(SignatureAlgorithm.HS256, secretKey).compact();
     }
 
-    public static Authentication buildAuthentication(Jws<Claims> jws, String userFiledName){
-        Object userId = jws.getBody().get(userFiledName);
-        TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(userId, null, new ArrayList<>(0));
-        SecurityContextHolder.getContext().setAuthentication(testingAuthenticationToken);
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
+//    public static Authentication buildAuthentication(Jws<Claims> jws, String userFiledName){
+//        Object userId = jws.getBody().get(userFiledName);
+//        TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(userId, null, new ArrayList<>(0));
+//        SecurityContextHolder.getContext().setAuthentication(testingAuthenticationToken);
+//        return SecurityContextHolder.getContext().getAuthentication();
+//    }
 
     public static Date getExpiredTimeFromToken(String token){
         Claims claims = Jwts.parser().setSigningKey(TokenConstants.secretKey).parseClaimsJws(token).getBody();

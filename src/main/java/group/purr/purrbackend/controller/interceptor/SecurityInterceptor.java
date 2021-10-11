@@ -101,8 +101,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         );
         response.addHeader(TokenConstants.accessHeaderName, newToken);
 
-        JwtUtils.buildAuthentication(JwtUtils.parserToken(newToken, TokenConstants.secretKey), TokenConstants.userKey);
-
+//        JwtUtils.buildAuthentication(JwtUtils.parserToken(newToken, TokenConstants.secretKey), TokenConstants.userKey);
         return true;
     }
 
