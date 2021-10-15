@@ -23,4 +23,6 @@ public interface ArticleService {
     Long getTotal();
 
     Long getTotalExceptDeleted();
+
+    String getArticleUrlByID(Long postID);
 }

@@ -10,4 +10,6 @@ public interface PageRepository extends JpaRepository<Page, String> {
 
     @Query(value = "select SUM(view_count) FROM page", nativeQuery = true)
     Long sumByView();
+
+    Page findByID(Long id);
 }

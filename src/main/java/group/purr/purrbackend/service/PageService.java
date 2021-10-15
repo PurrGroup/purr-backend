@@ -10,4 +10,6 @@ public interface PageService {
      * @return 返回页面ID
      */
     Long createPage(PageDTO pageDTO);
+
+    String getPageUrlByID(Long postID);
 }
