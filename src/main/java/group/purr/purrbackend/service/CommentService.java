@@ -21,4 +21,5 @@ public interface CommentService {
     List<CommentDTO> findRecentComment(Pageable pageable);
 
     Long getUnapproved();
+
 }

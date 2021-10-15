@@ -109,4 +109,10 @@ public class ArticleServiceImpl implements ArticleService {
     public Long getTotalExceptDeleted() {
         return articleRepository.countByDeleteTimeNotNull();
     }
+
+    @Override
+    public String getArticleUrlByID(Long postID) {
+        Article article = articleRepository.findByID(postID);
+        return article.getLinkName();
+    }
 }

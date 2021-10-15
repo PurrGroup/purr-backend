@@ -14,4 +14,6 @@ public interface ArticleRepository extends JpaRepository<Article, String>, JpaSp
 
     Long countByDeleteTimeNotNull();
 
+    Article findByID(Long id);
+
 }
