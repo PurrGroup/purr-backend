@@ -1,0 +1,107 @@
+###################################################################################################################
+# Purr backend continuous integration and deployment script
+# Ref:
+# https://aws.plainenglish.io/hands-on-ci-cd-for-spring-boot-applications-using-github-actions-and-aws-1cbc1e2c9d54
+# https://blog.imzjw.cn/posts/d347d656/
+###################################################################################################################
+name: Purr CI/CD
+on:
+  # Manually trigger workflow on github
+  workflow_dispatch:
+  # trigger when pushing to branch main on paths specified below
+  push:
+    branches:
+      - main
+    paths:
+      - '**'
+      - '!**.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**'
+      - '!**.md'
+  release:
+    types:
+      - created
+jobs:
+  tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    env:
+      DB_DATABASE: purr_dev
+      DB_USER: root
+      DB_PASSWORD: 123456
+    steps:
+      # Check-out your repository under $GITHUB_WORKSPACE
+      - uses: actions/checkout@v2
+      - name: stop default mysql db
+        run: sudo systemctl stop mysql
+      - name: Set up MySQL db for testing
+        uses: icomponent/mysql-action@master
+        with:
+          VERSION: 8.0
+          CONTAINER_NAME: mysql
+          PORT_MAPPING: 3306:3306
+          ROOT_PASSWORD: 123456
+          DATABASE: purr_dev
+      # Set up JDK 1.8 on runner
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '1.8'
+      # Set up Maven cache
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      # Run tests
+      - name: Run Tests
+        run: mvn -B test
+  build:
+    needs: tests
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '1.8'
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      # compile java code with maven target package, and skip tests
+      - name: Build with Maven
+        run: mvn -B package -DskipTests --file pom.xml
+      # upload jar to github
+      - name: Upload JAR
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact
+          path: target/purr-backend-0.0.1-SNAPSHOT.jar
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      # download the artifact which was uploaded in the build's job
+      - name: Download JAR
+        uses: actions/download-artifact@v2
+        with:
+          name: artifact
+      - name: Deploy to AliYun LAS
+        uses: mdallasanta/ssh-scp-deploy@v1.1.0
+        with:
+          local: './purr-backend-0.0.1-SNAPSHOT.jar'
+          remote: '~/.purr'
+          host: ${{ secrets.HOST }}
+          port: 22
+          user: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PASSWORD }}
+          post_upload: kill $(ps -aux | grep '[p]urr' | awk '{print $2}') && cd .purr && nohup java -jar purr-backend-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod 2>&1 > purr.log &
