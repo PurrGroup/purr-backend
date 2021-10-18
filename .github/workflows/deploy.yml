@@ -23,9 +23,18 @@ jobs:
   tests:
     name: Unit tests
     runs-on: ubuntu-latest
+    env:
+      DB_DATABASE: purr_dev
+      DB_USER: root
+      DB_PASSWORD: 123456
     steps:
       # Check-out your repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v2
+      # start mysql database on runner
+      - name: Set up MySQL
+        run: |
+          systemctl start mysql &&
+          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }} -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}'
       # Set up JDK 1.8 on runner
       - name: Set up JDK
         uses: actions/setup-java@v1
