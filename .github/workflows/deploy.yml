@@ -30,8 +30,9 @@ jobs:
     steps:
       # Check-out your repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v2
-      - name: Set up MySQL db for testing
+      - name: stop default mysql db
         run: sudo systemctl stop mysql
+      - name: Set up MySQL db for testing
         uses: icomponent/mysql-action@master
         with:
           VERSION: 8.0
