@@ -35,7 +35,7 @@ jobs:
     steps:
       # Check-out your repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v2
-      - name: stop default mysql db
+      - name: Stop default mysql db
         run: sudo systemctl stop mysql
       - name: Set up MySQL db for testing
         uses: icomponent/mysql-action@master
@@ -105,13 +105,13 @@ jobs:
           user: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PASSWORD }}
       - name: Deploy to AliYun LAS
-        uses: fifsky/ssh-action@master
+        uses: garygrossgarten/github-action-ssh@release
         with:
           command: |
             kill $(ps -aux | grep '[p]urr' | awk '{print $2}') \
             && cd .purr \
             && nohup java -jar purr-backend-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod 2>&1 > purr.log &
           host: ${{ secrets.HOST }}
-          user: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PASSWORD }}
+          username: ${{ secrets.SSH_USER }}
+          privateKey: ${{ secrets.SSH_PASSWORD }}
 
