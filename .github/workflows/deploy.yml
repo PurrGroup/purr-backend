@@ -91,7 +91,7 @@ jobs:
         with:
           name: artifact
       - name: Deploy to AliYun LAS
-        uses: mdallasanta/ssh-scp-deploy@{version}
+        uses: mdallasanta/ssh-scp-deploy@v1.1.0
         with:
           local: './purr-backend-0.0.1-SNAPSHOT.jar'
           remote: '~/.purr'
