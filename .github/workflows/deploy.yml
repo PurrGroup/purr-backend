@@ -23,6 +23,10 @@ jobs:
   tests:
     name: Unit tests
     runs-on: ubuntu-latest
+    env:
+      DB_DATABASE: purr_dev
+      DB_USER: root
+      DB_PASSWORD: 123456
     steps:
       # Check-out your repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v2
@@ -45,7 +49,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hasFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       # Run tests
       - name: Run Tests

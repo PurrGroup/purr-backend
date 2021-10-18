@@ -97,7 +97,7 @@ public class LoginController {
         TokenDTO tokenDTO = new TokenDTO();
         tokenDTO.setAccessToken(accessToken);
         tokenDTO.setRefreshToken(refreshToken);
-        tokenDTO.setAccessExpiredTime(DateUtil.formatE8Date(expiredTime));
+        tokenDTO.setAccessExpiredTime(expiredTime);
 
         return ResultVOUtil.success(tokenDTO);
     }
