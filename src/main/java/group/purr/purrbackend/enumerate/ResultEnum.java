@@ -29,7 +29,9 @@ public enum ResultEnum {
 
     DENIAL_OF_AUTHENTICATION("A1101", "请求频率过高，服务器拒绝服务", "请求频率过高，请稍后再试"),
 
-    TOKEN_EXPIRED("A1102", "登录凭证已过期", "登录凭证已经过期啦，请重新登录"),
+    ACCESS_TOKEN_EXPIRED("A1102", "access-token过期", "登录凭证过期，请重新获取登录凭证"),
+
+    REFRESH_TOKEN_EXPIRED("A1103", "登录凭证已过期", "登录凭证已经过期啦，请重新登录"),
 
     WRONG_PASSWORD("A1103", "密码错误", "密码输入错误，请重新输入密码");
 
