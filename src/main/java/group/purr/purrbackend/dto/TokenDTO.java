@@ -10,5 +10,5 @@ public class TokenDTO {
 
     private String refreshToken;
 
-    private String accessExpiredTime;
+    private Date accessExpiredTime;
 }
