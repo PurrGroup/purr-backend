@@ -95,7 +95,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: artifact
-      - name: Deploy to AliYun LAS
+      - name: Upload to Server
         uses: mdallasanta/ssh-scp-deploy@v1.1.0
         with:
           local: './purr-backend-0.0.1-SNAPSHOT.jar'
@@ -104,6 +104,14 @@ jobs:
           port: 22
           user: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PASSWORD }}
-          post_upload: kill $(ps -aux | grep '[p]urr' | awk '{print $2}') \
-                        && cd .purr \
-                        && nohup java -jar purr-backend-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod 2>&1 > purr.log &
+      - name: Deploy to AliYun LAS
+        uses: fifsky/ssh-action@master
+        with:
+          command: |
+            kill $(ps -aux | grep '[p]urr' | awk '{print $2}') \
+            && cd .purr \
+            && nohup java -jar purr-backend-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod 2>&1 > purr.log &
+          host: ${{ secrets.HOST }}
+          user: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PASSWORD }}
+
