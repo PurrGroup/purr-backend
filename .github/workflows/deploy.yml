@@ -30,11 +30,15 @@ jobs:
     steps:
       # Check-out your repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v2
-      # start mysql database on runner
-      - name: Set up MySQL
-        run: |
-          sudo systemctl start mysql &&
-          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }} -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}'
+      - name: Set up MySQL db for testing
+        run: sudo systemctl stop mysql
+        uses: icomponent/mysql-action@master
+        with:
+          VERSION: 8.0
+          CONTAINER_NAME: mysql
+          PORT_MAPPING: 3306:3306
+          ROOT_PASSWORD: 123456
+          DATABASE: purr_dev
       # Set up JDK 1.8 on runner
       - name: Set up JDK
         uses: actions/setup-java@v1
