@@ -105,7 +105,7 @@ jobs:
           user: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PASSWORD }}
           post_upload: |
-            kill $(ps -aux | grep '[p]urr' | awk '{print $2}' &&
+            kill $(ps -aux | grep '[p]urr' | awk '{print $2}') &&
             cd .purr &&
             nohup java -jar purr-backend-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod 2>&1 > purr.log &
 
