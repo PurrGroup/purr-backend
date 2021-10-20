@@ -26,6 +26,8 @@ public class CommentDTO {
 
     private String authorEmail;
 
+    private String avatarUrl;
+
     private String authorIP;
 
     private Date date;

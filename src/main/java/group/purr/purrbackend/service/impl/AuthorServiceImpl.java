@@ -7,6 +7,7 @@ import group.purr.purrbackend.entity.Author;
 import group.purr.purrbackend.repository.AuthorRepository;
 import group.purr.purrbackend.service.AuthorService;
 import group.purr.purrbackend.utils.EncryptUtil;
+import group.purr.purrbackend.utils.PurrUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -70,15 +71,12 @@ public class AuthorServiceImpl implements AuthorService {
         Author description = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.DESCRIPTION);
         Author qq = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.QQ);
 
-//        String avatar = "https://www.gravatar.com/avatar/" + md5Hex(email.getOptionValue());
-        String avatar = "https://sdn.geekzu.org/avatar/" + md5Hex(email.getOptionValue());
-
         AuthorDTO result = new AuthorDTO();
         result.setUsername(userName.getOptionValue());
         result.setEmail(email.getOptionValue());
         result.setDescription(description.getOptionValue());
         result.setQq("");
-        result.setAvatar(avatar);
+        result.setAvatar(PurrUtils.getAvatarUrl(qq.getOptionValue(), email.getOptionValue(), userName.getOptionValue()));
 
         return result;
     }
@@ -88,23 +86,5 @@ public class AuthorServiceImpl implements AuthorService {
         Author encryptedPassword = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.PASSWORD);
 
         return encryptedPassword.getOptionValue();
-    }
-
-    public static String hex(byte[] array) {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < array.length; ++i) {
-            sb.append(Integer.toHexString((array[i]
-                    & 0xFF) | 0x100).substring(1,3));
-        }
-        return sb.toString();
-    }
-    public static String md5Hex (String message) {
-        try {
-            MessageDigest md =
-                    MessageDigest.getInstance("MD5");
-            return hex (md.digest(message.getBytes("CP1252")));
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ignored) {
-        }
-        return null;
     }
 }

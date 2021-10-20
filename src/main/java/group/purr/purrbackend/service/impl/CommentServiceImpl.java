@@ -9,6 +9,7 @@ import group.purr.purrbackend.repository.PageRepository;
 import group.purr.purrbackend.service.ArticleService;
 import group.purr.purrbackend.service.CommentService;
 import group.purr.purrbackend.service.PageService;
+import group.purr.purrbackend.utils.PurrUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -65,11 +66,13 @@ public class CommentServiceImpl implements CommentService {
         Page<Comment> comments = commentRepository.findAll(pageable);
 
         List<CommentDTO> result = new ArrayList<>();
-        for (Comment comment : comments.getContent()) {
-            CommentDTO commentDTO = modelMapper.map(comment, CommentDTO.class);
-            commentDTO.setPostUrl(getPostUrl(comment.getPostID(), comment.getPostCategory()));
+
+        comments.getContent().forEach(commentItem -> {
+            CommentDTO commentDTO = modelMapper.map(commentItem, CommentDTO.class);
+            commentDTO.setPostUrl(getPostUrl(commentItem.getPostID(), commentItem.getPostCategory()));
+            commentDTO.setAvatarUrl(PurrUtils.getAvatarUrl(commentDTO.getAuthorQQ(), commentDTO.getAuthorEmail(), commentDTO.getAuthorName()));
             result.add(commentDTO);
-        }
+        });
 
         return result;
     }
