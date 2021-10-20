@@ -12,14 +12,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     @Bean
-    public SecurityInterceptor myInterceptor(){
+    public SecurityInterceptor myInterceptor() {
         return new SecurityInterceptor();
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        log.debug("before registry");
-        registry.addInterceptor(myInterceptor()).addPathPatterns("/api/**").excludePathPatterns("/api/uninstall", "/api/install", "/api/login", "/api/token/refresh");
-        log.debug("after registry");
+        registry.addInterceptor(myInterceptor()).addPathPatterns("/api/**").excludePathPatterns("/api/uninstall", "/api/install", "/api/login", "/api/token/refresh", "/api/meta/isInstalled");
     }
 }

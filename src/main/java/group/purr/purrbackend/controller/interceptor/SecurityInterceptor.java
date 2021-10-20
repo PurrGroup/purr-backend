@@ -46,24 +46,22 @@ public class SecurityInterceptor implements HandlerInterceptor {
         Jws<Claims> jws = JwtUtils.parserToken(token, TokenConstants.secretKey);
 
         if(jws == null){
-            log.error("token为空");
+            log.error("当前请求未携带token");
             throw new DenialOfServiceException();
         }
 
         // 从数据库读取加密后的密码
         String encryptedPassword = authorService.getEncryptedPassword();
+        String passInRequest = jws.getBody().get(TokenConstants.userKey, String.class);
         // 密码验证不正确
-        if(!encryptedPassword.equals(jws.getBody().get(TokenConstants.userKey, String.class))){
-            log.error(jws.getBody().get(TokenConstants.userKey, String.class));
-            log.error(encryptedPassword);
-            log.error("登陆凭证不符");
+        if(!encryptedPassword.equals(passInRequest)){
+            log.error(String.format("登录凭证不符，encryptedPassword: %s, passInRequest: %s", encryptedPassword, passInRequest));
             throw new DenialOfServiceException();
         }
 
         if(JwtUtils.checkIsExpired(jws)){
             log.info("access-token过期");
             throw new AccessTokenExpiredException();
-//            return handleExpiredToken(request, response);
         }
 
         return true;
