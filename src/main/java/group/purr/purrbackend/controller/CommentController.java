@@ -24,7 +24,7 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/recent")
+    @GetMapping("/recent")
     public ResultVO getRecentComment(@RequestParam(value = "page") Integer pageNum,
                                      @RequestParam(value = "num") Integer pageSize){
 
