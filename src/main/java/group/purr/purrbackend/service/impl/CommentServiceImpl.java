@@ -2,6 +2,7 @@ package group.purr.purrbackend.service.impl;
 
 import group.purr.purrbackend.constant.MagicConstants;
 import group.purr.purrbackend.dto.CommentDTO;
+import group.purr.purrbackend.entity.Article;
 import group.purr.purrbackend.entity.Comment;
 import group.purr.purrbackend.repository.ArticleRepository;
 import group.purr.purrbackend.repository.CommentRepository;
@@ -69,7 +70,9 @@ public class CommentServiceImpl implements CommentService {
 
         comments.getContent().forEach(commentItem -> {
             CommentDTO commentDTO = modelMapper.map(commentItem, CommentDTO.class);
-            commentDTO.setPostUrl(getPostUrl(commentItem.getPostID(), commentItem.getPostCategory()));
+            List<String> post = getPostUrl(commentItem.getPostID(), commentItem.getPostCategory());
+            commentDTO.setPostUrl(post.get(0));
+            commentDTO.setPostName(post.get(1));
             commentDTO.setAvatarUrl(PurrUtils.getAvatarUrl(commentDTO.getAuthorQQ(), commentDTO.getAuthorEmail(), commentDTO.getAuthorName()));
             result.add(commentDTO);
         });
@@ -83,23 +86,34 @@ public class CommentServiceImpl implements CommentService {
     }
 
 
-    private String getPostUrl(Long postID, Integer postCategory){
+    private List<String> getPostUrl(Long postID, Integer postCategory){
         String postUrl;
+        String postName;
+        List<String> post = new ArrayList<>();
 
         if(postCategory==0){
-            postUrl = articleRepository.findByID(postID).getLinkName();
+            Article article = articleRepository.findByID(postID);
+            postUrl = article.getLinkName();
+            postName = article.getName();
         }
         else if(postCategory==1){
-            postUrl = pageRepository.findByID(postID).getUrlName();
+            group.purr.purrbackend.entity.Page page = pageRepository.findByID(postID);
+            postUrl = page.getUrlName();
+            postName = page.getName();
         }
         else if(postCategory==2){
             postUrl = MagicConstants.DEFAULT_MENUITEM_COMMENT_URL;
+            postName = MagicConstants.DEFAULT_MENUITEM_COMMENT_NAME;
         }
         else{
-            return "";
+            return null;
         }
 
-        return postUrl;
+        assert false;
+        post.add(postUrl);
+        post.add(postName);
+
+        return post;
 
     }
 }
