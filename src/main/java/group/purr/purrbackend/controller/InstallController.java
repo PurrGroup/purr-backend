@@ -46,7 +46,7 @@ public class InstallController {
                              ArticleService articleService,
                              TagService tagService,
                              CommentService commentService,
-                             LinkService linkService, SearchService searchService) {
+                             LinkService linkService) {
         this.metaService = metaService;
         this.authorService = authorService;
         this.menuService = menuService;
