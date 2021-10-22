@@ -7,6 +7,7 @@ import group.purr.purrbackend.enumerate.PostCategoryEnum;
 import group.purr.purrbackend.exception.AlreadyInstalledException;
 import group.purr.purrbackend.exception.AlreadyUninstalledException;
 import group.purr.purrbackend.service.*;
+import group.purr.purrbackend.utils.PurrUtils;
 import group.purr.purrbackend.utils.ResultVOUtil;
 import group.purr.purrbackend.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +46,7 @@ public class InstallController {
                              ArticleService articleService,
                              TagService tagService,
                              CommentService commentService,
-                             LinkService linkService) {
+                             LinkService linkService, SearchService searchService) {
         this.metaService = metaService;
         this.authorService = authorService;
         this.menuService = menuService;

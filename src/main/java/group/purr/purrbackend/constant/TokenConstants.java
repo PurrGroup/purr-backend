@@ -14,7 +14,7 @@ public class TokenConstants {
     public static final String userKey = "Encrypted-Password";
     public static final String accessExpiredTime = "Access-Token-Expired-Time";
 
-    @Value("${secretKey}")
+    @Value("${purr.security.secretKey}")
     public void setSecretKey(String key){
         secretKey = key;
     }
