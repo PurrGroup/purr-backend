@@ -9,6 +9,5 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.authorizeRequests().anyRequest().permitAll().and().logout().permitAll().and().httpBasic().and().csrf().disable();
-//        httpSecurity.authorizeRequests().anyRequest().authenticated().and().httpBasic().and().csrf().disable();
     }
 }

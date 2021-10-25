@@ -45,6 +45,8 @@ public class ArticleDTO {
 
     public Integer isPinned;
 
+    public Integer isRecommended;
+
     public String articleAbstract;
 
     public Date deleteTime;
