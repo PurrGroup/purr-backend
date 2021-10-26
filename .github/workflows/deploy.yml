@@ -51,7 +51,7 @@ jobs:
           sudo ls /usr/bin
       - uses: everpcpc/elasticsearch-action@v2
         with:
-          stack-version: '7.15.1'
+          version: '7.15.1'
           plugins: https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.15.1/elasticsearch-analysis-ik-7.15.1.zip
 #           host port: 9200
 #           container port: 9200
