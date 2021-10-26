@@ -11,7 +11,7 @@ on:
   # trigger when pushing to branch main on paths specified below
   push:
     branches:
-      - main
+      - sxy
     paths:
       - '**'
       - '!**.md'
