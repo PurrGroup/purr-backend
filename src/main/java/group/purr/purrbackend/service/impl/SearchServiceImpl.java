@@ -4,6 +4,7 @@ import group.purr.purrbackend.dto.SearchDTO;
 import group.purr.purrbackend.entity.ESEntity.*;
 import group.purr.purrbackend.repository.ESRepository.*;
 import group.purr.purrbackend.service.SearchService;
+import group.purr.purrbackend.utils.ESUtil;
 import group.purr.purrbackend.utils.PurrUtils;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.modelmapper.ModelMapper;
@@ -87,7 +88,7 @@ public class SearchServiceImpl implements SearchService {
         List<SearchDTO> result = new ArrayList<>();
 
         for (ElasticArticle article : articles){
-            SearchDTO searchDTO = PurrUtils.formatArticleToSearch(article);
+            SearchDTO searchDTO = ESUtil.formatArticleToSearch(article);
             result.add(searchDTO);
         }
 
@@ -110,7 +111,7 @@ public class SearchServiceImpl implements SearchService {
         List<SearchDTO> result = new ArrayList<>();
 
         for (ElasticPage page : pages){
-            SearchDTO searchDTO = PurrUtils.formatPageToSearch(page);
+            SearchDTO searchDTO = ESUtil.formatPageToSearch(page);
             result.add(searchDTO);
         }
 
@@ -131,7 +132,7 @@ public class SearchServiceImpl implements SearchService {
         List<SearchDTO> result = new ArrayList<>();
 
         for (ElasticComment comment : comments){
-            SearchDTO searchDTO = PurrUtils.formatCommentToSearch(comment);
+            SearchDTO searchDTO = ESUtil.formatCommentToSearch(comment);
             result.add(searchDTO);
         }
 
@@ -152,7 +153,7 @@ public class SearchServiceImpl implements SearchService {
         List<SearchDTO> result = new ArrayList<>();
 
         for (ElasticMoment moment : moments){
-            SearchDTO searchDTO = PurrUtils.formatMomentToSearch(moment);
+            SearchDTO searchDTO = ESUtil.formatMomentToSearch(moment);
             result.add(searchDTO);
         }
 

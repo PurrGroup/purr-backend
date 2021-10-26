@@ -9,6 +9,7 @@ import group.purr.purrbackend.repository.ArticleRepository;
 import group.purr.purrbackend.repository.ArticleTagRepository;
 import group.purr.purrbackend.repository.ContentRepository;
 import group.purr.purrbackend.service.ArticleService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
@@ -84,6 +86,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         List<ArticleDTO> result = new ArrayList<>();
         for (Article article : articles.getContent()) {
+//            log.info(article.toString());
             article.setCommentStatus(null);
             article.setPingStatus(null);
             article.setToPing(null);

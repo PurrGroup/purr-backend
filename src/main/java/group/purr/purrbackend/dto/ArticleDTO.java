@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class ArticleDTO {
 
-    public Long ID;
+    public Long id;
 
     public String name;
 
@@ -44,6 +44,8 @@ public class ArticleDTO {
     public Integer isOriginal;
 
     public Integer isPinned;
+
+    public Integer isRecommended;
 
     public String articleAbstract;
 

@@ -35,7 +35,7 @@ public class ArticleController {
      * 初步设想抽取出一张表DeletedArticle用于存放被删除的文章，Article只用于存放可展示的文章
      * 因此分页查询只需查询Article即可。
      */
-    @PostMapping("/recent")
+    @GetMapping("/recent")
     public ResultVO getRecentArticle(@RequestParam(value = "page") Integer pageNum,
                                      @RequestParam(value = "num") Integer pageSize){
 

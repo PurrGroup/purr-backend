@@ -80,7 +80,7 @@ public class InstallController {
 
         // initialize article information
         ArticleDTO defaultArticle = createArticle(userName);
-        Long articleID = defaultArticle.getID();
+        Long articleID = defaultArticle.getId();
 
         // initialize tag information
         Long tagID = createTag();
@@ -149,7 +149,7 @@ public class InstallController {
         defaultArticle.setTarget(MagicConstants.DEFAULT_ARTICLE_TARGET);
         defaultArticle.setIsPinned(MagicConstants.DEFAULT_IS_PINNED);
         Long articleID = articleService.createArticle(defaultArticle);
-        defaultArticle.setID(articleID);
+        defaultArticle.setId(articleID);
 
         LinkDTO articleLink = new LinkDTO();
         articleLink.setName(defaultArticle.getName());
