@@ -36,9 +36,9 @@ jobs:
       # Check-out your repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v2
       - name: install curl
-          run: |
-            sudo apt-get update
-            sudo apt-get install -y curl docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl docker
       - name: Configure sysctl limits
         run: |
           sudo swapoff -a
