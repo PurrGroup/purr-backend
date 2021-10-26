@@ -33,8 +33,6 @@ jobs:
       DB_USER: root
       DB_PASSWORD: 123456
     steps:
-      # Check-out your repository under $GITHUB_WORKSPACE
-      - uses: actions/checkout@v2
       - name: install curl
         run: |
           sudo apt-get update
@@ -48,11 +46,14 @@ jobs:
       - uses: miyataka/elasticsearch-github-actions@1
         with:
           stack-version: '7.15.1'
+          plugins: 'analysis-ik'
 #           host port: 9200
 #           container port: 9200
 #           host node port: 9300
 #           node port: 9300
 #           discovery type: 'single-node'
+      # Check-out your repository under $GITHUB_WORKSPACE
+      - uses: actions/checkout@v2
       - name: Stop default mysql db
         run: sudo systemctl stop mysql
       - name: Set up MySQL db for testing
