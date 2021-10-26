@@ -49,10 +49,10 @@ jobs:
         run: |
           sudo pwd
           sudo ls /usr/bin
-      - uses: miyataka/elasticsearch-github-actions@1
+      - uses: everpcpc/elasticsearch-action@2
         with:
-          stack-version: '7.6.2'
-          plugins: 'analysis-kuromoji analysis-icu'
+          stack-version: '7.15.1'
+          plugins: https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.15.1/elasticsearch-analysis-ik-7.15.1.zip
 #           host port: 9200
 #           container port: 9200
 #           host node port: 9300
