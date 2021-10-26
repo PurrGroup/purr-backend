@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class ArticleDTO {
 
-    public Long ID;
+    public Long id;
 
     public String name;
 
