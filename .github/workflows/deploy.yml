@@ -45,14 +45,14 @@ jobs:
           sudo sysctl -w vm.swappiness=1
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
-      - uses: getong/elasticsearch-action@v1.2
+      - uses: miyataka/elasticsearch-github-actions@1
         with:
-          elasticsearch version: '7.15.1'
-          host port: 9200
-          container port: 9200
-          host node port: 9300
-          node port: 9300
-          discovery type: 'single-node'
+          stack-version: '7.15.1'
+#           host port: 9200
+#           container port: 9200
+#           host node port: 9300
+#           node port: 9300
+#           discovery type: 'single-node'
       - name: Stop default mysql db
         run: sudo systemctl stop mysql
       - name: Set up MySQL db for testing
