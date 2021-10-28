@@ -3,6 +3,7 @@ package group.purr.purrbackend.dto;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class ArticleDTO {
@@ -52,5 +53,7 @@ public class ArticleDTO {
     public Date deleteTime;
 
     public String content;
+
+    public List<TagDTO> tags;
 
 }

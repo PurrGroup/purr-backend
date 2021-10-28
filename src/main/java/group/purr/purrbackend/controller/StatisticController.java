@@ -5,7 +5,14 @@ import group.purr.purrbackend.service.StatisticService;
 import group.purr.purrbackend.utils.ResultVOUtil;
 import group.purr.purrbackend.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -32,7 +39,13 @@ public class StatisticController {
     }
 
     @GetMapping("/article/commit")
-    public ResultVO getCommit(@RequestParam(value = "count")Integer count){
-        return ResultVOUtil.success(statisticService.getLatestCommitCount(count));
+    public ResultVO getCommit(@RequestParam(value = "beginDate")String beginDate,
+                              @RequestParam(value = "endDate")String endDate) throws ParseException {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date beginTime = simpleDateFormat.parse(beginDate);
+        Date endTime = simpleDateFormat.parse(endDate);
+
+        return ResultVOUtil.success(statisticService.getLatestCommitCount(beginTime, endTime));
     }
 }

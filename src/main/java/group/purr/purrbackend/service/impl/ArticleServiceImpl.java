@@ -1,13 +1,12 @@
 package group.purr.purrbackend.service.impl;
 
 import group.purr.purrbackend.dto.ArticleDTO;
-import group.purr.purrbackend.entity.Article;
-import group.purr.purrbackend.entity.ArticleTagKey;
-import group.purr.purrbackend.entity.ArticleTagRelation;
-import group.purr.purrbackend.entity.Content;
+import group.purr.purrbackend.dto.TagDTO;
+import group.purr.purrbackend.entity.*;
 import group.purr.purrbackend.repository.ArticleRepository;
 import group.purr.purrbackend.repository.ArticleTagRepository;
 import group.purr.purrbackend.repository.ContentRepository;
+import group.purr.purrbackend.repository.TagRepository;
 import group.purr.purrbackend.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -26,6 +25,8 @@ public class ArticleServiceImpl implements ArticleService {
     final
     ArticleRepository articleRepository;
 
+    final TagRepository tagRepository;
+
     final
     ContentRepository contentRepository;
 
@@ -35,8 +36,9 @@ public class ArticleServiceImpl implements ArticleService {
     final
     ModelMapper modelMapper;
 
-    public ArticleServiceImpl(ArticleRepository articleRepository, ContentRepository contentRepository, ArticleTagRepository articleTagRepository, ModelMapper modelMapper) {
+    public ArticleServiceImpl(ArticleRepository articleRepository, TagRepository tagRepository, ContentRepository contentRepository, ArticleTagRepository articleTagRepository, ModelMapper modelMapper) {
         this.articleRepository = articleRepository;
+        this.tagRepository = tagRepository;
         this.contentRepository = contentRepository;
         this.articleTagRepository = articleTagRepository;
         this.modelMapper = modelMapper;
@@ -78,6 +80,27 @@ public class ArticleServiceImpl implements ArticleService {
         articleTagRepository.save(articleTagRelation);
     }
 
+    private List<TagDTO> findTagsByArticle(Long id){
+        List<ArticleTagRelation> relations = articleTagRepository.findAllByArticleTagKey_ArticleID(id);
+        List<TagDTO> tags = new ArrayList<>();
+
+        for (ArticleTagRelation relation : relations){
+            Tag tag = tagRepository.findByID(relation.getArticleTagKey().getTagID());
+            tag.setCreateTime(null);
+            tag.setUpdateTime(null);
+            tag.setDeleteTime(null);
+            tag.setBackgroundUrl(null);
+            tag.setCiteCount(null);
+            tag.setDescription(null);
+            tag.setLinkRel(null);
+            tag.setLinkRss(null);
+            tag.setVisitCount(null);
+            tags.add(modelMapper.map(tag, TagDTO.class));
+        }
+
+        return tags;
+    }
+
 
     @Override
     public List<ArticleDTO> findRecentArticle(Pageable pageable) {
@@ -91,16 +114,16 @@ public class ArticleServiceImpl implements ArticleService {
             article.setPingStatus(null);
             article.setToPing(null);
             article.setPinged(null);
-            article.setArticleAbstract(null);
+//            article.setArticleAbstract(null);
             article.setDeleteTime(null);
             ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
+            List<TagDTO> tagDTOS = findTagsByArticle(article.getID());
+            articleDTO.setTags(tagDTOS);
             result.add(articleDTO);
         }
 
         return result;
     }
-
-
 
 
     @Override

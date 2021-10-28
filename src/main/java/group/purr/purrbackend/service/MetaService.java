@@ -1,5 +1,7 @@
 package group.purr.purrbackend.service;
 
+import group.purr.purrbackend.dto.BlogMetaDTO;
+
 public interface MetaService {
     Boolean queryInstalled();
 
@@ -16,5 +18,7 @@ public interface MetaService {
     Boolean updateApiUrl(String apiUrl);
 
     void deleteAll();
+
+    BlogMetaDTO getProfile();
 }
 

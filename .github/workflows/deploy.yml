@@ -115,4 +115,3 @@ jobs:
             cd .purr
             nohup java -jar purr-backend-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod 2>&1 > purr.log &
             exit 1
-

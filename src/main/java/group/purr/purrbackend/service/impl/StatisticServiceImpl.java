@@ -1,5 +1,6 @@
 package group.purr.purrbackend.service.impl;
 
+import group.purr.purrbackend.dto.CommitDTO;
 import group.purr.purrbackend.entity.Commit;
 import group.purr.purrbackend.entity.Visit;
 import group.purr.purrbackend.repository.*;
@@ -111,27 +112,29 @@ public class StatisticServiceImpl implements StatisticService {
     }
 
     @Override
-    public List<Long> getLatestCommitCount(Integer days) {
-        List<Long> latestCommitCount = new LinkedList<>();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        Date currentDate = new Date();
-        String beginTime;
-        String endTime;
-        Calendar calendar = Calendar.getInstance();
+    public List<CommitDTO> getLatestCommitCount(Date beginDate, Date endDate) {
+//        List<Long> latestCommitCount = new LinkedList<>();
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        Date date = new Date();
+//        Date currentDate = new Date();
+//        String beginTime;
+//        String endTime;
+//        Calendar calendar = Calendar.getInstance();
+//
+//        calendar.setTime(currentDate);
+//        calendar.add(Calendar.DAY_OF_MONTH, -days + 1);
+//        date = calendar.getTime();
+//        beginTime = simpleDateFormat.format(date);
+//
+//        endTime = simpleDateFormat.format(currentDate);
 
-        calendar.setTime(currentDate);
-        calendar.add(Calendar.DAY_OF_MONTH, -days + 1);
-        date = calendar.getTime();
-        beginTime = simpleDateFormat.format(date);
+        List<Commit> latestCommit = commitRepository.selectByTime(beginDate, endDate);
+        List<CommitDTO> commits = new ArrayList<>();
 
-        endTime = simpleDateFormat.format(currentDate);
+        for (Commit commit : latestCommit){
+            commits.add(modelMapper.map(commit, CommitDTO.class));
+        }
 
-        List<Commit> latestCommit = commitRepository.selectByTime(beginTime, endTime);
-
-        for(Commit commit : latestCommit)
-            latestCommitCount.add(new Long((long)commit.getCommitCount()));
-
-        return latestCommitCount;
+        return commits;
     }
 }
