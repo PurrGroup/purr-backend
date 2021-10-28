@@ -85,6 +85,9 @@ public class Article {
     @Column(columnDefinition = "DATETIME")
     private Date deleteTime;
 
+    @Column(columnDefinition = "TINYINT UNSIGNED")
+    private Integer isRecommended;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

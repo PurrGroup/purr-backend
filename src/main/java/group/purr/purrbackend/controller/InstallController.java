@@ -1,5 +1,6 @@
 package group.purr.purrbackend.controller;
 
+import ch.qos.logback.core.pattern.color.MagentaCompositeConverter;
 import com.alibaba.fastjson.JSONObject;
 import group.purr.purrbackend.constant.MagicConstants;
 import group.purr.purrbackend.dto.*;
@@ -39,13 +40,16 @@ public class InstallController {
     final
     LinkService linkService;
 
+    final
+    PageService pageService;
+
     public InstallController(MetaService metaService,
                              AuthorService authorService,
                              MenuService menuService,
                              ArticleService articleService,
                              TagService tagService,
                              CommentService commentService,
-                             LinkService linkService) {
+                             LinkService linkService, PageService pageService) {
         this.metaService = metaService;
         this.authorService = authorService;
         this.menuService = menuService;
@@ -53,6 +57,7 @@ public class InstallController {
         this.tagService = tagService;
         this.commentService = commentService;
         this.linkService = linkService;
+        this.pageService = pageService;
     }
 
 
@@ -99,6 +104,8 @@ public class InstallController {
 
         // initialize subMenuItem information
         createSubMenu(aboutID);
+
+        createPage();
 
         return ResultVOUtil.success(true);
     }
@@ -392,5 +399,46 @@ public class InstallController {
 
     private void bandTag(Long articleID, Long tagID) {
         articleService.addTag(articleID, tagID);
+    }
+
+    private void createPage(){
+        PageDTO friends = new PageDTO();
+        friends.setName(MagicConstants.DEFAULT_MENUITEM_FRIENDS_NAME);
+        friends.setUrlName(MagicConstants.DEFAULT_MENUITEM_FRIENDS_URL);
+        friends.setDescription("");
+        friends.setCommentStatus(1);
+        friends.setBackgroundUrl("");
+        friends.setStatus(1);
+        friends.setCommentCount(0);
+        friends.setThumbCount(0);
+        friends.setShareCount(0);
+        friends.setViewCount(0);
+        pageService.createPage(friends);
+
+        PageDTO me = new PageDTO();
+        me.setName(MagicConstants.DEFAULT_SUBMENU_ME_NAME);
+        me.setUrlName(MagicConstants.DEFAULT_SUBMENU_ME_URL);
+        me.setDescription("");
+        me.setCommentStatus(0);
+        me.setBackgroundUrl("");
+        me.setStatus(1);
+        me.setCommentCount(0);
+        me.setThumbCount(0);
+        me.setShareCount(0);
+        me.setViewCount(0);
+        pageService.createPage(me);
+
+        PageDTO comment = new PageDTO();
+        comment.setName(MagicConstants.DEFAULT_MENUITEM_COMMENT_NAME);
+        comment.setUrlName(MagicConstants.DEFAULT_MENUITEM_COMMENT_URL);
+        comment.setDescription("");
+        comment.setCommentStatus(1);
+        comment.setBackgroundUrl("");
+        comment.setStatus(1);
+        comment.setCommentCount(0);
+        comment.setThumbCount(0);
+        comment.setShareCount(0);
+        comment.setViewCount(0);
+        pageService.createPage(comment);
     }
 }

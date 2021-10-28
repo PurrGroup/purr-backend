@@ -51,4 +51,6 @@ public class ArticleDTO {
 
     public String content;
 
+    public Integer isRecommended;
+
 }

@@ -115,4 +115,28 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = articleRepository.findByID(postID);
         return article.getLinkName();
     }
+
+    @Override
+    public void setCommentStatus(Long id, Integer commentStatus) {
+        Article article = articleRepository.findByID(id);
+        article.setCommentStatus(commentStatus);
+
+        articleRepository.save(article);
+    }
+
+    @Override
+    public void setPinnedStatus(Long id, Integer pinnedStatus) {
+        Article article = articleRepository.findByID(id);
+        article.setIsPinned(pinnedStatus);
+
+        articleRepository.save(article);
+    }
+
+    @Override
+    public void setRecommendStatus(Long id, Integer recommendStatus) {
+        Article article = articleRepository.findByID(id);
+        article.setIsRecommended(recommendStatus);
+
+        articleRepository.save(article);
+    }
 }

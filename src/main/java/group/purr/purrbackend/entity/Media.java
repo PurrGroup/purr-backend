@@ -37,6 +37,9 @@ public class Media {
     @Column(nullable = false, columnDefinition = "DATETIME")
     private Date createTime;
 
+    @Column(nullable = false)
+    private String name;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

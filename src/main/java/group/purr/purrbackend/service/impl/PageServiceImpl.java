@@ -39,4 +39,12 @@ public class PageServiceImpl implements PageService {
         Page page = pageRepository.findByID(postID);
         return page.getUrlName();
     }
+
+    @Override
+    public void setCommentStatus(Long id, Integer commentStatus) {
+        Page page = pageRepository.findByID(id);
+        page.setCommentStatus(commentStatus);
+
+        pageRepository.save(page);
+    }
 }

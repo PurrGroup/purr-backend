@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -40,6 +41,12 @@ public class ArticleController {
                                      @RequestParam(value = "num") Integer pageSize){
 
         Long total = articleService.getTotalExceptDeleted();
+
+        if(pageSize == 0){
+            List<ArticleDTO> result = new ArrayList<>();
+            return ResultVOUtil.success(result);
+        }
+
         int maxNum = Math.toIntExact(total / pageSize);
         if((pageNum-1)>maxNum){
             pageNum = maxNum;

@@ -1,12 +1,20 @@
 package group.purr.purrbackend.utils;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.*;
 
 import static group.purr.purrbackend.constant.ExternalAPIConstants.*;
 
 public class PurrUtils {
+
+    private static final List<String> IMAGE_SET_VALUES = Arrays.asList("jpg", "png", "gif", "svg", "jpeg", "JPG", "PNG", "GIF", "SVG", "JPEG");
+    private static final Set<String> IMAGE_TYPE_SET = new HashSet<>(IMAGE_SET_VALUES);
+
+
     public static String getAvatarUrl(String qq, String email, String username){
         if(qq!=null && qq.length()!=0){
             return QQ_AVATAR_API_BASE_URL + qq;
@@ -39,4 +47,42 @@ public class PurrUtils {
         }
         return null;
     }
+
+    public static void checkAndCreate(String folderPath){
+        File folder = new File(folderPath);
+        if (!folder.exists() && !folder.isDirectory()) {
+            folder.mkdirs();
+        }
+    }
+
+    public static synchronized String getUniqueKey() {
+        Random random = new Random();
+        Integer number = random.nextInt(900000) + 100000;
+
+        return System.currentTimeMillis() + String.valueOf(number);
+    }
+
+    public static Integer getFileType(String file){
+        int begin = file.lastIndexOf(".");
+        String ext =  file.substring(begin+1);
+        //picture
+        if(IMAGE_TYPE_SET.contains(ext)){
+            return 0;
+        }
+        else{
+            return 1;
+        }
+    }
+
+    public static void createFile(String filePath) {
+        File file = new File(filePath);
+        try {
+            file.createNewFile();
+        } catch (IOException ignored) {
+
+        }
+    }
+
+
+
 }

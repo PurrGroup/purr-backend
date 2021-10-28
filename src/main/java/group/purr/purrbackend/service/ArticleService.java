@@ -25,4 +25,10 @@ public interface ArticleService {
     Long getTotalExceptDeleted();
 
     String getArticleUrlByID(Long postID);
+
+    void setCommentStatus(Long id, Integer commentStatus);
+
+    void setPinnedStatus(Long id, Integer pinnedStatus);
+
+    void setRecommendStatus(Long id, Integer recommendStatus);
 }

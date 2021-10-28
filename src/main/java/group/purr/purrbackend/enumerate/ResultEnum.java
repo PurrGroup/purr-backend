@@ -33,7 +33,11 @@ public enum ResultEnum {
 
     REFRESH_TOKEN_EXPIRED("A1103", "登录凭证已过期", "登录凭证已经过期啦，请重新登录"),
 
-    WRONG_PASSWORD("A1103", "密码错误", "密码输入错误，请重新输入密码");
+    WRONG_PASSWORD("A1103", "密码错误", "密码输入错误，请重新输入密码"),
+
+    ILLEGAL_FILE("A0700", "文件不合法", "文件不符合要求, 请重新上传"),
+
+    ILLEGAL_CATEGORY("A0420", "类型参数不合法", "类型参数不符合要求，请重新请求");
 
 
     /**

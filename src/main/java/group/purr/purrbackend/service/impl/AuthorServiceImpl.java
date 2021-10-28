@@ -13,8 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -68,17 +72,52 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public AuthorDTO getProfile() {
 
-        Author userName = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.USER_NAME).orElse(new Author());
-        Author email = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.EMAIL).orElse(new Author());
-        Author description = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.DESCRIPTION).orElse(new Author());
-        Author qq = authorRepository.findAuthorByOptionKey(AuthorMetaConstants.QQ).orElse(new Author());
-
+        List<Author> profiles = authorRepository.findAll();
         AuthorDTO result = new AuthorDTO();
-        result.setUsername(userName.getOptionValue());
-        result.setEmail(email.getOptionValue());
-        result.setDescription(description.getOptionValue());
-        result.setQq(qq.getOptionValue());
-        result.setAvatar(PurrUtils.getAvatarUrl(qq.getOptionValue(), email.getOptionValue(), userName.getOptionValue()));
+
+        for(Author profile: profiles){
+
+            String key = profile.getOptionKey();
+            String value = profile.getOptionValue();
+
+            String methodName = key.substring(0,1).toUpperCase() + key.substring(1);
+            methodName = methodName.replace("_", "");
+            try{
+                Method setMethod = AuthorDTO.class.getMethod("set"+methodName, String.class);
+                setMethod.invoke(result,value);
+            } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException ignored) {
+
+            }
+
+        }
+
+        //遍历属性，若有null则赋值为""
+        Field[] fields = AuthorDTO.class.getFields();
+        for(Field field: fields){
+
+            String key = field.getName();
+            String value = null;
+            String methodName = key.substring(0,1).toUpperCase() + key.substring(1);
+            methodName = methodName.replace("_", "");
+            try{
+                Method m = AuthorDTO.class.getMethod("get"+methodName);
+                value = (String) m.invoke(result);
+            } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+
+            }
+
+            if(value == null){
+                value = "";
+                try{
+                    Method setMethod = AuthorDTO.class.getMethod("set"+methodName, String.class);
+                    setMethod.invoke(result, value);
+                } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException ignored) {
+
+                }
+            }
+        }
+
+        result.setAvatar(PurrUtils.getAvatarUrl(result.getQq(), result.getEmail(), result.getUsername()));
 
         return result;
     }
