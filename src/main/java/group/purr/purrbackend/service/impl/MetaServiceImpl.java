@@ -1,6 +1,7 @@
 package group.purr.purrbackend.service.impl;
 
 import group.purr.purrbackend.constant.BlogMetaConstants;
+import group.purr.purrbackend.dto.BlogMetaDTO;
 import group.purr.purrbackend.entity.BlogMeta;
 import group.purr.purrbackend.repository.BlogMetaRepository;
 import group.purr.purrbackend.service.MetaService;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class MetaServiceImpl implements MetaService {
@@ -77,5 +79,17 @@ public class MetaServiceImpl implements MetaService {
     @Override
     public void deleteAll() {
         blogmetaRepository.deleteAll();
+    }
+
+    @Override
+    public BlogMetaDTO getProfile() {
+        BlogMeta blogTitle = blogmetaRepository.findBlogMetaByOptionKey(BlogMetaConstants.BLOG_TITLE).orElse(new BlogMeta());
+        BlogMeta favicon = blogmetaRepository.findBlogMetaByOptionKey(BlogMetaConstants.FAVICON).orElse(new BlogMeta());
+
+        BlogMetaDTO blogMetaDTO = new BlogMetaDTO();
+        blogMetaDTO.setBlogTitle(blogTitle.getOptionValue());
+        blogMetaDTO.setFavicon(favicon.getOptionValue());
+
+        return blogMetaDTO;
     }
 }

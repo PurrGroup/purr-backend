@@ -4,5 +4,5 @@ import group.purr.purrbackend.entity.MenuItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MenuItemRepository extends JpaRepository<MenuItem, String> {
-
+    MenuItem findByID(Long id);
 }

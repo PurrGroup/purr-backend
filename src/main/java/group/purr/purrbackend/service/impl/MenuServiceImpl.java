@@ -9,6 +9,9 @@ import group.purr.purrbackend.service.MenuService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class MenuServiceImpl implements MenuService {
 
@@ -90,5 +93,38 @@ public class MenuServiceImpl implements MenuService {
 
         subMenuItemRepository.deleteAll();
         menuItemContainRelationRepository.deleteAll();
+    }
+
+    @Override
+    public MenuDTO getDefaultMenu() {
+        Menu menu = menuRepository.getByIsDefault(1);
+
+        return modelMapper.map(menu, MenuDTO.class);
+    }
+
+    @Override
+    public List<MenuItemDTO> getMenuItemsByParent(Long menuId) {
+        List<MenuContainRelation> relations = menuContainRelationRepository.findAllByMenuContainRelationKey_MenuID(menuId);
+        List<MenuItemDTO> menuItems = new ArrayList<>();
+
+        for (MenuContainRelation relation : relations){
+            MenuItem menuItem = menuItemRepository.findByID(relation.getMenuContainRelationKey().getMenuItemID());
+            menuItems.add(modelMapper.map(menuItem, MenuItemDTO.class));
+        }
+
+        return menuItems;
+    }
+
+    @Override
+    public List<SubMenuItemDTO> getSubMenuItemsByParent(Long menuItemId) {
+        List<MenuItemContainRelation> relations = menuItemContainRelationRepository.findAllByMenuItemContainRelationKey_MenuItemID(menuItemId);
+        List<SubMenuItemDTO> subMenuItems = new ArrayList<>();
+
+        for (MenuItemContainRelation relation : relations){
+            SubMenuItem subMenuItem = subMenuItemRepository.findByID(relation.getMenuItemContainRelationKey().getSubMenuItemID());
+            subMenuItems.add(modelMapper.map(subMenuItem, SubMenuItemDTO.class));
+        }
+
+        return subMenuItems;
     }
 }

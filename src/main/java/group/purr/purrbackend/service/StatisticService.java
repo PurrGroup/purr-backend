@@ -1,7 +1,9 @@
 package group.purr.purrbackend.service;
 
+import group.purr.purrbackend.dto.CommitDTO;
 import group.purr.purrbackend.dto.VisitDTO;
 
+import java.util.Date;
 import java.util.List;
 
 public interface StatisticService {
@@ -10,5 +12,5 @@ public interface StatisticService {
     Long getThumbCount();
     Long getViewCount();
     List<Long> getLatestViewCount();
-    List<Long> getLatestCommitCount(Integer days);
+    List<CommitDTO> getLatestCommitCount(Date beginDate, Date endDate);
 }

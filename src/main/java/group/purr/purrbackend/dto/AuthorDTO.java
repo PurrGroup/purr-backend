@@ -15,12 +15,18 @@ public class AuthorDTO {
 
     public String qq;
 
+    public String blogTitle;
+
+    public String favicon;
+
     @Override
     public String toString() {
         return "AuthorDTO{" +
                 "username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", description='" + description + '\'' +
+                ", blogTitle='" + blogTitle + '\'' +
+                ", favicon='" + favicon + '\'' +
                 '}';
     }
 }

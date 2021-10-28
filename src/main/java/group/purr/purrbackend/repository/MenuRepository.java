@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MenuRepository extends JpaRepository<Menu, String> {
 
+    Menu getByIsDefault(Integer isDefault);
+
 }

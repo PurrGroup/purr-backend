@@ -2,6 +2,7 @@ package group.purr.purrbackend.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import group.purr.purrbackend.dto.AuthorDTO;
+import group.purr.purrbackend.dto.BlogMetaDTO;
 import group.purr.purrbackend.service.AuthorService;
 import group.purr.purrbackend.service.MetaService;
 import group.purr.purrbackend.utils.ResultVOUtil;
@@ -47,6 +48,10 @@ public class MetaController {
     @GetMapping("/profile")
     public ResultVO getProfile(){
         AuthorDTO authorDTO = authorService.getProfile();
+        BlogMetaDTO blogMetaDTO = metaService.getProfile();
+
+        authorDTO.setBlogTitle(blogMetaDTO.getBlogTitle());
+        authorDTO.setFavicon(blogMetaDTO.getFavicon());
         return ResultVOUtil.success(authorDTO);
     }
 
