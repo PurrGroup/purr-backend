@@ -1,5 +1,6 @@
 package group.purr.purrbackend.controller;
 
+import group.purr.purrbackend.dto.CommitDTO;
 import group.purr.purrbackend.dto.StatisticDTO;
 import group.purr.purrbackend.service.StatisticService;
 import group.purr.purrbackend.utils.ResultVOUtil;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -43,9 +45,18 @@ public class StatisticController {
                               @RequestParam(value = "endDate")String endDate) throws ParseException {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        ParsePosition position = new ParsePosition(8);
         Date beginTime = simpleDateFormat.parse(beginDate);
         Date endTime = simpleDateFormat.parse(endDate);
 
-        return ResultVOUtil.success(statisticService.getLatestCommitCount(beginTime, endTime));
+        List<CommitDTO> commits = statisticService.getLatestCommitCount(beginTime, endTime);
+        for (CommitDTO commit : commits){
+            commit.setCommitTime(null);
+            String dateString = simpleDateFormat.format(commit.getCommitDate());
+            commit.setCommitDate(null);
+            commit.setDate(dateString);
+        }
+
+        return ResultVOUtil.success(commits);
     }
 }
