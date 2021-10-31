@@ -8,6 +8,8 @@ import java.util.Date;
 public class CommitDTO {
     private Date commitDate;
 
+    private String date;
+
     private Date commitTime;
 
     private Integer commitCount;
