@@ -14,6 +14,12 @@ public interface ArticleService {
      */
     Long createArticle(ArticleDTO articleDTO);
 
+    void updateArticle(ArticleDTO articleDTO);
+
+    void deleteArticleTags(Long articleId);
+
+    void deleteArticleById(Long articleId);
+
     void deleteAll();
 
     void addTag(Long articleID, Long tagID);
@@ -25,4 +31,10 @@ public interface ArticleService {
     Long getTotalExceptDeleted();
 
     String getArticleUrlByID(Long postID);
+
+    List<ArticleDTO> findRecommendedArticle();
+
+    ArticleDTO getArticleByID(Long postID);
+
+    ArticleDTO getArticleByLinkName(String linkName);
 }
