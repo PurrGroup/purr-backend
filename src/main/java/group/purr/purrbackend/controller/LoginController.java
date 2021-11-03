@@ -11,17 +11,21 @@ import group.purr.purrbackend.service.AuthorService;
 import group.purr.purrbackend.service.IPService;
 import group.purr.purrbackend.service.TokenService;
 import group.purr.purrbackend.utils.EncryptUtil;
+import group.purr.purrbackend.utils.PurrUtils;
 import group.purr.purrbackend.utils.ResultVOUtil;
 import group.purr.purrbackend.vo.ResultVO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 登录验证、登陆保持、登出、token刷新

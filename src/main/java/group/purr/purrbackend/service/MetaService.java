@@ -20,5 +20,9 @@ public interface MetaService {
     void deleteAll();
 
     BlogMetaDTO getProfile();
+
+    String getArticleLinkNamePrefix();
+
+    String getPageLinkNamePrefix();
 }
 

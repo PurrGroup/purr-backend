@@ -7,11 +7,14 @@ import group.purr.purrbackend.entity.ESEntity.ElasticArticle;
 import group.purr.purrbackend.entity.ESEntity.ElasticComment;
 import group.purr.purrbackend.entity.ESEntity.ElasticMoment;
 import group.purr.purrbackend.entity.ESEntity.ElasticPage;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
+import java.util.Date;
 
 import static group.purr.purrbackend.constant.ExternalAPIConstants.*;
 
@@ -71,5 +74,50 @@ public class PurrUtils {
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException ignored) {
         }
         return null;
+    }
+
+//  0 /articles/
+//  1 /articles/year(yyyy)/month(mm)
+//  2 /articles/year(yy)/month(mm)
+//  3 /articles/year(yyyy)/month(mm)/day(dd)
+//  4 /articles/year(yy)/month(mm)/day(dd)
+    public static String getArticleLinkNamePrefix(String option){
+        String prefix = "/articles";
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date();
+        calendar.setTime(date);
+        Integer year = calendar.get(Calendar.YEAR);
+        Integer month = calendar.get(Calendar.MONTH) + 1;
+        Integer day = calendar.get(Calendar.DATE);
+
+        switch (option){
+            case "0": prefix += "/"; break;
+            case "1": prefix += "/" + year.toString() + "/" + month.toString(); break;
+            case "2": prefix += "/" + year.toString().substring(2) + "/" + month.toString(); break;
+            case "3": prefix += "/" + year.toString() + "/" + month.toString() + "/" + day.toString(); break;
+            case "4": prefix += "/" + year.toString().substring(2) + "/" + month.toString() + "/" + day.toString(); break;
+        }
+
+        return prefix;
+    }
+
+    public static String getPageLinkNamePrefix(String option){
+        String prefix = "/pages";
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date();
+        calendar.setTime(date);
+        Integer year = calendar.get(Calendar.YEAR);
+        Integer month = calendar.get(Calendar.MONTH) + 1;
+        Integer day = calendar.get(Calendar.DATE);
+
+        switch (option){
+            case "0": prefix += "/"; break;
+            case "1": prefix += "/" + year.toString() + "/" + month.toString(); break;
+            case "2": prefix += "/" + year.toString().substring(2) + "/" + month.toString(); break;
+            case "3": prefix += "/" + year.toString() + "/" + month.toString() + "/" + day.toString(); break;
+            case "4": prefix += "/" + year.toString().substring(2) + "/" + month.toString() + "/" + day.toString(); break;
+        }
+
+        return prefix;
     }
 }

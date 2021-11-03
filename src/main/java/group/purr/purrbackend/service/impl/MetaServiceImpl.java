@@ -5,6 +5,7 @@ import group.purr.purrbackend.dto.BlogMetaDTO;
 import group.purr.purrbackend.entity.BlogMeta;
 import group.purr.purrbackend.repository.BlogMetaRepository;
 import group.purr.purrbackend.service.MetaService;
+import group.purr.purrbackend.utils.PurrUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -64,6 +65,16 @@ public class MetaServiceImpl implements MetaService {
         faviconMeta.setOptionValue(favicon);
         blogmetaRepository.save(faviconMeta);
 
+        BlogMeta articlePrefixMeta = new BlogMeta();
+        articlePrefixMeta.setOptionKey(BlogMetaConstants.ARTICLE_PREFIX_OPTION);
+        articlePrefixMeta.setOptionValue("0");
+        blogmetaRepository.save(articlePrefixMeta);
+
+        BlogMeta pagePrefixMeta = new BlogMeta();
+        pagePrefixMeta.setOptionKey(BlogMetaConstants.PAGE_PREFIX_OPTION);
+        pagePrefixMeta.setOptionValue("0");
+        blogmetaRepository.save(pagePrefixMeta);
+
         return true;
     }
 
@@ -91,5 +102,17 @@ public class MetaServiceImpl implements MetaService {
         blogMetaDTO.setFavicon(favicon.getOptionValue());
 
         return blogMetaDTO;
+    }
+
+    @Override
+    public String getArticleLinkNamePrefix() {
+        BlogMeta option = blogmetaRepository.findBlogMetaByOptionKey(BlogMetaConstants.ARTICLE_PREFIX_OPTION).orElse(new BlogMeta());
+        return PurrUtils.getArticleLinkNamePrefix(option.getOptionValue());
+    }
+
+    @Override
+    public String getPageLinkNamePrefix() {
+        BlogMeta option = blogmetaRepository.findBlogMetaByOptionKey(BlogMetaConstants.PAGE_PREFIX_OPTION).orElse(new BlogMeta());
+        return PurrUtils.getPageLinkNamePrefix(option.getOptionValue());
     }
 }

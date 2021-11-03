@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface ArticleRepository extends JpaRepository<Article, String>, JpaSpecificationExecutor<Article> {
     @Query(value = "select SUM(thumb_count) FROM article", nativeQuery = true)
     Long sumAllByThumb();
@@ -15,5 +17,9 @@ public interface ArticleRepository extends JpaRepository<Article, String>, JpaSp
     Long countByDeleteTimeNotNull();
 
     Article findByID(Long id);
+
+    List<Article> findAllByIsRecommendedOrderByUpdateTimeDesc(Integer isRecommended);
+
+    Article findByLinkName(String linkName);
 
 }

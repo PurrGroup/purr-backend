@@ -15,6 +15,14 @@ public enum ResultEnum {
      */
     USER_AUTH_FAILED("A0120", "密码校验失败", "(oﾟvﾟ)ノ密码校验失败，请检查你的用户名和密码"),
 
+    NAME_LENGTH_EXCEED("A0121", "参数校验失败", "linkName为空且name过长，name不能超过255个字"),
+
+    NAME_REPEATED("A0122", "参数校验失败", "linkName为空且name重复了"),
+
+    LINK_NAME_LENGTH_EXCEED("A0123", "参数校验失败", "linkName不能超过255个字"),
+
+    LINK_NAME_REPEATED("A0124", "参数校验失败", "linkName重复了"),
+
     /**
      * 安装失败，系统已安装
      */

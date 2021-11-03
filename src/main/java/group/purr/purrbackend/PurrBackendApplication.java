@@ -1,7 +1,9 @@
 package group.purr.purrbackend;
 
 import com.spring4all.swagger.EnableSwagger2Doc;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -11,11 +13,13 @@ import java.util.TimeZone;
 
 @EnableSwagger2Doc
 @SpringBootApplication
+@Slf4j
 public class PurrBackendApplication {
 
     @PostConstruct
     void init(){
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+0"));
+        log.info("运行了init方法");
     }
 
     public static void main(String[] args) {
