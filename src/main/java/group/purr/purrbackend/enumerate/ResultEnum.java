@@ -35,9 +35,15 @@ public enum ResultEnum {
 
     WRONG_PASSWORD("A1103", "密码错误", "密码输入错误，请重新输入密码"),
 
-    ILLEGAL_FILE("A0700", "文件不合法", "文件不符合要求, 请重新上传"),
+    UPLOAD_FILE_ERROR("A0700", "上传文件异常", "上传文件失败, 请重新上传"),
 
-    ILLEGAL_CATEGORY("A0420", "类型参数不合法", "类型参数不符合要求，请重新请求");
+    ILLEGAL_CATEGORY("A0420", "类型参数不合法", "类型参数不符合要求，请重新请求"),
+
+    /**
+     *  code A0706 MediaController中动态构建一系列上传文件失败的错误
+     */
+
+    NO_PERMISSION("A0300", "没有权限进行操作", "请检查您的权限");
 
 
     /**

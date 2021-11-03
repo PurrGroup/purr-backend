@@ -1,14 +1,26 @@
 package group.purr.purrbackend.utils;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.tika.Tika;
+import org.springframework.lang.NonNull;
+import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 import static group.purr.purrbackend.constant.ExternalAPIConstants.*;
 
+@Slf4j
 public class PurrUtils {
 
     private static final List<String> IMAGE_SET_VALUES = Arrays.asList("jpg", "png", "gif", "svg", "jpeg", "JPG", "PNG", "GIF", "SVG", "JPEG");
@@ -48,11 +60,15 @@ public class PurrUtils {
         return null;
     }
 
-    public static void checkAndCreate(String folderPath){
+    public static boolean checkAndCreate(String folderPath) {
         File folder = new File(folderPath);
-        if (!folder.exists() && !folder.isDirectory()) {
-            folder.mkdirs();
+        if(!checkWorkDir(folderPath)){
+            return false;
         }
+        if (!folder.exists() && !folder.isDirectory()) {
+            return folder.mkdirs();
+        }
+        return true;
     }
 
     public static synchronized String getUniqueKey() {
@@ -62,27 +78,62 @@ public class PurrUtils {
         return System.currentTimeMillis() + String.valueOf(number);
     }
 
-    public static Integer getFileType(String file){
-        int begin = file.lastIndexOf(".");
-        String ext =  file.substring(begin+1);
-        //picture
-        if(IMAGE_TYPE_SET.contains(ext)){
-            return 0;
-        }
-        else{
-            return 1;
-        }
+    public static String getFileType(MultipartFile file) throws IOException {
+
+        Tika tika = new Tika();
+
+        return tika.detect(file.getInputStream());
+
     }
 
-    public static void createFile(String filePath) {
+    public static void createFile(String filePath) throws IOException {
         File file = new File(filePath);
-        try {
-            file.createNewFile();
-        } catch (IOException ignored) {
+        file.createNewFile();
+    }
 
+    /**
+     * Check work directory.
+     */
+    public static Boolean checkWorkDir(String fileUrl) {
+        // Get work path
+        Path workPath = Paths.get(fileUrl);
+
+        // Check file type
+        if (!Files.isDirectory(workPath)
+                || !Files.isReadable(workPath)
+                || !Files.isWritable(workPath)) {
+            log.warn("Please make sure that {} is a directory, readable and writable!", fileUrl);
+            return false;
         }
+
+        return true;
     }
 
 
+    public static String getFileExt(String fileName) {
+        if(fileName == null){
+            return "";
+        }
 
+        int begin = fileName.lastIndexOf(".");
+        if(begin == -1){
+            return "";
+        }
+        return fileName.substring(begin);
+    }
+
+    /**
+     * Ensures the string contain suffix.
+     *
+     * @param string string must not be blank
+     * @param suffix suffix must not be blank
+     * @return string contain suffix specified
+     */
+    @NonNull
+    public static String ensureSuffix(@NonNull String string, @NonNull String suffix) {
+        Assert.hasText(string, "String must not be blank");
+        Assert.hasText(suffix, "Suffix must not be blank");
+
+        return StringUtils.removeEnd(string, suffix) + suffix;
+    }
 }

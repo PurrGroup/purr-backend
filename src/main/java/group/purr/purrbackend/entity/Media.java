@@ -28,8 +28,18 @@ public class Media {
     @Column(nullable = false)
     private String url;
 
-    @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
-    private Integer category;
+//    @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
+//    private Integer category;
+
+    /**
+     *  the category of file, like image
+     */
+    private String fileCategory;
+
+    /**
+     *  the type of file, like png/jpg
+     */
+    private String fileType;
 
     @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Integer host;
@@ -39,6 +49,17 @@ public class Media {
 
     @Column(nullable = false)
     private String name;
+
+    /**
+     * kb
+     */
+    private String size;
+
+    private Integer imageHeight;
+
+    private Integer imageWidth;
+
+    private String thumbnailPath;
 
     @Override
     public boolean equals(Object o) {
