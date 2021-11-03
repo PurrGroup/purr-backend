@@ -47,7 +47,7 @@ public class SearchController {
     }
 
     @GetMapping("/searchByKeyword")
-    public ResultVO searchByKeyword(@RequestParam(value = "pageNum") Integer pageNum,
+    public ResultVO searchByKeyword(@RequestParam(value = "curPage") Integer pageNum,
                                     @RequestParam(value = "pageSize") Integer pageSize,
                                     @RequestParam(value = "keyword") String keyword){
 

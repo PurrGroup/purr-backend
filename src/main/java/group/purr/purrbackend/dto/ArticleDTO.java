@@ -2,6 +2,7 @@ package group.purr.purrbackend.dto;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.util.Date;
 import java.util.List;
 
@@ -55,5 +56,11 @@ public class ArticleDTO {
     public String content;
 
     public List<TagDTO> tags;
+
+    private Integer copyright;
+
+    private Integer contract;
+
+    private String copyrightInfo;
 
 }

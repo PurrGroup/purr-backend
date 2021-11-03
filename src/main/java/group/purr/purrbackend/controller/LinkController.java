@@ -22,7 +22,7 @@ public class LinkController {
     }
 
     @GetMapping("/recent")
-    public ResultVO getRecentList(@RequestParam(value = "pageNum")Integer pageNum,
+    public ResultVO getRecentList(@RequestParam(value = "curPage")Integer pageNum,
                                   @RequestParam(value = "pageSize")Integer pageSize){
         Sort sort = Sort.by(Sort.Direction.DESC, "updateTime");
         Pageable pageable = PageRequest.of(pageNum, pageSize, sort);

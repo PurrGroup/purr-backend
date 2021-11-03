@@ -42,8 +42,8 @@ public class ArticleController {
      * 因此分页查询只需查询Article即可。
      */
     @GetMapping("/recent")
-    public ResultVO getRecentArticle(@RequestParam(value = "page") Integer pageNum,
-                                     @RequestParam(value = "num") Integer pageSize){
+    public ResultVO getRecentArticle(@RequestParam(value = "curPage") Integer pageNum,
+                                     @RequestParam(value = "pageSize") Integer pageSize){
 
         Long total = articleService.getTotalExceptDeleted();
         int maxNum = Math.toIntExact(total / pageSize);
@@ -161,6 +161,7 @@ public class ArticleController {
             originArticle.setAuthor(article.getAuthor());
             originArticle.setContent(article.getContent());
             originArticle.setTags(null);
+            originArticle.setStatus(0);
 
             articleService.deleteArticleTags(id);
 
