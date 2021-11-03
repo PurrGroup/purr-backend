@@ -29,7 +29,7 @@ public class MomentController {
     }
 
     @GetMapping("/recent")
-    public ResultVO getRecentMoments(@RequestParam(value = "pageNum")Integer pageNum,
+    public ResultVO getRecentMoments(@RequestParam(value = "curPage")Integer pageNum,
                                      @RequestParam(value = "pageSize")Integer pageSize){
 
         Sort sort = Sort.by(Sort.Direction.DESC, "updateTime");

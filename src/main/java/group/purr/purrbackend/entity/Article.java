@@ -86,4 +86,13 @@ public class Article {
     @Column(columnDefinition = "DATETIME")
     private Date deleteTime;
 
+    @Column(columnDefinition = "TINYINT")
+    private Integer copyright;
+
+    @Column(columnDefinition = "TINYINT")
+    private Integer contract;
+
+    @Column(columnDefinition = "TEXT")
+    private String copyrightInfo;
+
 }
