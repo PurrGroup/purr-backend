@@ -3,11 +3,12 @@ package group.purr.purrbackend.dto;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class ArticleDTO {
 
-    public Long ID;
+    public Long id;
 
     public String name;
 
@@ -45,12 +46,20 @@ public class ArticleDTO {
 
     public Integer isPinned;
 
+    public Integer isRecommended;
+
     public String articleAbstract;
 
     public Date deleteTime;
 
     public String content;
 
-    public Integer isRecommended;
+    public List<TagDTO> tags;
+
+    private Integer copyright;
+
+    private Integer contract;
+
+    private String copyrightInfo;
 
 }

@@ -55,13 +55,14 @@ public class ResultVOUtil {
     }
 
     /**
-     *  响应出错，返回动态构建的错误类型
+     * 响应出错，返回动态构建的错误类型
+     *
      * @param code 错误码
-     * @param msg 错误信息
-     * @param tip 错误提示
+     * @param msg  错误信息
+     * @param tip  错误提示
      * @return 返回的响应体
      */
-    public static ResultVO error(String code, String msg, String tip){
+    public static ResultVO error(String code, String msg, String tip) {
         ResultVO resultVO = new ResultVO();
         resultVO.setSuccess(false);
         resultVO.setErrorCode(code);

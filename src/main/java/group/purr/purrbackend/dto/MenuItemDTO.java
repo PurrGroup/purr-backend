@@ -2,6 +2,8 @@ package group.purr.purrbackend.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class MenuItemDTO {
 
@@ -16,4 +18,6 @@ public class MenuItemDTO {
     private String target;
 
     private Integer isParent;
+
+    private List<SubMenuItemDTO> subMenuItems;
 }

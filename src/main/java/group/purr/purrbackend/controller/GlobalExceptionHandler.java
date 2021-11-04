@@ -25,6 +25,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = PurrHttpException.class)
     public ResponseEntity<ResultVO> purrHttpExceptionHandler(HttpServletRequest httpServletRequest, PurrHttpException e) {
         logger.info("Response failed: Http status code: " + e.getHttpStatus() + ", response data: " + e.getBody());
-        return new ResponseEntity<ResultVO>(e.getBody(), (MultiValueMap<String, String>) e.getHeaders(), e.getHttpStatus());
+        return new ResponseEntity<ResultVO>(e.getBody(), e.getHeaders(), e.getHttpStatus());
     }
 }

@@ -41,7 +41,6 @@ public class MediaServiceImpl implements MediaService {
     ModelMapper modelMapper;
 
 
-
     @Override
     public MediaDTO saveMedia(String url, String category, String type, Integer host, String originalFilename, String size, Integer height, Integer width, String thumbNailUrl) {
         Media media = new Media();
@@ -77,11 +76,11 @@ public class MediaServiceImpl implements MediaService {
         try {
             Files.createFile(thumbPath);
             // Convert to thumbnail and copy the thumbnail
-            log.debug("Trying to generate thumbnail: [{}]", thumbPath.toString());
+            log.debug("Trying to generate thumbnail: [{}]", thumbPath);
             Thumbnails.of(thumbImage).size(THUMB_WIDTH, THUMB_HEIGHT).keepAspectRatio(true)
                     .toFile(thumbPath.toFile());
             log.info("Generated thumbnail image, and wrote the thumbnail to [{}]",
-                    thumbPath.toString());
+                    thumbPath);
             result = true;
         } catch (Throwable t) {
             // Ignore the error

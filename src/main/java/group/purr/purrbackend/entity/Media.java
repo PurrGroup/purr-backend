@@ -32,12 +32,12 @@ public class Media {
 //    private Integer category;
 
     /**
-     *  the category of file, like image
+     * the category of file, like image
      */
     private String fileCategory;
 
     /**
-     *  the type of file, like png/jpg
+     * the type of file, like png/jpg
      */
     private String fileType;
 

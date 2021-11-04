@@ -1,7 +1,6 @@
 package group.purr.purrbackend.service.impl;
 
 import group.purr.purrbackend.dto.PageDTO;
-import group.purr.purrbackend.entity.Article;
 import group.purr.purrbackend.entity.Page;
 import group.purr.purrbackend.repository.PageRepository;
 import group.purr.purrbackend.service.PageService;

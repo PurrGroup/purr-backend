@@ -1,16 +1,11 @@
 package group.purr.purrbackend.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.Hibernate;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -19,6 +14,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @DynamicUpdate
 @DynamicInsert
+@EqualsAndHashCode
 public class Article {
 
     @Id
@@ -35,7 +31,7 @@ public class Article {
     @Column(columnDefinition = "DATETIME")
     private Date updateTime;
 
-    @Column(length = 50)
+    @Column(length = 255)
     private String linkName;
 
     @Column(length = 25, nullable = false)
@@ -79,25 +75,22 @@ public class Article {
     @Column(columnDefinition = "TINYINT UNSIGNED")
     private Integer isPinned;
 
+    @Column(columnDefinition = "TINYINT UNSIGNED")
+    private Integer isRecommended;
+
     @Column(name = "abstract", columnDefinition = "TEXT")
     private String articleAbstract;
 
     @Column(columnDefinition = "DATETIME")
     private Date deleteTime;
 
-    @Column(columnDefinition = "TINYINT UNSIGNED")
-    private Integer isRecommended;
+    @Column(columnDefinition = "TINYINT")
+    private Integer copyright;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Article article = (Article) o;
-        return Objects.equals(ID, article.ID);
-    }
+    @Column(columnDefinition = "TINYINT")
+    private Integer contract;
 
-    @Override
-    public int hashCode() {
-        return 0;
-    }
+    @Column(columnDefinition = "TEXT")
+    private String copyrightInfo;
+
 }

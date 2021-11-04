@@ -12,15 +12,9 @@ on:
   push:
     branches:
       - main
-    paths:
-      - '**'
-      - '!**.md'
   pull_request:
     branches:
       - main
-    paths:
-      - '**'
-      - '!**.md'
   release:
     types:
       - created
@@ -28,10 +22,6 @@ jobs:
   tests:
     name: Unit tests
     runs-on: ubuntu-latest
-    env:
-      DB_DATABASE: purr_dev
-      DB_USER: root
-      DB_PASSWORD: 123456
     steps:
       # Check-out your repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v2
@@ -45,6 +35,15 @@ jobs:
           PORT_MAPPING: 3306:3306
           ROOT_PASSWORD: 123456
           DATABASE: purr_dev
+      - name: Set up Elastic Search
+        uses: miyataka/elasticsearch-github-actions@master
+        with:
+          stack-version: '7.15.1'
+          plugins: '
+            analysis-smartcn
+            analysis-icu
+            https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.15.1/elasticsearch-analysis-ik-7.15.1.zip
+          '
       # Set up JDK 1.8 on runner
       - name: Set up JDK
         uses: actions/setup-java@v1
@@ -116,4 +115,3 @@ jobs:
             cd .purr
             nohup java -jar purr-backend-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod 2>&1 > purr.log &
             exit 1
-

@@ -1,6 +1,5 @@
 package group.purr.purrbackend.controller;
 
-import ch.qos.logback.core.pattern.color.MagentaCompositeConverter;
 import com.alibaba.fastjson.JSONObject;
 import group.purr.purrbackend.constant.MagicConstants;
 import group.purr.purrbackend.dto.*;
@@ -84,7 +83,7 @@ public class InstallController {
 
         // initialize article information
         ArticleDTO defaultArticle = createArticle(userName);
-        Long articleID = defaultArticle.getID();
+        Long articleID = defaultArticle.getId();
 
         // initialize tag information
         Long tagID = createTag();
@@ -155,7 +154,7 @@ public class InstallController {
         defaultArticle.setTarget(MagicConstants.DEFAULT_ARTICLE_TARGET);
         defaultArticle.setIsPinned(MagicConstants.DEFAULT_IS_PINNED);
         Long articleID = articleService.createArticle(defaultArticle);
-        defaultArticle.setID(articleID);
+        defaultArticle.setId(articleID);
 
         LinkDTO articleLink = new LinkDTO();
         articleLink.setName(defaultArticle.getName());
@@ -401,7 +400,7 @@ public class InstallController {
         articleService.addTag(articleID, tagID);
     }
 
-    private void createPage(){
+    private void createPage() {
         PageDTO friends = new PageDTO();
         friends.setName(MagicConstants.DEFAULT_MENUITEM_FRIENDS_NAME);
         friends.setUrlName(MagicConstants.DEFAULT_MENUITEM_FRIENDS_URL);

@@ -1,6 +1,7 @@
 package group.purr.purrbackend.dto;
 
 import lombok.Data;
+
 import java.util.Date;
 
 @Data
@@ -19,7 +20,7 @@ public class MediaDTO {
     private String name;
 
     /**
-     *  以kb为单位
+     * 以kb为单位
      */
     private String size;
 

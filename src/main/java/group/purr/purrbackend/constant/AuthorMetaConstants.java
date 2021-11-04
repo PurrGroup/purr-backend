@@ -6,5 +6,4 @@ public class AuthorMetaConstants {
     public static final String PASSWORD = "password";
     public static final String DESCRIPTION = "description";
     public static final String QQ = "qq";
-
 }

@@ -1,5 +1,6 @@
 package group.purr.purrbackend.service.impl;
 
+import group.purr.purrbackend.dto.CommitDTO;
 import group.purr.purrbackend.entity.Commit;
 import group.purr.purrbackend.entity.Visit;
 import group.purr.purrbackend.repository.*;
@@ -58,9 +59,9 @@ public class StatisticServiceImpl implements StatisticService {
         pageThumbCount = pageRepository.sumByThumb();
         momentThumbCount = momentRepository.sumByThumb();
 
-        if(articleThumbCount == null) articleThumbCount = new Long(0L);
-        if(pageThumbCount == null) pageThumbCount = new Long(0L);
-        if(momentThumbCount == null) momentThumbCount = new Long(0L);
+        if (articleThumbCount == null) articleThumbCount = new Long(0L);
+        if (pageThumbCount == null) pageThumbCount = new Long(0L);
+        if (momentThumbCount == null) momentThumbCount = new Long(0L);
 
         totalThumbCount = articleThumbCount + pageThumbCount + momentThumbCount;
 
@@ -72,8 +73,8 @@ public class StatisticServiceImpl implements StatisticService {
         Long articleViewCount = articleRepository.sumByView();
         Long pageViewCount = pageRepository.sumByView();
 
-        if(articleViewCount == null) articleViewCount = new Long(0L);
-        if(pageViewCount == null) pageViewCount = new Long(0L);
+        if (articleViewCount == null) articleViewCount = new Long(0L);
+        if (pageViewCount == null) pageViewCount = new Long(0L);
 
         Long totalViewCount = articleViewCount + pageViewCount;
 
@@ -100,38 +101,40 @@ public class StatisticServiceImpl implements StatisticService {
         List<Visit> latestVisitCount = visitRepository.selectByTime(beginTime, endTime);
         int length = latestVisitCount.size();
 
-        for(; length < 7; length++)
+        for (; length < 7; length++)
             latestViewCount.add(new Long(0L));
 
-        for(Visit visit : latestVisitCount){
-            latestViewCount.add(new Long((long)visit.getVisitCount()));
+        for (Visit visit : latestVisitCount) {
+            latestViewCount.add(new Long((long) visit.getVisitCount()));
         }
 
         return latestViewCount;
     }
 
     @Override
-    public List<Long> getLatestCommitCount(Integer days) {
-        List<Long> latestCommitCount = new LinkedList<>();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        Date currentDate = new Date();
-        String beginTime;
-        String endTime;
-        Calendar calendar = Calendar.getInstance();
+    public List<CommitDTO> getLatestCommitCount(Date beginDate, Date endDate) {
+//        List<Long> latestCommitCount = new LinkedList<>();
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        Date date = new Date();
+//        Date currentDate = new Date();
+//        String beginTime;
+//        String endTime;
+//        Calendar calendar = Calendar.getInstance();
+//
+//        calendar.setTime(currentDate);
+//        calendar.add(Calendar.DAY_OF_MONTH, -days + 1);
+//        date = calendar.getTime();
+//        beginTime = simpleDateFormat.format(date);
+//
+//        endTime = simpleDateFormat.format(currentDate);
 
-        calendar.setTime(currentDate);
-        calendar.add(Calendar.DAY_OF_MONTH, -days + 1);
-        date = calendar.getTime();
-        beginTime = simpleDateFormat.format(date);
+        List<Commit> latestCommit = commitRepository.selectByTime(beginDate, endDate);
+        List<CommitDTO> commits = new ArrayList<>();
 
-        endTime = simpleDateFormat.format(currentDate);
+        for (Commit commit : latestCommit) {
+            commits.add(modelMapper.map(commit, CommitDTO.class));
+        }
 
-        List<Commit> latestCommit = commitRepository.selectByTime(beginTime, endTime);
-
-        for(Commit commit : latestCommit)
-            latestCommitCount.add(new Long((long)commit.getCommitCount()));
-
-        return latestCommitCount;
+        return commits;
     }
 }

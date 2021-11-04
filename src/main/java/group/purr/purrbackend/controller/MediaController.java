@@ -20,7 +20,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Calendar;
 
 @CrossOrigin
 @RestController
@@ -38,7 +38,7 @@ public class MediaController {
     @PostMapping("/upload")
     public ResultVO uploadMedia(@RequestPart("file") MultipartFile file) {
 
-        if(file == null){
+        if (file == null) {
             throw new IllegalFileException();
         }
 
@@ -47,19 +47,18 @@ public class MediaController {
         String month = String.valueOf(cal.get(Calendar.MONTH) + 1);
         String year = String.valueOf(cal.get(Calendar.YEAR));
         String folderPath = rootPath + "/" + year + "/" + month;
-        if(!PurrUtils.checkAndCreate(folderPath)){
+        if (!PurrUtils.checkAndCreate(folderPath)) {
             return ResultVOUtil.error(ResultEnum.NO_PERMISSION);
         }
 
 
         String mimeType = null;
-        try{
+        try {
             mimeType = PurrUtils.getFileType(file);
-        }
-        catch (IOException ioException){
+        } catch (IOException ioException) {
             ResultVOUtil.error("A0706", ioException.getMessage(), ioException.getMessage());
         }
-        if(mimeType == null){
+        if (mimeType == null) {
             ResultVOUtil.error("A0706", "解析文件类型失败", "解析文件类型失败，请重试");
         }
         String category = mimeType.split("/")[0];
@@ -67,31 +66,29 @@ public class MediaController {
 
         String fileName = PurrUtils.getUniqueKey();
         String url = folderPath + "/" + fileName + "." + type;
-        if(!PurrUtils.checkWorkDir(url)){
+        if (!PurrUtils.checkWorkDir(url)) {
             ResultVOUtil.error(ResultEnum.NO_PERMISSION);
         }
 
         Integer host = 0;
 
         //在服务器上新建
-        try{
+        try {
             PurrUtils.createFile(url);
-        }
-        catch (IOException ioException){
+        } catch (IOException ioException) {
             ResultVOUtil.error("A0706", ioException.getMessage(), ioException.getMessage());
         }
-        try{
+        try {
             byte[] bytes = file.getBytes();
             Path path = Paths.get(url);
-            Files.write(path,bytes);
-        }
-        catch (IOException ioException){
+            Files.write(path, bytes);
+        } catch (IOException ioException) {
             ResultVOUtil.error("A0706", ioException.getMessage(), "新建文件失败，请重试");
         }
 
         //写数据库
         double kbs = file.getSize() / 1024.0;
-        String size = String .format("%.2f", kbs);
+        String size = String.format("%.2f", kbs);
         Integer height = null;
         Integer width = null;
         String thumbNailUrl = null;
@@ -105,19 +102,17 @@ public class MediaController {
             try {
                 String absoluteUrl = FileSystems.getDefault().getPath(thumbNailUrl).normalize().toAbsolutePath().toString();
                 boolean thumbnailSuccess = mediaService.generateThumbNail(absoluteUrl, type, file.getInputStream());
-                if(!thumbnailSuccess){
+                if (!thumbnailSuccess) {
                     ResultVOUtil.error("A0706", "生成缩略图失败", "生成缩略图失败");
                 }
-            }
-            catch (IOException ioException){
+            } catch (IOException ioException) {
                 ResultVOUtil.error("A0706", "生成缩略图失败", "生成缩略图失败");
             }
-        }
-        catch (IOException ioException){
+        } catch (IOException ioException) {
             return ResultVOUtil.error("A0706", ioException.getMessage(), ioException.getMessage());
         }
 
-        MediaDTO mediaDTO = mediaService.saveMedia(url.substring(url.indexOf(".")+1), category, type, host, file.getOriginalFilename(), size, height, width, thumbNailUrl.substring(thumbNailUrl.indexOf(".")+1));
+        MediaDTO mediaDTO = mediaService.saveMedia(url.substring(url.indexOf(".") + 1), category, type, host, file.getOriginalFilename(), size, height, width, thumbNailUrl.substring(thumbNailUrl.indexOf(".") + 1));
 
         return ResultVOUtil.success(mediaDTO);
     }

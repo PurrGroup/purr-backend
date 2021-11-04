@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @CrossOrigin
@@ -25,15 +26,14 @@ public class CommentController {
     }
 
     @GetMapping("/recent")
-    public ResultVO getRecentComment(@RequestParam(value = "page") Integer pageNum,
-                                     @RequestParam(value = "num") Integer pageSize){
+    public ResultVO getRecentComment(@RequestParam(value = "curPage") Integer pageNum,
+                                     @RequestParam(value = "pageSize") Integer pageSize) {
 
         Long total = commentService.getTotal();
         int maxNum = Math.toIntExact(total / pageSize);
-        if((pageNum-1)>maxNum){
+        if ((pageNum - 1) > maxNum) {
             pageNum = maxNum;
-        }
-        else pageNum = Math.max(pageNum - 1, 0);
+        } else pageNum = Math.max(pageNum - 1, 0);
 
         Sort sort = Sort.by(Sort.Direction.DESC, "date");
         Pageable pageable = PageRequest.of(pageNum, pageSize, sort);
@@ -45,7 +45,7 @@ public class CommentController {
     }
 
     @GetMapping("/unapproved")
-    public ResultVO getUnapprovedCommentNumber(){
+    public ResultVO getUnapprovedCommentNumber() {
         Long unapproved = commentService.getUnapproved();
         return ResultVOUtil.success(unapproved);
     }

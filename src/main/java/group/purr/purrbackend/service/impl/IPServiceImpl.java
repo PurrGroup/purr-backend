@@ -22,17 +22,14 @@ public class IPServiceImpl implements IPService {
     }
 
     @Override
-    public Boolean isIPLockdown(String IP){
+    public Boolean isIPLockdown(String IP) {
         LockdownIP lockdownIP = lockdownIPRepository.findByLockdownIP(IP);
         Date date = new Date();
 
-        if(lockdownIP == null)
+        if (lockdownIP == null)
             return false;
 
-        if(lockdownIP.getReleaseDate().before(date))
-            return false;
-
-        return true;
+        return !lockdownIP.getReleaseDate().before(date);
     }
 
     @Override
@@ -69,7 +66,7 @@ public class IPServiceImpl implements IPService {
         Date endTime = calendar.getTime();
 
         Integer count = loginFailedRepository.countByLoginAttemptDateBetween(beginTime, loginFailedDate);
-        if(count > 5)
+        if (count > 5)
             lockdownIP(IP, date, endTime);
     }
 

@@ -1,7 +1,6 @@
 package group.purr.purrbackend.exception;
 
 import group.purr.purrbackend.enumerate.ResultEnum;
-import group.purr.purrbackend.exception.http.BadRequestException;
 import group.purr.purrbackend.exception.http.IAMATeapotException;
 
 /**
@@ -10,6 +9,7 @@ import group.purr.purrbackend.exception.http.IAMATeapotException;
  */
 public class DenialOfServiceException extends IAMATeapotException {
     private static final ResultEnum result = ResultEnum.DENIAL_OF_SERVICE;
+
     public DenialOfServiceException() {
         super(result);
     }

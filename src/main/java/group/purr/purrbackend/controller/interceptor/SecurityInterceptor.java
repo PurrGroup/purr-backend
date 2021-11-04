@@ -27,7 +27,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
     @Autowired
     private TokenService tokenService;
 
-    private String getTokenContent(String authorizationToken){
+    private String getTokenContent(String authorizationToken) {
         return authorizationToken;
     }
 
@@ -36,7 +36,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         String authorizationHeader = request.getHeader(TokenConstants.accessHeaderName);
 
         // 判断token是否合法
-        if(!tokenService.checkTokenAuthorizationHeader(authorizationHeader)){
+        if (!tokenService.checkTokenAuthorizationHeader(authorizationHeader)) {
             log.error("非系统签发token");
             throw new DenialOfServiceException();
         }
@@ -45,7 +45,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         String token = getTokenContent(authorizationHeader);
         Jws<Claims> jws = JwtUtils.parserToken(token, TokenConstants.secretKey);
 
-        if(jws == null){
+        if (jws == null) {
             log.error("当前请求未携带token");
             throw new DenialOfServiceException();
         }
@@ -54,12 +54,12 @@ public class SecurityInterceptor implements HandlerInterceptor {
         String encryptedPassword = authorService.getEncryptedPassword();
         String passInRequest = jws.getBody().get(TokenConstants.userKey, String.class);
         // 密码验证不正确
-        if(!encryptedPassword.equals(passInRequest)){
+        if (!encryptedPassword.equals(passInRequest)) {
             log.error(String.format("登录凭证不符，encryptedPassword: %s, passInRequest: %s", encryptedPassword, passInRequest));
             throw new DenialOfServiceException();
         }
 
-        if(JwtUtils.checkIsExpired(jws)){
+        if (JwtUtils.checkIsExpired(jws)) {
             log.info("access-token过期");
             throw new AccessTokenExpiredException();
         }

@@ -2,6 +2,7 @@ package group.purr.purrbackend.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import group.purr.purrbackend.dto.AuthorDTO;
+import group.purr.purrbackend.dto.BlogMetaDTO;
 import group.purr.purrbackend.exception.IllegalCategoryException;
 import group.purr.purrbackend.service.ArticleService;
 import group.purr.purrbackend.service.AuthorService;
@@ -47,31 +48,35 @@ public class MetaController {
     }
 
     @PutMapping("/apiUrl")
-    public ResultVO updateApiUrl(@RequestBody JSONObject jsonObject){
+    public ResultVO updateApiUrl(@RequestBody JSONObject jsonObject) {
         String apiUrl = jsonObject.getString("apiUrl");
         metaService.updateApiUrl(apiUrl);
         return ResultVOUtil.success(true);
     }
 
     @GetMapping("/profile")
-    public ResultVO getProfile(){
+    public ResultVO getProfile() {
         AuthorDTO authorDTO = authorService.getProfile();
+        BlogMetaDTO blogMetaDTO = metaService.getProfile();
+
+        authorDTO.setBlogTitle(blogMetaDTO.getBlogTitle());
+        authorDTO.setFavicon(blogMetaDTO.getFavicon());
         return ResultVOUtil.success(authorDTO);
     }
 
     @PutMapping("/comment")
-    public ResultVO setCommentStatus(@RequestBody JSONObject jsonObject){
+    public ResultVO setCommentStatus(@RequestBody JSONObject jsonObject) {
         String id = jsonObject.getString("id");
         String category = jsonObject.getString("category");
         String commentStatus = jsonObject.getString("commentStatus");
 
         //article
-        if(category.equals("0")){
+        if (category.equals("0")) {
             articleService.setCommentStatus(Long.valueOf(id), Integer.valueOf(commentStatus));
             return ResultVOUtil.success(true);
         }
         //page
-        if(category.equals("1")){
+        if (category.equals("1")) {
             pageService.setCommentStatus(Long.valueOf(id), Integer.valueOf(commentStatus));
             return ResultVOUtil.success(true);
         }
@@ -81,13 +86,13 @@ public class MetaController {
     }
 
     @PutMapping("/pinned")
-    public ResultVO setPinnedStatus(@RequestBody JSONObject jsonObject){
+    public ResultVO setPinnedStatus(@RequestBody JSONObject jsonObject) {
         String id = jsonObject.getString("id");
         String category = jsonObject.getString("category");
         String pinnedStatus = jsonObject.getString("pinnedStatus");
 
         //article
-        if(category.equals("0")){
+        if (category.equals("0")) {
             articleService.setPinnedStatus(Long.valueOf(id), Integer.valueOf(pinnedStatus));
             return ResultVOUtil.success(true);
         }
@@ -96,13 +101,13 @@ public class MetaController {
     }
 
     @PutMapping("/recommend")
-    public ResultVO setRecommend(@RequestBody JSONObject jsonObject){
+    public ResultVO setRecommend(@RequestBody JSONObject jsonObject) {
         String id = jsonObject.getString("id");
         String category = jsonObject.getString("category");
         String recommendStatus = jsonObject.getString("recommendStatus");
 
         //article
-        if(category.equals("0")){
+        if (category.equals("0")) {
             articleService.setRecommendStatus(Long.valueOf(id), Integer.valueOf(recommendStatus));
             return ResultVOUtil.success(true);
         }
