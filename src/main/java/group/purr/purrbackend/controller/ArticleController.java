@@ -3,8 +3,10 @@ package group.purr.purrbackend.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import group.purr.purrbackend.dto.ArticleDTO;
+import group.purr.purrbackend.dto.PageableArticle;
 import group.purr.purrbackend.dto.TagDTO;
 import group.purr.purrbackend.enumerate.ResultEnum;
+import group.purr.purrbackend.exception.DenialOfServiceException;
 import group.purr.purrbackend.service.ArticleService;
 import group.purr.purrbackend.service.MetaService;
 import group.purr.purrbackend.utils.ResultVOUtil;
@@ -41,24 +43,62 @@ public class ArticleController {
      * 初步设想抽取出一张表DeletedArticle用于存放被删除的文章，Article只用于存放可展示的文章
      * 因此分页查询只需查询Article即可。
      */
-    @GetMapping("/recent")
-    public ResultVO getRecentArticle(@RequestParam(value = "curPage") Integer pageNum,
+    @GetMapping("/admin/recent")
+    public ResultVO getRecentArticleExceptDeleted(@RequestParam(value = "curPage") Integer pageNum,
                                      @RequestParam(value = "pageSize") Integer pageSize){
 
+
+        if(pageSize <= 0) throw new DenialOfServiceException();
+
         Long total = articleService.getTotalExceptDeleted();
-        int maxNum = Math.toIntExact(total / pageSize);
-        if((pageNum-1)>maxNum){
+        int maxNum = (int)Math.ceil((double) total / pageSize);
+
+        if(pageNum > maxNum){
             pageNum = maxNum;
         }
-        else pageNum = Math.max(pageNum - 1, 0);
+        pageNum = Math.max(pageNum - 1, 0);
 
         Sort sort = Sort.by(Sort.Direction.DESC, "updateTime");
         Pageable pageable = PageRequest.of(pageNum, pageSize, sort);
 
-        List<ArticleDTO> recentArticles = articleService.findRecentArticle(pageable);
+        List<ArticleDTO> recentArticles = articleService.findRecentArticleExceptDeleted(pageable);
 
-        return ResultVOUtil.success(recentArticles);
+        PageableArticle result = new PageableArticle();
+        result.setData(recentArticles);
+        result.setPageNum(maxNum);
+        result.setPageSize(pageSize);
+        result.setCurrentPage(pageNum + 1);;
 
+        return ResultVOUtil.success(result);
+
+    }
+
+    @GetMapping("/recent")
+    public ResultVO getRecentArticlePublic(@RequestParam(value = "curPage") Integer pageNum,
+                                           @RequestParam(value = "pageSize") Integer pageSize){
+
+        if(pageSize <= 0) throw new DenialOfServiceException();
+
+        Long total = articleService.getTotalPublic();
+        int maxNum = (int)Math.ceil((double) total / pageSize);
+
+        if(pageNum > maxNum){
+            pageNum = maxNum;
+        }
+        pageNum = Math.max(pageNum - 1, 0);
+
+        Sort sort = Sort.by(Sort.Direction.DESC, "updateTime");
+        Pageable pageable = PageRequest.of(pageNum, pageSize, sort);
+
+        List<ArticleDTO> recentArticles = articleService.findRecentArticlePublic(pageable);
+
+        PageableArticle result = new PageableArticle();
+        result.setData(recentArticles);
+        result.setPageNum(maxNum);
+        result.setPageSize(pageSize);
+        result.setCurrentPage(pageNum + 1);;
+
+        return ResultVOUtil.success(result);
     }
 
     /**

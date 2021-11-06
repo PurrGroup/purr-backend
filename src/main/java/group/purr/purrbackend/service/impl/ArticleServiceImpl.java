@@ -152,9 +152,11 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    public List<ArticleDTO> findRecentArticle(Pageable pageable) {
+    public List<ArticleDTO> findRecentArticlePublic(Pageable pageable) {
 
-        Page<Article> articles = articleRepository.findAll(pageable);
+//        Page<Article> articles = articleRepository.findAll(pageable);
+        // 公开发表的并且没有被删除的文章
+        Page<Article> articles = articleRepository.findAllByStatusAndDeleteTimeIsNull(1, pageable);
 
         List<ArticleDTO> result = new ArrayList<>();
         for (Article article : articles.getContent()) {
@@ -176,13 +178,35 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    public Long getTotal() {
-        return articleRepository.count();
+    public Long getTotalPublic() {
+        return articleRepository.countByStatusAndDeleteTimeIsNull(1);
     }
 
     @Override
     public Long getTotalExceptDeleted() {
-        return articleRepository.countByDeleteTimeNotNull();
+        return articleRepository.countByDeleteTimeIsNull();
+    }
+
+    @Override
+    public List<ArticleDTO> findRecentArticleExceptDeleted(Pageable pageable) {
+        Page<Article> articles = articleRepository.findAllByDeleteTimeIsNull(pageable);
+
+        List<ArticleDTO> result = new ArrayList<>();
+        for (Article article : articles.getContent()) {
+//            log.info(article.toString());
+            article.setCommentStatus(null);
+            article.setPingStatus(null);
+            article.setToPing(null);
+            article.setPinged(null);
+//            article.setArticleAbstract(null);
+            article.setDeleteTime(null);
+            ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
+            List<TagDTO> tagDTOS = findTagsByArticle(article.getID());
+            articleDTO.setTags(tagDTOS);
+            result.add(articleDTO);
+        }
+
+        return result;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package group.purr.purrbackend.controller;
 
 import group.purr.purrbackend.dto.CommentDTO;
+import group.purr.purrbackend.dto.PageableComment;
 import group.purr.purrbackend.service.CommentService;
 import group.purr.purrbackend.utils.ResultVOUtil;
 import group.purr.purrbackend.vo.ResultVO;
@@ -29,8 +30,9 @@ public class CommentController {
                                      @RequestParam(value = "pageSize") Integer pageSize){
 
         Long total = commentService.getTotal();
-        int maxNum = Math.toIntExact(total / pageSize);
-        if((pageNum-1)>maxNum){
+        int maxNum = (int) Math.ceil((double) total / pageSize);
+
+        if(pageNum > maxNum){
             pageNum = maxNum;
         }
         else pageNum = Math.max(pageNum - 1, 0);
@@ -40,8 +42,41 @@ public class CommentController {
 
         List<CommentDTO> recentComments = commentService.findRecentComment(pageable);
 
-        return ResultVOUtil.success(recentComments);
+        PageableComment result = new PageableComment();
+        result.setData(recentComments);
+        result.setPageNum(maxNum);
+        result.setPageSize(pageSize);
+        result.setCurrentPage(pageNum + 1);
 
+        return ResultVOUtil.success(result);
+
+    }
+
+    @GetMapping("/admin/recent")
+    public ResultVO getRecentCommentAuthorized(@RequestParam(value = "curPage") Integer pageNum,
+                                               @RequestParam(value = "pageSize") Integer pageSize){
+
+
+        Long total = commentService.getTotal();
+        int maxNum = (int) Math.ceil((double) total / pageSize);
+
+        if(pageNum > maxNum){
+            pageNum = maxNum;
+        }
+        else pageNum = Math.max(pageNum - 1, 0);
+
+        Sort sort = Sort.by(Sort.Direction.DESC, "date");
+        Pageable pageable = PageRequest.of(pageNum, pageSize, sort);
+
+        List<CommentDTO> recentComments = commentService.findRecentComment(pageable);
+
+        PageableComment result = new PageableComment();
+        result.setData(recentComments);
+        result.setPageNum(maxNum);
+        result.setPageSize(pageSize);
+        result.setCurrentPage(pageNum + 1);
+
+        return ResultVOUtil.success(result);
     }
 
     @GetMapping("/unapproved")
