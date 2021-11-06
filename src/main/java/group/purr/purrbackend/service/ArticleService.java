@@ -24,11 +24,21 @@ public interface ArticleService {
 
     void addTag(Long articleID, Long tagID);
 
-    List<ArticleDTO> findRecentArticle(Pageable pageable);
+    /**
+     *
+     * @return 公开的并且未被删除的文章总数
+     */
+    Long getTotalPublic();
 
-    Long getTotal();
+    List<ArticleDTO> findRecentArticlePublic(Pageable pageable);
 
+    /**
+     *
+     * @return 所有未被删除的文章总数
+     */
     Long getTotalExceptDeleted();
+
+    List<ArticleDTO> findRecentArticleExceptDeleted(Pageable pageable);
 
     String getArticleUrlByID(Long postID);
 
