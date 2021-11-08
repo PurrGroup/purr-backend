@@ -51,7 +51,7 @@ public class Media {
     private String name;
 
     /**
-     * kb
+     * b
      */
     private String size;
 

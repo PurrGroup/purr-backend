@@ -1,15 +1,26 @@
 package group.purr.purrbackend.service.impl;
 
+import group.purr.purrbackend.constant.BlogMetaConstants;
+import group.purr.purrbackend.controller.handler.FileHandler;
+import group.purr.purrbackend.controller.handler.file.LocalFileHandler;
 import group.purr.purrbackend.dto.MediaDTO;
+import group.purr.purrbackend.entity.BlogMeta;
 import group.purr.purrbackend.entity.Media;
+import group.purr.purrbackend.enumerate.ResultEnum;
+import group.purr.purrbackend.exception.http.InternalServerErrorException;
+import group.purr.purrbackend.repository.BlogMetaRepository;
 import group.purr.purrbackend.repository.MediaRepository;
 import group.purr.purrbackend.service.MediaService;
+import group.purr.purrbackend.utils.PurrUtils;
+import group.purr.purrbackend.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -24,21 +35,17 @@ import java.util.Date;
 @Service
 public class MediaServiceImpl implements MediaService {
 
-    /**
-     * Thumbnail width.
-     */
-    private static final int THUMB_WIDTH = 256;
-
-    /**
-     * Thumbnail height.
-     */
-    private static final int THUMB_HEIGHT = 256;
-
     @Autowired
     MediaRepository mediaRepository;
 
     @Autowired
+    BlogMetaRepository blogMetaRepository;
+
+    @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    Environment env;
 
 
     @Override
@@ -62,35 +69,38 @@ public class MediaServiceImpl implements MediaService {
         return modelMapper.map(media, MediaDTO.class);
     }
 
+
     @Override
-    public boolean generateThumbNail(String thumbUrl, String type, InputStream originalFile) throws IOException {
-        // TODO refactor this: if image is ico ext. extension
-        BufferedImage thumbImage = ImageIO.read(originalFile);
-        Assert.notNull(thumbImage, "Image must not be null");
-        Assert.notNull(thumbUrl, "Thumb path must not be null");
+    public MediaDTO upload(MultipartFile file) throws IOException {
 
-        Path thumbPath = Paths.get(thumbUrl);
+        String rootPath = env.getProperty("purr.media.path");
 
-        boolean result = false;
-        // Create the thumbnail
-        try {
-            Files.createFile(thumbPath);
-            // Convert to thumbnail and copy the thumbnail
-            log.debug("Trying to generate thumbnail: [{}]", thumbPath);
-            Thumbnails.of(thumbImage).size(THUMB_WIDTH, THUMB_HEIGHT).keepAspectRatio(true)
-                    .toFile(thumbPath.toFile());
-            log.info("Generated thumbnail image, and wrote the thumbnail to [{}]",
-                    thumbPath);
-            result = true;
-        } catch (Throwable t) {
-            // Ignore the error
-            log.warn("Failed to generate thumbnail: " + thumbPath, t);
-        } finally {
-            // Disposes of this graphics context and releases any system resources that it is using.
-            thumbImage.getGraphics().dispose();
+        String host = blogMetaRepository.findBlogMetaByOptionKey(BlogMetaConstants.RESOURCES_HOST)
+                .orElse(
+                        BlogMeta.builder()
+                                .optionKey(BlogMetaConstants.RESOURCES_HOST)
+                                .optionValue("0")
+                                .build()
+                ).getOptionValue();
+
+        if(host.equals("0")){
+            FileHandler lfh = new LocalFileHandler();
+            MediaDTO result = lfh.uploadFile(file, rootPath);
+
+            log.debug("file type: [{}], upload path: [{}]", result.getFileType(), result.getUrl());
+
+            Date currentTime = new Date();
+            result.setCreateTime(currentTime);
+
+            // Save media
+            Media media = modelMapper.map(result, Media.class);
+            mediaRepository.save(media);
+
+            return result;
         }
-        return result;
 
-
+        throw new InternalServerErrorException(ResultEnum.NO_PROPER_FILE_HANDLER);
     }
+
+
 }

@@ -128,7 +128,8 @@ public class InstallController {
 
     private void initializeMeta(String blogName, String hostname) {
         String favicon = MagicConstants.DEFAULT_FAVICON;
-        metaService.createBy(blogName, hostname, favicon);
+        String host = MagicConstants.DEFAULT_HOST;
+        metaService.createBy(blogName, hostname, favicon, host);
     }
 
     private void createAdmin(String userName, String psd, String email) {

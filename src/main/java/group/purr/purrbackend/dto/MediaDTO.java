@@ -20,7 +20,7 @@ public class MediaDTO {
     private String name;
 
     /**
-     * 以kb为单位
+     * 以b为单位
      */
     private String size;
 

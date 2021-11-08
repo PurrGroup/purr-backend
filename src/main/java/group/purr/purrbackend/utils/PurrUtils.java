@@ -1,16 +1,21 @@
 package group.purr.purrbackend.utils;
 
 import group.purr.purrbackend.constant.HttpConstants;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.Tika;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,6 +32,17 @@ import static group.purr.purrbackend.constant.ExternalAPIConstants.*;
 public class PurrUtils {
     private PurrUtils() {
     }
+
+    /**
+     * Thumbnail width.
+     */
+    private static final int THUMB_WIDTH = 256;
+
+    /**
+     * Thumbnail height.
+     */
+    private static final int THUMB_HEIGHT = 256;
+
 
     public static String getIP(HttpServletRequest request) {
         String IP = request.getHeader(HttpConstants.X_FORWARDED_FOR);
@@ -82,17 +98,6 @@ public class PurrUtils {
         return null;
     }
 
-    public static boolean checkAndCreate(String folderPath) {
-        File folder = new File(folderPath);
-        if (!checkWorkDir(folderPath)) {
-            return false;
-        }
-        if (!folder.exists() && !folder.isDirectory()) {
-            return folder.mkdirs();
-        }
-        return true;
-    }
-
     public static synchronized String getUniqueKey() {
         Random random = new Random();
         Integer number = random.nextInt(900000) + 100000;
@@ -116,19 +121,30 @@ public class PurrUtils {
     /**
      * Check work directory.
      */
-    public static Boolean checkWorkDir(String fileUrl) {
-        // Get work path
-        Path workPath = Paths.get(fileUrl);
+    public static Integer checkAndCreateFolder(String workDir) {
 
-        // Check file type
-        if (!Files.isDirectory(workPath)
-                || !Files.isReadable(workPath)
-                || !Files.isWritable(workPath)) {
-            log.warn("Please make sure that {} is a directory, readable and writable!", fileUrl);
-            return false;
+        // Get work path
+        Path workPath = Paths.get(workDir);
+
+        if (!Files.isDirectory(workPath)) {
+
+            File folder = new File(workDir);
+
+            if (!folder.mkdirs()) {
+                log.error("create upload path " + workDir + " failed");
+                return -1;
+            }
+            return 1;
+
+        } else {
+            if (Files.isReadable(workPath) && Files.isWritable(workPath)) {
+                return 1;
+            } else {
+                log.error("no permission to read or write upload path" + workDir);
+                return -2;
+            }
         }
 
-        return true;
     }
 
 
@@ -222,5 +238,35 @@ public class PurrUtils {
         }
 
         return prefix;
+    }
+
+    public static boolean generateThumbNail(String thumbUrl, InputStream originalFile) throws IOException {
+        // TODO refactor this: if image is ico ext. extension
+        BufferedImage thumbImage = ImageIO.read(originalFile);
+        Assert.notNull(thumbImage, "Image must not be null");
+        Assert.notNull(thumbUrl, "Thumb path must not be null");
+
+        Path thumbPath = Paths.get(thumbUrl);
+
+        boolean result = false;
+        // Create the thumbnail
+        try {
+            Files.createFile(thumbPath);
+            // Convert to thumbnail and copy the thumbnail
+            log.debug("Trying to generate thumbnail: [{}]", thumbPath);
+            Thumbnails.of(thumbImage).size(THUMB_WIDTH, THUMB_HEIGHT).keepAspectRatio(true)
+                    .toFile(thumbPath.toFile());
+            log.info("Generated thumbnail image, and wrote the thumbnail to [{}]",
+                    thumbPath);
+            result = true;
+        } catch (Throwable t) {
+            // Ignore the error
+            log.warn("Failed to generate thumbnail: " + thumbPath, t);
+        } finally {
+            // Disposes of this graphics context and releases any system resources that it is using.
+            thumbImage.getGraphics().dispose();
+        }
+        return result;
+
     }
 }

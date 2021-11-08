@@ -50,8 +50,16 @@ public enum ResultEnum {
     /**
      * code A0706 MediaController中动态构建一系列上传文件失败的错误
      */
+    GENERATE_THUMBNAIL_FAILED("A0707", "生成缩略图失败", "生成缩略图失败"),
 
-    NO_PERMISSION("A0300", "没有权限进行操作", "请检查您的权限");
+    NO_PERMISSION("A0300", "没有权限进行操作", "请检查您的权限"),
+
+    CREATE_FOLDER_FAILED("B0321", "创建文件夹失败", "创建文件夹失败,请检查系统日志"),
+
+    NO_PROPER_FILE_HANDLER("B0300", "没有匹配的文件处理器", "没有匹配的文件处理器,请检查资源托管服务器"),
+
+    PARSE_FILE_TYPE_FAILED("A0706", "解析文件类型失败", "解析文件类型失败，请重试");
+
 
 
     /**

@@ -27,13 +27,12 @@ public class MetaServiceImpl implements MetaService {
      */
     @Override
     public Boolean queryInstalled() {
-//        Long count = blogmetaRepository.countAllByOptionKey("blog_title");
         long count = blogmetaRepository.count();
         return count != 0;
     }
 
     @Override
-    public Boolean createBy(String blogTitle, String domain, String favicon) {
+    public Boolean createBy(String blogTitle, String domain, String favicon, String host) {
         Assert.notNull(blogTitle, "BlogTitle must not be null.");
         Assert.notNull(domain, "Domain must not be null.");
         Assert.notNull(favicon, "Favicon must not be null.");
@@ -63,6 +62,11 @@ public class MetaServiceImpl implements MetaService {
         faviconMeta.setOptionKey(BlogMetaConstants.FAVICON);
         faviconMeta.setOptionValue(favicon);
         blogmetaRepository.save(faviconMeta);
+
+        BlogMeta hostMeta = new BlogMeta();
+        hostMeta.setOptionKey(BlogMetaConstants.RESOURCES_HOST);
+        hostMeta.setOptionValue(host);
+        blogmetaRepository.save(hostMeta);
 
         BlogMeta articlePrefixMeta = new BlogMeta();
         articlePrefixMeta.setOptionKey(BlogMetaConstants.ARTICLE_PREFIX_OPTION);
