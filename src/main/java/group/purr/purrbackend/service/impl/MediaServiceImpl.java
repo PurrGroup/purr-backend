@@ -44,9 +44,6 @@ public class MediaServiceImpl implements MediaService {
     @Autowired
     ModelMapper modelMapper;
 
-    @Autowired
-    Environment env;
-
 
     @Override
     public MediaDTO saveMedia(String url, String category, String type, Integer host, String originalFilename, String size, Integer height, Integer width, String thumbNailUrl) {
@@ -72,20 +69,16 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaDTO upload(MultipartFile file) throws IOException {
-
-        String rootPath = env.getProperty("purr.media.path");
-
         String host = blogMetaRepository.findBlogMetaByOptionKey(BlogMetaConstants.RESOURCES_HOST)
-                .orElse(
-                        BlogMeta.builder()
-                                .optionKey(BlogMetaConstants.RESOURCES_HOST)
-                                .optionValue("0")
-                                .build()
-                ).getOptionValue();
+                .orElse(BlogMeta.builder()
+                        .optionKey(BlogMetaConstants.RESOURCES_HOST)
+                        .optionValue("0")
+                        .build())
+                .getOptionValue();
 
         if(host.equals("0")){
             FileHandler lfh = new LocalFileHandler();
-            MediaDTO result = lfh.uploadFile(file, rootPath);
+            MediaDTO result = lfh.uploadFile(file);
 
             log.debug("file type: [{}], upload path: [{}]", result.getFileType(), result.getUrl());
 
