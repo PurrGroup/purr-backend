@@ -11,4 +11,6 @@ public interface LinkService {
     void deleteAll();
 
     List<LinkDTO> getRecentLinks(Pageable pageable);
+
+    Long getTotalCount();
 }

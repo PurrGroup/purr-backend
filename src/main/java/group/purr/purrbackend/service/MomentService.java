@@ -8,4 +8,5 @@ import java.util.List;
 public interface MomentService {
     Long createMoment(MomentDTO momentDTO);
     List<MomentDTO> getRecentMoments(Pageable pageable);
+    Long getTotalCount();
 }

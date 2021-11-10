@@ -1,6 +1,8 @@
 package group.purr.purrbackend.controller;
 
+import group.purr.purrbackend.dto.PageableSearch;
 import group.purr.purrbackend.dto.SearchDTO;
+import group.purr.purrbackend.exception.DenialOfServiceException;
 import group.purr.purrbackend.service.SearchService;
 import group.purr.purrbackend.utils.ResultVOUtil;
 import group.purr.purrbackend.vo.ResultVO;
@@ -22,39 +24,54 @@ public class SearchController {
         this.searchService = searchService;
     }
 
-    @GetMapping("/init")
-    public ResultVO saveRecord(){
-//        Blog defaultBlog1 = new Blog();
-//        defaultBlog1.setBlogId("1");
-//        defaultBlog1.setBlogTitle("spring boot + elasticsearch");
-//        defaultBlog1.setContent("Spring Data Elasticsearch是Spring Data项目的子项目，提供了Elasticsearch与Spring的集成。实现了Spring Data Repository风格的Elasticsearch文档交互风格，让你轻松进行Elasticsearch客户端开发。");
-//
-//        Blog defaultBlog2 = new Blog();
-//        defaultBlog2.setBlogId("2");
-//        defaultBlog2.setBlogTitle("spring boot + spring security");
-//        defaultBlog2.setContent("Spring Security致力于为Java应用提供认证和授权管理。它是一个强大的，高度自定义的认证和访问控制框架");
-//
-//        Blog defaultBlog3 = new Blog();
-//        defaultBlog2.setBlogId("3");
-//        defaultBlog2.setBlogTitle("a record");
-//        defaultBlog2.setContent("test");
-//
-//        esService.save(defaultBlog1);
-//        esService.save(defaultBlog2);
-//        esService.save(defaultBlog3);
-
-        return ResultVOUtil.success(true);
-    }
-
     @GetMapping("/searchByKeyword")
     public ResultVO searchByKeyword(@RequestParam(value = "curPage") Integer pageNum,
                                     @RequestParam(value = "pageSize") Integer pageSize,
                                     @RequestParam(value = "keyword") String keyword){
 
+        if(pageSize <= 0) throw new DenialOfServiceException();
+
+        pageNum = Math.max(pageNum - 1, 0);
+
         Pageable pageable = PageRequest.of(pageNum, pageSize);
 
-        List<SearchDTO> searchDTOS = searchService.searchByKeyword(keyword, pageable);
+        List<SearchDTO> searchDTOS = searchService.searchPublicByKeyword(keyword, pageable);
 
-        return ResultVOUtil.success(searchDTOS);
+        Long total = searchService.getTotalPublic();
+        int maxNum = (int) Math.ceil((double) total / pageSize);
+
+        PageableSearch result = new PageableSearch();
+        result.setData(searchDTOS);
+        result.setPageNum(maxNum);
+        result.setPageSize(pageSize);
+        result.setCurrentPage(pageNum + 1);
+
+        return ResultVOUtil.success(result);
+    }
+
+    @GetMapping("/admin/searchByKeyword")
+    public ResultVO searchAuthorized(@RequestParam(value = "curPage") Integer pageNum,
+                                     @RequestParam(value = "pageSize") Integer pageSize,
+                                     @RequestParam(value = "keyword") String keyword){
+
+        if(pageSize <= 0) throw new DenialOfServiceException();
+
+        pageNum = Math.max(pageNum - 1, 0);
+
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+
+        List<SearchDTO> searchDTOS = searchService.searchNotDeletedByKeyword(keyword, pageable);
+
+        Long total = searchService.getTotalNotDeleted();
+        int maxNum = (int) Math.ceil((double) total / pageSize);
+
+        PageableSearch result = new PageableSearch();
+        result.setData(searchDTOS);
+        result.setPageNum(maxNum);
+        result.setPageSize(pageSize);
+        result.setCurrentPage(pageNum + 1);
+
+        return ResultVOUtil.success(result);
+
     }
 }

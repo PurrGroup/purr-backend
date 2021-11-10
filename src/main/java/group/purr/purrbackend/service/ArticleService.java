@@ -4,6 +4,7 @@ import group.purr.purrbackend.dto.ArticleDTO;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ArticleService {
     /**
@@ -47,4 +48,8 @@ public interface ArticleService {
     ArticleDTO getArticleByID(Long postID);
 
     ArticleDTO getArticleByLinkName(String linkName);
+
+    List<ArticleDTO> getArticlesByOneTag(Long tagId);
+
+    List<ArticleDTO> getAllArticles();
 }

@@ -47,4 +47,9 @@ public class MomentServiceImpl implements MomentService {
 
         return result;
     }
+
+    @Override
+    public Long getTotalCount() {
+        return momentRepository.count();
+    }
 }

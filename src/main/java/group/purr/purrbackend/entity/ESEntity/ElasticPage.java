@@ -22,8 +22,12 @@ public class ElasticPage {
     @Field(type = FieldType.Text, analyzer = "ik_smart", searchAnalyzer = "ik_smart")
     private String content;
 
-    private Date createTime;
+    @Field(name = "create_time")
+    private String createTime;
 
+    @Field(name = "url_name")
     private String urlName;
+
+    private Integer status;
 
 }

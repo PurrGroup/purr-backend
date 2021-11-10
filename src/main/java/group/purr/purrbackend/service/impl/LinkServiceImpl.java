@@ -63,4 +63,9 @@ public class LinkServiceImpl implements LinkService {
         return result;
     }
 
+    @Override
+    public Long getTotalCount() {
+        return linkRepository.count();
+    }
+
 }

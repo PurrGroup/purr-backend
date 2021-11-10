@@ -160,14 +160,11 @@ public class ArticleServiceImpl implements ArticleService {
 
         List<ArticleDTO> result = new ArrayList<>();
         for (Article article : articles.getContent()) {
-//            log.info(article.toString());
-            article.setCommentStatus(null);
-            article.setPingStatus(null);
-            article.setToPing(null);
-            article.setPinged(null);
-//            article.setArticleAbstract(null);
-            article.setDeleteTime(null);
             ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
+            articleDTO.setCommentStatus(null);
+            articleDTO.setPingStatus(null);
+            articleDTO.setPinged(null);
+            articleDTO.setToPing(null);
             List<TagDTO> tagDTOS = findTagsByArticle(article.getID());
             articleDTO.setTags(tagDTOS);
             result.add(articleDTO);
@@ -193,14 +190,11 @@ public class ArticleServiceImpl implements ArticleService {
 
         List<ArticleDTO> result = new ArrayList<>();
         for (Article article : articles.getContent()) {
-//            log.info(article.toString());
-            article.setCommentStatus(null);
-            article.setPingStatus(null);
-            article.setToPing(null);
-            article.setPinged(null);
-//            article.setArticleAbstract(null);
-            article.setDeleteTime(null);
             ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
+            articleDTO.setCommentStatus(null);
+            articleDTO.setPingStatus(null);
+            articleDTO.setPinged(null);
+            articleDTO.setToPing(null);
             List<TagDTO> tagDTOS = findTagsByArticle(article.getID());
             articleDTO.setTags(tagDTOS);
             result.add(articleDTO);
@@ -222,14 +216,15 @@ public class ArticleServiceImpl implements ArticleService {
 
         for (Article article : articles)
             if(article.getDeleteTime() == null){
-                article.setArticleAbstract(null);
-                article.setCreateTime(null);
-                article.setUpdateTime(null);
-                article.setCommentCount(null);
-                article.setShareCount(null);
-                article.setThumbCount(null);
-                article.setViewCount(null);
-                result.add(modelMapper.map(article, ArticleDTO.class));
+                ArticleDTO dto = modelMapper.map(article, ArticleDTO.class);
+                dto.setArticleAbstract(null);
+                dto.setCreateTime(null);
+                dto.setUpdateTime(null);
+                dto.setCommentCount(null);
+                dto.setShareCount(null);
+                dto.setThumbCount(null);
+                dto.setViewCount(null);
+                result.add(dto);
             }
 
         return result;
@@ -255,5 +250,50 @@ public class ArticleServiceImpl implements ArticleService {
         if(article == null) return null;
 
         return modelMapper.map(article, ArticleDTO.class);
+    }
+
+    @Override
+    public List<ArticleDTO> getArticlesByOneTag(Long tagId) {
+        List<ArticleTagRelation> relations = articleTagRepository.findAllByArticleTagKey_TagID(tagId);
+        List<ArticleDTO> articles = new ArrayList<>();
+
+        for (ArticleTagRelation relation : relations){
+            Article article = articleRepository.findByID(relation.getArticleTagKey().getArticleID());
+            ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
+
+            articleDTO.setCommentStatus(null);
+            articleDTO.setPingStatus(null);
+            articleDTO.setPinged(null);
+            articleDTO.setToPing(null);
+
+            List<TagDTO> tagDTOS = findTagsByArticle(article.getID());
+            articleDTO.setTags(tagDTOS);
+
+            articles.add(articleDTO);
+        }
+
+        return articles;
+    }
+
+    @Override
+    public List<ArticleDTO> getAllArticles() {
+        List<Article> articles = articleRepository.findAll();
+        List<ArticleDTO> result = new ArrayList<>();
+
+        for (Article article : articles){
+            ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
+
+            articleDTO.setCommentStatus(null);
+            articleDTO.setPingStatus(null);
+            articleDTO.setPinged(null);
+            articleDTO.setToPing(null);
+
+            List<TagDTO> tagDTOS = findTagsByArticle(article.getID());
+            articleDTO.setTags(tagDTOS);
+
+            result.add(articleDTO);
+        }
+
+        return result;
     }
 }

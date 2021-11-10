@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Data
 public class SearchDTO {
-    public String id;
+    public Long id;
 
     public Long mysqlId;
 
@@ -20,5 +20,7 @@ public class SearchDTO {
 
     public String url;
 
-    public Date createTime;
+    public String createTime;
+
+    public Integer status;
 }
