@@ -18,5 +18,6 @@ public class ElasticMoment {
     @Field(type = FieldType.Text, analyzer = "ik_smart", searchAnalyzer = "ik_smart")
     private String content;
 
-    private Date createTime;
+    @Field(name = "create_time")
+    private String createTime;
 }

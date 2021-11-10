@@ -4,7 +4,6 @@ package group.purr.purrbackend.controller;
 import com.alibaba.fastjson.JSONObject;
 import group.purr.purrbackend.dto.ArticleDTO;
 import group.purr.purrbackend.dto.PageableArticle;
-import group.purr.purrbackend.dto.TagDTO;
 import group.purr.purrbackend.enumerate.ResultEnum;
 import group.purr.purrbackend.exception.DenialOfServiceException;
 import group.purr.purrbackend.service.ArticleService;
@@ -18,8 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @CrossOrigin
 @RestController
@@ -221,5 +219,52 @@ public class ArticleController {
     public ResultVO deleteArticle(@RequestParam(value = "id") Long id){
         articleService.deleteArticleById(id);
         return ResultVOUtil.success(true);
+    }
+
+    @GetMapping("/admin/recentWithCondition")
+    public ResultVO getArticlesByStatusAndTags(@RequestParam(value = "curPage") Integer pageNum,
+                                               @RequestParam(value = "pageSize") Integer pageSize,
+                                               @RequestParam(value = "status") Integer status,
+                                               @RequestParam(value = "tagList") List<Integer> tagList){
+
+        if(pageSize <= 0) throw new DenialOfServiceException();
+
+        Set<ArticleDTO> articles = new TreeSet<>((o1, o2) -> o1.updateTime.before(o2.updateTime) ? -1 : 1);
+
+        if(tagList.size() == 0){
+            List<ArticleDTO> articleDTOS = articleService.getAllArticles();
+            for (ArticleDTO article: articleDTOS){
+                if(status == 0 || (status == 3 && article.getDeleteTime() != null) || (article.getDeleteTime() == null && (article.getStatus() ^ 1) == status - 1))
+                    articles.add(article);
+            }
+        }
+        else{
+            for (Integer tagId : tagList){
+                List<ArticleDTO> articleDTOS = articleService.getArticlesByOneTag(tagId.longValue());
+
+                for (ArticleDTO article : articleDTOS){
+                    if(status == 0 || (status == 3 && article.getDeleteTime() != null) || (article.getDeleteTime() == null && (article.getStatus() ^ 1) == status - 1))
+                        articles.add(article);
+                }
+            }
+        }
+
+        Integer totalNum = articles.size();
+        Integer maxNum = (int) Math.ceil((double) totalNum / pageSize);
+
+        if(pageNum > maxNum){
+            pageNum = maxNum;
+        }
+        pageNum = Math.max(pageNum - 1, 0);
+
+        List<ArticleDTO> data = new ArrayList(articles);
+
+        PageableArticle result = new PageableArticle();
+        result.setData(data.subList(pageNum * pageSize, Math.min((pageNum + 1) * pageSize, totalNum)));
+        result.setCurrentPage(pageNum + 1);
+        result.setPageSize(pageSize);
+        result.setPageNum(maxNum);
+
+        return ResultVOUtil.success(result);
     }
 }

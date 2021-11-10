@@ -5,9 +5,13 @@ import group.purr.purrbackend.entity.Tag;
 import group.purr.purrbackend.repository.TagRepository;
 import group.purr.purrbackend.service.TagService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -36,6 +40,24 @@ public class TagServiceImpl implements TagService {
     @Override
     public void deleteAll() {
         tagRepository.deleteAll();
+    }
+
+    @Override
+    public Long getTotalCount() {
+        return tagRepository.countByDeleteTimeIsNull();
+    }
+
+    @Override
+    public List<TagDTO> getRecentTags(Pageable pageable) {
+        Page<Tag> tags = tagRepository.findAllByDeleteTimeIsNull(pageable);
+
+        List<TagDTO> result = new ArrayList<>();
+        for (Tag tag : tags.getContent()){
+            TagDTO dto = modelMapper.map(tag, TagDTO.class);
+            result.add(dto);
+        }
+
+        return result;
     }
 
 }

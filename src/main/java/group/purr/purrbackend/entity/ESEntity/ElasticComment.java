@@ -18,5 +18,5 @@ public class ElasticComment {
     @Field(type = FieldType.Text, analyzer = "ik_smart", searchAnalyzer = "ik_smart")
     private String content;
 
-    private Date date;
+    private String date;
 }

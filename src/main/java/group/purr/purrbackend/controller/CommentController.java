@@ -2,6 +2,7 @@ package group.purr.purrbackend.controller;
 
 import group.purr.purrbackend.dto.CommentDTO;
 import group.purr.purrbackend.dto.PageableComment;
+import group.purr.purrbackend.exception.DenialOfServiceException;
 import group.purr.purrbackend.service.CommentService;
 import group.purr.purrbackend.utils.ResultVOUtil;
 import group.purr.purrbackend.vo.ResultVO;
@@ -29,13 +30,15 @@ public class CommentController {
     public ResultVO getRecentComment(@RequestParam(value = "curPage") Integer pageNum,
                                      @RequestParam(value = "pageSize") Integer pageSize){
 
+        if(pageSize <= 0) throw new DenialOfServiceException();
+
         Long total = commentService.getTotal();
         int maxNum = (int) Math.ceil((double) total / pageSize);
 
         if(pageNum > maxNum){
             pageNum = maxNum;
         }
-        else pageNum = Math.max(pageNum - 1, 0);
+        pageNum = Math.max(pageNum - 1, 0);
 
         Sort sort = Sort.by(Sort.Direction.DESC, "date");
         Pageable pageable = PageRequest.of(pageNum, pageSize, sort);
@@ -56,6 +59,7 @@ public class CommentController {
     public ResultVO getRecentCommentAuthorized(@RequestParam(value = "curPage") Integer pageNum,
                                                @RequestParam(value = "pageSize") Integer pageSize){
 
+        if(pageSize <= 0) throw new DenialOfServiceException();
 
         Long total = commentService.getTotal();
         int maxNum = (int) Math.ceil((double) total / pageSize);
@@ -63,7 +67,7 @@ public class CommentController {
         if(pageNum > maxNum){
             pageNum = maxNum;
         }
-        else pageNum = Math.max(pageNum - 1, 0);
+        pageNum = Math.max(pageNum - 1, 0);
 
         Sort sort = Sort.by(Sort.Direction.DESC, "date");
         Pageable pageable = PageRequest.of(pageNum, pageSize, sort);
