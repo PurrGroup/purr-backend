@@ -13,7 +13,7 @@ public interface MetaService {
      * @param favicon
      * @return true/false 是否创建成功
      */
-    Boolean createBy(String blogTitle, String domain, String favicon);
+    Boolean createBy(String blogTitle, String domain, String favicon, String host);
 
     Boolean updateApiUrl(String apiUrl);
 

@@ -4,6 +4,7 @@ public class MagicConstants {
     //meta
     public static final String DEFAULT_DESCRIPTION = "这是默认的描述";
     public static final String DEFAULT_FAVICON = "";
+    public static final String DEFAULT_HOST = "0";
 
     //article
     public static final String DEFAULT_ARTICLE_NAME = "Hello, Purr";

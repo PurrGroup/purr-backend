@@ -6,8 +6,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import java.util.Date;
-
 @Document(indexName = "page")
 @Data
 public class ElasticPage {

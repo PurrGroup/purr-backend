@@ -6,8 +6,6 @@ import group.purr.purrbackend.service.StatisticService;
 import group.purr.purrbackend.utils.ResultVOUtil;
 import group.purr.purrbackend.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -28,7 +26,7 @@ public class StatisticController {
     }
 
     @GetMapping("/statistics")
-    public ResultVO getStatistics(){
+    public ResultVO getStatistics() {
         StatisticDTO statisticDTO = new StatisticDTO();
 
         statisticDTO.setCommentCount(statisticService.getCommentCount());
@@ -41,8 +39,8 @@ public class StatisticController {
     }
 
     @GetMapping("/article/commit")
-    public ResultVO getCommit(@RequestParam(value = "beginDate")String beginDate,
-                              @RequestParam(value = "endDate")String endDate) throws ParseException {
+    public ResultVO getCommit(@RequestParam(value = "beginDate") String beginDate,
+                              @RequestParam(value = "endDate") String endDate) throws ParseException {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         ParsePosition position = new ParsePosition(8);
@@ -50,7 +48,7 @@ public class StatisticController {
         Date endTime = simpleDateFormat.parse(endDate);
 
         List<CommitDTO> commits = statisticService.getLatestCommitCount(beginTime, endTime);
-        for (CommitDTO commit : commits){
+        for (CommitDTO commit : commits) {
             commit.setCommitTime(null);
             String dateString = simpleDateFormat.format(commit.getCommitDate());
             commit.setCommitDate(null);

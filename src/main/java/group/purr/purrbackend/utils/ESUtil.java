@@ -14,9 +14,10 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ESUtil {
-    private ESUtil(){}
+    private ESUtil() {
+    }
 
-    public static SearchDTO formatArticleToSearch(ElasticArticle article){
+    public static SearchDTO formatArticleToSearch(ElasticArticle article) {
         SearchDTO searchDTO = new SearchDTO();
 
         log.info(article.getCreateTime().toString());
@@ -34,7 +35,7 @@ public class ESUtil {
         return searchDTO;
     }
 
-    public static SearchDTO formatPageToSearch(ElasticPage page){
+    public static SearchDTO formatPageToSearch(ElasticPage page) {
         SearchDTO searchDTO = new SearchDTO();
 
         searchDTO.setId(page.getID());
@@ -50,7 +51,7 @@ public class ESUtil {
         return searchDTO;
     }
 
-    public static SearchDTO formatCommentToSearch(ElasticComment comment){
+    public static SearchDTO formatCommentToSearch(ElasticComment comment) {
         SearchDTO searchDTO = new SearchDTO();
 
         searchDTO.setId(comment.getID());
@@ -66,7 +67,7 @@ public class ESUtil {
         return searchDTO;
     }
 
-    public static SearchDTO formatMomentToSearch(ElasticMoment moment){
+    public static SearchDTO formatMomentToSearch(ElasticMoment moment) {
         SearchDTO searchDTO = new SearchDTO();
 
         searchDTO.setId(moment.getID());

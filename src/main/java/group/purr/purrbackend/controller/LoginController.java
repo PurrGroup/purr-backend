@@ -11,21 +11,17 @@ import group.purr.purrbackend.service.AuthorService;
 import group.purr.purrbackend.service.IPService;
 import group.purr.purrbackend.service.TokenService;
 import group.purr.purrbackend.utils.EncryptUtil;
-import group.purr.purrbackend.utils.PurrUtils;
 import group.purr.purrbackend.utils.ResultVOUtil;
 import group.purr.purrbackend.vo.ResultVO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 登录验证、登陆保持、登出、token刷新
@@ -47,7 +43,7 @@ public class LoginController {
     private TokenService tokenService;
 
     @PostMapping("/login")
-    public ResultVO login(@RequestBody JSONObject loginJSON, HttpServletRequest request){
+    public ResultVO login(@RequestBody JSONObject loginJSON, HttpServletRequest request) {
         log.info("login");
         // 获取用户信息
         String username = loginJSON.getString("username");
@@ -60,13 +56,13 @@ public class LoginController {
         String encryptedPassword = authorService.getEncryptedPassword();
 
         log.info("check user agent");
-        if(ua == null){
+        if (ua == null) {
             ipService.loginFailed(ip, date);
             ipService.checkLockdownStatus(ip, date);
             throw new DenialOfServiceException();
         }
 
-        if(ipService.isIPLockdown(ip)){
+        if (ipService.isIPLockdown(ip)) {
             // 检验是否被封禁 如果封禁则增加一次失败记录
             ipService.loginFailed(ip, date);
             ipService.checkLockdownStatus(ip, date);
@@ -75,7 +71,7 @@ public class LoginController {
 
         log.info("check password");
         // 检验密码是否正确
-        if(!EncryptUtil.checkPassword(password, encryptedPassword)){
+        if (!EncryptUtil.checkPassword(password, encryptedPassword)) {
             log.info("密码不正确");
             // 如果登陆失败，增加一次失败记录，检验IP封禁次数
             ipService.loginFailed(ip, date);
@@ -106,27 +102,27 @@ public class LoginController {
     }
 
     @GetMapping("/token/refresh")
-    public ResultVO refresh(HttpServletRequest request){
+    public ResultVO refresh(HttpServletRequest request) {
         String refreshHeader = request.getHeader(TokenConstants.accessHeaderName);
 
-        if(!tokenService.checkTokenAuthorizationHeader(refreshHeader)){
+        if (!tokenService.checkTokenAuthorizationHeader(refreshHeader)) {
             log.error("非系统签发token");
             throw new DenialOfServiceException();
         }
 
         Jws<Claims> jws = JwtUtils.parserToken(refreshHeader, TokenConstants.secretKey);
-        if(jws == null){
+        if (jws == null) {
             log.error("token为空");
             throw new DenialOfServiceException();
         }
 
         String encryptedPassword = authorService.getEncryptedPassword();
-        if(!encryptedPassword.equals(jws.getBody().get(TokenConstants.userKey, String.class))){
+        if (!encryptedPassword.equals(jws.getBody().get(TokenConstants.userKey, String.class))) {
             log.error("登陆凭证不符");
-            throw  new DenialOfServiceException();
+            throw new DenialOfServiceException();
         }
 
-        if(JwtUtils.checkIsExpired(jws)){
+        if (JwtUtils.checkIsExpired(jws)) {
             log.info("refresh-token过期");
             throw new RefreshTokenExpiredException();
         }

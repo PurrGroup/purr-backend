@@ -27,14 +27,14 @@ public class TagController {
 
     @GetMapping("/admin/recent")
     public ResultVO getRecentTagAuthorized(@RequestParam(value = "curPage") Integer pageNum,
-                                           @RequestParam(value = "pageSize") Integer pageSize){
+                                           @RequestParam(value = "pageSize") Integer pageSize) {
 
-        if(pageSize <= 0) throw new DenialOfServiceException();
+        if (pageSize <= 0) throw new DenialOfServiceException();
 
         Long total = tagService.getTotalCount();
         int maxNum = (int) Math.ceil((double) total / pageSize);
 
-        if(pageNum > maxNum){
+        if (pageNum > maxNum) {
             pageNum = maxNum;
         }
         pageNum = Math.max(pageNum - 1, 0);

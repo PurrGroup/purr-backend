@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface ArticleTagRepository extends JpaRepository<ArticleTagRelation, String> {
     List<ArticleTagRelation> findAllByArticleTagKey_ArticleID(Long id);
+
     List<ArticleTagRelation> findAllByArticleTagKey_TagID(Long id);
+
     void deleteByArticleTagKey(ArticleTagKey key);
 }

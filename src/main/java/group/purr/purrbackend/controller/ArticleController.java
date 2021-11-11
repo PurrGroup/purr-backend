@@ -43,15 +43,15 @@ public class ArticleController {
      */
     @GetMapping("/admin/recent")
     public ResultVO getRecentArticleExceptDeleted(@RequestParam(value = "curPage") Integer pageNum,
-                                     @RequestParam(value = "pageSize") Integer pageSize){
+                                                  @RequestParam(value = "pageSize") Integer pageSize) {
 
 
-        if(pageSize <= 0) throw new DenialOfServiceException();
+        if (pageSize <= 0) throw new DenialOfServiceException();
 
         Long total = articleService.getTotalExceptDeleted();
-        int maxNum = (int)Math.ceil((double) total / pageSize);
+        int maxNum = (int) Math.ceil((double) total / pageSize);
 
-        if(pageNum > maxNum){
+        if (pageNum > maxNum) {
             pageNum = maxNum;
         }
         pageNum = Math.max(pageNum - 1, 0);
@@ -65,7 +65,8 @@ public class ArticleController {
         result.setData(recentArticles);
         result.setPageNum(maxNum);
         result.setPageSize(pageSize);
-        result.setCurrentPage(pageNum + 1);;
+        result.setCurrentPage(pageNum + 1);
+        ;
 
         return ResultVOUtil.success(result);
 
@@ -73,14 +74,14 @@ public class ArticleController {
 
     @GetMapping("/recent")
     public ResultVO getRecentArticlePublic(@RequestParam(value = "curPage") Integer pageNum,
-                                           @RequestParam(value = "pageSize") Integer pageSize){
+                                           @RequestParam(value = "pageSize") Integer pageSize) {
 
-        if(pageSize <= 0) throw new DenialOfServiceException();
+        if (pageSize <= 0) throw new DenialOfServiceException();
 
         Long total = articleService.getTotalPublic();
-        int maxNum = (int)Math.ceil((double) total / pageSize);
+        int maxNum = (int) Math.ceil((double) total / pageSize);
 
-        if(pageNum > maxNum){
+        if (pageNum > maxNum) {
             pageNum = maxNum;
         }
         pageNum = Math.max(pageNum - 1, 0);
@@ -94,47 +95,48 @@ public class ArticleController {
         result.setData(recentArticles);
         result.setPageNum(maxNum);
         result.setPageSize(pageSize);
-        result.setCurrentPage(pageNum + 1);;
+        result.setCurrentPage(pageNum + 1);
+        ;
 
         return ResultVOUtil.success(result);
     }
 
     /**
      * 最多返回十篇文章（按照修改时间排序）
+     *
      * @return 被推荐的文章列表
      */
     @GetMapping("/recommend")
-    public ResultVO getRecommendedArticle(){
+    public ResultVO getRecommendedArticle() {
         List<ArticleDTO> articles = articleService.findRecommendedArticle();
 
         return ResultVOUtil.success(articles.subList(0, Math.min(10, articles.size())));
     }
 
     @GetMapping("/details")
-    public ResultVO getArticleDetail(@RequestParam(value = "id")Long id){
+    public ResultVO getArticleDetail(@RequestParam(value = "id") Long id) {
         return ResultVOUtil.success(articleService.getArticleByID(id));
     }
 
     @PostMapping("/validate")
-    public ResultVO validate(@RequestBody JSONObject json){
+    public ResultVO validate(@RequestBody JSONObject json) {
         String name = json.getString("name");
-        String linkName =  json.getString("linkName");
+        String linkName = json.getString("linkName");
         String prefix = metaService.getArticleLinkNamePrefix();
 
-        if(linkName.equals("")){
+        if (linkName.equals("")) {
             linkName = prefix + name;
             log.info("name->linkName: " + linkName);
-            if(linkName.getBytes(StandardCharsets.UTF_8).length > 255)
+            if (linkName.getBytes(StandardCharsets.UTF_8).length > 255)
                 return ResultVOUtil.error(ResultEnum.NAME_LENGTH_EXCEED);
-            else if(articleService.getArticleByLinkName(linkName) != null)
+            else if (articleService.getArticleByLinkName(linkName) != null)
                 return ResultVOUtil.error(ResultEnum.NAME_REPEATED);
-        }
-        else{
+        } else {
             linkName = prefix + linkName;
             log.info("linkName->linkName: " + linkName);
-            if(linkName.getBytes(StandardCharsets.UTF_8).length > 255)
+            if (linkName.getBytes(StandardCharsets.UTF_8).length > 255)
                 return ResultVOUtil.error(ResultEnum.LINK_NAME_LENGTH_EXCEED);
-            else if(articleService.getArticleByLinkName(linkName) != null)
+            else if (articleService.getArticleByLinkName(linkName) != null)
                 return ResultVOUtil.error(ResultEnum.LINK_NAME_REPEATED);
         }
 
@@ -142,7 +144,7 @@ public class ArticleController {
     }
 
     @PutMapping("/new")
-    public ResultVO createArticle(@RequestBody JSONObject json){
+    public ResultVO createArticle(@RequestBody JSONObject json) {
         Long id = json.getLongValue("id");
         List<Integer> tags = json.getObject("tags", List.class);
         Long createTime = json.getLongValue("createTime");
@@ -152,13 +154,13 @@ public class ArticleController {
 
         ArticleDTO article = JSONObject.toJavaObject(json, ArticleDTO.class);
 
-        if(article.getTarget().equals("0"))
+        if (article.getTarget().equals("0"))
             article.setTarget("_self");
         else
             article.setTarget("_blank");
         article.setCreateTime(new Date(createTime));
 
-        if(id != -1) {
+        if (id != -1) {
             articleService.deleteArticleTags(id);
         }
 
@@ -172,7 +174,7 @@ public class ArticleController {
     }
 
     @PutMapping("/draft")
-    public ResultVO createDraft(@RequestBody JSONObject json){
+    public ResultVO createDraft(@RequestBody JSONObject json) {
         Long id = json.getLongValue("id");
         List<Integer> tags = json.getObject("tags", List.class);
 
@@ -180,7 +182,7 @@ public class ArticleController {
 
         ArticleDTO article = JSONObject.toJavaObject(json, ArticleDTO.class);
 
-        if(id == -1){ // 新草稿
+        if (id == -1) { // 新草稿
             article.setStatus(0); //草稿
             article.setCommentStatus(0);
             article.setIsOriginal(1);
@@ -189,11 +191,10 @@ public class ArticleController {
 
             Long articleId = articleService.createArticle(article);
 
-            for (Integer tagId : tags){
+            for (Integer tagId : tags) {
                 articleService.addTag(articleId, tagId.longValue());
             }
-        }
-        else{ // 对草稿or文章进行修改
+        } else { // 对草稿or文章进行修改
             ArticleDTO originArticle = articleService.getArticleByID(id);
             originArticle.setName(article.getName());
             originArticle.setAuthor(article.getAuthor());
@@ -207,7 +208,7 @@ public class ArticleController {
             log.info("finish update article");
 
             log.info("finish delete tags");
-            for (Integer tagId : tags){
+            for (Integer tagId : tags) {
                 articleService.addTag(id, tagId.longValue());
             }
         }
@@ -216,7 +217,7 @@ public class ArticleController {
     }
 
     @GetMapping("/delete")
-    public ResultVO deleteArticle(@RequestParam(value = "id") Long id){
+    public ResultVO deleteArticle(@RequestParam(value = "id") Long id) {
         articleService.deleteArticleById(id);
         return ResultVOUtil.success(true);
     }
@@ -225,25 +226,24 @@ public class ArticleController {
     public ResultVO getArticlesByStatusAndTags(@RequestParam(value = "curPage") Integer pageNum,
                                                @RequestParam(value = "pageSize") Integer pageSize,
                                                @RequestParam(value = "status") Integer status,
-                                               @RequestParam(value = "tagList") List<Integer> tagList){
+                                               @RequestParam(value = "tagList") List<Integer> tagList) {
 
-        if(pageSize <= 0) throw new DenialOfServiceException();
+        if (pageSize <= 0) throw new DenialOfServiceException();
 
         Set<ArticleDTO> articles = new TreeSet<>((o1, o2) -> o1.updateTime.before(o2.updateTime) ? -1 : 1);
 
-        if(tagList.size() == 0){
+        if (tagList.size() == 0) {
             List<ArticleDTO> articleDTOS = articleService.getAllArticles();
-            for (ArticleDTO article: articleDTOS){
-                if(status == 0 || (status == 3 && article.getDeleteTime() != null) || (article.getDeleteTime() == null && (article.getStatus() ^ 1) == status - 1))
+            for (ArticleDTO article : articleDTOS) {
+                if (status == 0 || (status == 3 && article.getDeleteTime() != null) || (article.getDeleteTime() == null && (article.getStatus() ^ 1) == status - 1))
                     articles.add(article);
             }
-        }
-        else{
-            for (Integer tagId : tagList){
+        } else {
+            for (Integer tagId : tagList) {
                 List<ArticleDTO> articleDTOS = articleService.getArticlesByOneTag(tagId.longValue());
 
-                for (ArticleDTO article : articleDTOS){
-                    if(status == 0 || (status == 3 && article.getDeleteTime() != null) || (article.getDeleteTime() == null && (article.getStatus() ^ 1) == status - 1))
+                for (ArticleDTO article : articleDTOS) {
+                    if (status == 0 || (status == 3 && article.getDeleteTime() != null) || (article.getDeleteTime() == null && (article.getStatus() ^ 1) == status - 1))
                         articles.add(article);
                 }
             }
@@ -252,7 +252,7 @@ public class ArticleController {
         Integer totalNum = articles.size();
         Integer maxNum = (int) Math.ceil((double) totalNum / pageSize);
 
-        if(pageNum > maxNum){
+        if (pageNum > maxNum) {
             pageNum = maxNum;
         }
         pageNum = Math.max(pageNum - 1, 0);

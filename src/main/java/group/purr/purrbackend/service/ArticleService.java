@@ -4,7 +4,6 @@ import group.purr.purrbackend.dto.ArticleDTO;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Set;
 
 public interface ArticleService {
     /**
@@ -26,7 +25,6 @@ public interface ArticleService {
     void addTag(Long articleID, Long tagID);
 
     /**
-     *
      * @return 公开的并且未被删除的文章总数
      */
     Long getTotalPublic();
@@ -34,7 +32,6 @@ public interface ArticleService {
     List<ArticleDTO> findRecentArticlePublic(Pageable pageable);
 
     /**
-     *
      * @return 所有未被删除的文章总数
      */
     Long getTotalExceptDeleted();
@@ -42,6 +39,12 @@ public interface ArticleService {
     List<ArticleDTO> findRecentArticleExceptDeleted(Pageable pageable);
 
     String getArticleUrlByID(Long postID);
+
+    void setCommentStatus(Long id, Integer commentStatus);
+
+    void setPinnedStatus(Long id, Integer pinnedStatus);
+
+    void setRecommendStatus(Long id, Integer recommendStatus);
 
     List<ArticleDTO> findRecommendedArticle();
 

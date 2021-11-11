@@ -9,7 +9,6 @@ import group.purr.purrbackend.repository.ContentRepository;
 import group.purr.purrbackend.repository.TagRepository;
 import group.purr.purrbackend.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.common.recycler.Recycler;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -53,7 +52,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         Article article = modelMapper.map(articleDTO, Article.class);
         Date currentTime = new Date();
-        if(date == null)
+        if (date == null)
             article.setCreateTime(currentTime);
         article.setUpdateTime(currentTime);
         Article result = articleRepository.saveAndFlush(article);
@@ -61,7 +60,7 @@ public class ArticleServiceImpl implements ArticleService {
         Content content = new Content();
         content.setID(result.getID());
         content.setContent(articleDTO.getContent());
-        if(date == null)
+        if (date == null)
             content.setCreateTime(currentTime);
         else
             content.setCreateTime(date);
@@ -128,11 +127,11 @@ public class ArticleServiceImpl implements ArticleService {
         articleTagRepository.save(articleTagRelation);
     }
 
-    private List<TagDTO> findTagsByArticle(Long id){
+    private List<TagDTO> findTagsByArticle(Long id) {
         List<ArticleTagRelation> relations = articleTagRepository.findAllByArticleTagKey_ArticleID(id);
         List<TagDTO> tags = new ArrayList<>();
 
-        for (ArticleTagRelation relation : relations){
+        for (ArticleTagRelation relation : relations) {
             Tag tag = tagRepository.findByID(relation.getArticleTagKey().getTagID());
             TagDTO tagDTO = modelMapper.map(tag, TagDTO.class);
             tagDTO.setCreateTime(null);
@@ -215,7 +214,7 @@ public class ArticleServiceImpl implements ArticleService {
         List<ArticleDTO> result = new ArrayList<>();
 
         for (Article article : articles)
-            if(article.getDeleteTime() == null){
+            if (article.getDeleteTime() == null) {
                 ArticleDTO dto = modelMapper.map(article, ArticleDTO.class);
                 dto.setArticleAbstract(null);
                 dto.setCreateTime(null);
@@ -247,7 +246,7 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleDTO getArticleByLinkName(String linkName) {
         Article article = articleRepository.findByLinkName(linkName);
 
-        if(article == null) return null;
+        if (article == null) return null;
 
         return modelMapper.map(article, ArticleDTO.class);
     }
@@ -257,7 +256,7 @@ public class ArticleServiceImpl implements ArticleService {
         List<ArticleTagRelation> relations = articleTagRepository.findAllByArticleTagKey_TagID(tagId);
         List<ArticleDTO> articles = new ArrayList<>();
 
-        for (ArticleTagRelation relation : relations){
+        for (ArticleTagRelation relation : relations) {
             Article article = articleRepository.findByID(relation.getArticleTagKey().getArticleID());
             ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
 
@@ -280,7 +279,7 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> articles = articleRepository.findAll();
         List<ArticleDTO> result = new ArrayList<>();
 
-        for (Article article : articles){
+        for (Article article : articles) {
             ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
 
             articleDTO.setCommentStatus(null);
@@ -295,5 +294,29 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         return result;
+    }
+
+    @Override
+    public void setCommentStatus(Long id, Integer commentStatus) {
+        Article article = articleRepository.findByID(id);
+        article.setCommentStatus(commentStatus);
+
+        articleRepository.save(article);
+    }
+
+    @Override
+    public void setPinnedStatus(Long id, Integer pinnedStatus) {
+        Article article = articleRepository.findByID(id);
+        article.setIsPinned(pinnedStatus);
+
+        articleRepository.save(article);
+    }
+
+    @Override
+    public void setRecommendStatus(Long id, Integer recommendStatus) {
+        Article article = articleRepository.findByID(id);
+        article.setIsRecommended(recommendStatus);
+
+        articleRepository.save(article);
     }
 }

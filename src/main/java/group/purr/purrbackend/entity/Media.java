@@ -28,14 +28,41 @@ public class Media {
     @Column(nullable = false)
     private String url;
 
-    @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
-    private Integer category;
+//    @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
+//    private Integer category;
+
+    /**
+     * the category of file, like image
+     */
+    private String fileCategory;
+
+    /**
+     * the type of file, like png/jpg
+     */
+    private String fileType;
 
     @Column(nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Integer host;
 
     @Column(nullable = false, columnDefinition = "DATETIME")
     private Date createTime;
+
+    @Column(columnDefinition = "DATETIME")
+    private Date deleteTime;
+
+    @Column(nullable = false)
+    private String name;
+
+    /**
+     * b
+     */
+    private String size;
+
+    private Integer imageHeight;
+
+    private Integer imageWidth;
+
+    private String thumbnailPath;
 
     @Override
     public boolean equals(Object o) {

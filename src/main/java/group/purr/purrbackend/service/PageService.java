@@ -12,4 +12,7 @@ public interface PageService {
     Long createPage(PageDTO pageDTO);
 
     String getPageUrlByID(Long postID);
+
+    void setCommentStatus(Long id, Integer commentStatus);
+
 }

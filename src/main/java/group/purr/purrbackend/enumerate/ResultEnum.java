@@ -41,7 +41,26 @@ public enum ResultEnum {
 
     REFRESH_TOKEN_EXPIRED("A1103", "登录凭证已过期", "登录凭证已经过期啦，请重新登录"),
 
-    WRONG_PASSWORD("A1103", "密码错误", "密码输入错误，请重新输入密码");
+    WRONG_PASSWORD("A1103", "密码错误", "密码输入错误，请重新输入密码"),
+
+    UPLOAD_FILE_ERROR("A0700", "上传文件异常", "上传文件失败, 请重新上传"),
+
+    ILLEGAL_CATEGORY("A0420", "类型参数不合法", "类型参数不符合要求，请重新请求"),
+
+    /**
+     * code A0706 MediaController中动态构建一系列上传文件失败的错误
+     */
+    GENERATE_THUMBNAIL_FAILED("A0707", "生成缩略图失败", "生成缩略图失败"),
+
+    NO_PERMISSION("A0300", "没有权限进行操作", "请检查您的权限"),
+
+    CREATE_FOLDER_FAILED("B0321", "创建文件夹失败", "创建文件夹失败,请检查系统日志"),
+
+    NO_PROPER_FILE_HANDLER("B0300", "没有匹配的文件处理器", "没有匹配的文件处理器,请检查资源托管服务器"),
+
+    PARSE_FILE_TYPE_FAILED("A0706", "解析文件类型失败", "解析文件类型失败，请重试"),
+
+    ID_NOT_EXISTED("A0601", "该id不存在", "查询id不存在，请检查");
 
 
     /**

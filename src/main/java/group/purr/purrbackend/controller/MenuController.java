@@ -27,13 +27,13 @@ public class MenuController {
     }
 
     @GetMapping("/default")
-    public ResultVO getUsedMenu(){
+    public ResultVO getUsedMenu() {
         MenuDTO defaultMenu = menuService.getDefaultMenu();
 
         List<MenuItemDTO> menuItems = menuService.getMenuItemsByParent(defaultMenu.getID());
 
-        for (MenuItemDTO menuItem : menuItems){
-            if(menuItem.getIsParent() == 0) continue;
+        for (MenuItemDTO menuItem : menuItems) {
+            if (menuItem.getIsParent() == 0) continue;
             List<SubMenuItemDTO> subMenuItems = menuService.getSubMenuItemsByParent(menuItem.getID());
             menuItem.setSubMenuItems(subMenuItems);
         }
