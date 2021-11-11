@@ -1,19 +1,15 @@
 package group.purr.purrbackend.controller.handler.file;
 
-import com.fasterxml.jackson.databind.jsontype.impl.AsExistingPropertyTypeSerializer;
 import group.purr.purrbackend.controller.handler.FileHandler;
 import group.purr.purrbackend.dto.MediaDTO;
 import group.purr.purrbackend.enumerate.ResultEnum;
 import group.purr.purrbackend.exception.http.InternalServerErrorException;
 import group.purr.purrbackend.utils.PurrUtils;
-import jdk.vm.ci.meta.Local;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.core.env.Environment;
 
 import javax.imageio.ImageIO;
 import javax.validation.constraints.NotNull;
@@ -39,7 +35,8 @@ public class LocalFileHandler implements FileHandler {
         this.env = env;
     }
 
-    public LocalFileHandler() {}
+    public LocalFileHandler() {
+    }
 
     @Override
     public MediaDTO uploadFile(MultipartFile file) throws IOException {
@@ -92,11 +89,9 @@ public class LocalFileHandler implements FileHandler {
         Integer createFolder = PurrUtils.checkAndCreateFolder(folderPath);
         if (createFolder == -1) {
             throw new InternalServerErrorException(ResultEnum.CREATE_FOLDER_FAILED);
-        }
-        else if(createFolder == -2){
+        } else if (createFolder == -2) {
             throw new InternalServerErrorException(ResultEnum.NO_PERMISSION);
-        }
-        else {
+        } else {
             return folderPath;
         }
     }
@@ -116,8 +111,8 @@ public class LocalFileHandler implements FileHandler {
 
         final String[] mimeArr = mimeType.split("/");
         String category = mimeType.split("/")[0];
-        String type="";
-        if(mimeArr.length>1) {
+        String type = "";
+        if (mimeArr.length > 1) {
             type = mimeType.split("/")[1];
         }
         String fileName = PurrUtils.getUniqueKey();
@@ -134,8 +129,7 @@ public class LocalFileHandler implements FileHandler {
                 width = bufferedImage.getWidth();
                 height = bufferedImage.getHeight();
             }
-        }
-        catch (IOException ioException){
+        } catch (IOException ioException) {
             log.warn("获取图片长宽失败， file： [{}]", fileName);
         }
 
