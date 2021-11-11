@@ -38,8 +38,11 @@ import java.util.*;
 @Slf4j
 public class MediaController {
 
-    @Autowired
-    private MediaService mediaService;
+    private final MediaService mediaService;
+
+    public MediaController(MediaService mediaService) {
+        this.mediaService = mediaService;
+    }
 
     @PostMapping("/upload")
     public ResultVO uploadMedia(@RequestPart("file") MultipartFile file) throws IOException {
@@ -48,13 +51,7 @@ public class MediaController {
             throw new IllegalFileException();
         }
 
-        MediaDTO uploadResult;
-        try {
-            uploadResult = mediaService.upload(file);
-        }
-        catch (IOException ioException){
-            throw ioException;
-        }
+        MediaDTO uploadResult = mediaService.upload(file);
 
         return ResultVOUtil.success(uploadResult);
     }
