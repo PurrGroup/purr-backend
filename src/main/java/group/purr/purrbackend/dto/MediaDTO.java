@@ -7,6 +7,8 @@ import java.util.Date;
 @Data
 public class MediaDTO {
 
+    private Long ID;
+
     private String url;
 
     private String fileCategory;
@@ -16,6 +18,8 @@ public class MediaDTO {
     private Integer host;
 
     private Date createTime;
+
+    private Date deleteTime;
 
     private String name;
 
@@ -29,5 +33,7 @@ public class MediaDTO {
     private Integer imageWidth;
 
     private String thumbnailPath;
+
+
 
 }

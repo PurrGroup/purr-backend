@@ -58,7 +58,9 @@ public enum ResultEnum {
 
     NO_PROPER_FILE_HANDLER("B0300", "没有匹配的文件处理器", "没有匹配的文件处理器,请检查资源托管服务器"),
 
-    PARSE_FILE_TYPE_FAILED("A0706", "解析文件类型失败", "解析文件类型失败，请重试");
+    PARSE_FILE_TYPE_FAILED("A0706", "解析文件类型失败", "解析文件类型失败，请重试"),
+
+    ID_NOT_EXISTED("A0601", "该id不存在", "查询id不存在，请检查");
 
 
 

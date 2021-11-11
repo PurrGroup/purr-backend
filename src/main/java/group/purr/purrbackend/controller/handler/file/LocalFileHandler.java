@@ -63,7 +63,12 @@ public class LocalFileHandler implements FileHandler {
 
         // Generate thumbnail
         String thumbNailUrl = uploadFolderPath + SEP + fileAttributes.getName() + "_thumbnail." + fileAttributes.getFileType();
-        generateThumbnail(thumbNailUrl, file.getInputStream());
+        Boolean thumbNailResult = generateThumbnail(thumbNailUrl, file.getInputStream());
+
+        if(!thumbNailResult){
+            log.error("生成缩略图出错");
+            thumbNailUrl = "";
+        }
 
         log.info("Uploaded file: [{}] to directory: [{}] successfully",
                 fileAttributes.getName(), uploadFolderPath);
@@ -110,7 +115,11 @@ public class LocalFileHandler implements FileHandler {
             throw new InternalServerErrorException(ResultEnum.PARSE_FILE_TYPE_FAILED);
         }
         String category = mimeType.split("/")[0];
-        String type = mimeType.split("/")[1];
+        String type = "";
+        if(mimeType.length()>1){
+            type = mimeType.split("/")[1];
+        }
+
         String fileName = PurrUtils.getUniqueKey();
 
         Long bytes = file.getSize();
@@ -141,7 +150,7 @@ public class LocalFileHandler implements FileHandler {
         return result;
     }
 
-    private void generateThumbnail(String thumbNailUrl, InputStream fileInputStream) throws IOException {
+    private Boolean generateThumbnail(String thumbNailUrl, InputStream fileInputStream) throws IOException {
 
         String absoluteUrl = FileSystems.getDefault().getPath(thumbNailUrl).normalize().toAbsolutePath().toString();
 
@@ -149,10 +158,13 @@ public class LocalFileHandler implements FileHandler {
             boolean thumbnailSuccess = PurrUtils.generateThumbNail(absoluteUrl, fileInputStream);
             if (!thumbnailSuccess) {
                 log.error("生成缩略图异常，请查看系统日志");
-                throw new InternalServerErrorException(ResultEnum.GENERATE_THUMBNAIL_FAILED);
+                return false;
             }
         } catch (IOException ioException) {
-            throw ioException;
+            log.error("生成缩略图异常 [{}]", ioException.getMessage());
+            return false;
         }
+
+        return true;
     }
 }

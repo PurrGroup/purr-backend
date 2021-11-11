@@ -47,6 +47,9 @@ public class Media {
     @Column(nullable = false, columnDefinition = "DATETIME")
     private Date createTime;
 
+    @Column(columnDefinition = "DATETIME")
+    private Date deleteTime;
+
     @Column(nullable = false)
     private String name;
 
