@@ -223,6 +223,8 @@ public class ArticleServiceImpl implements ArticleService {
                 dto.setShareCount(null);
                 dto.setThumbCount(null);
                 dto.setViewCount(null);
+                List<TagDTO> tagDTOS = findTagsByArticle(article.getID());
+                dto.setTags(tagDTOS);
                 result.add(dto);
             }
 

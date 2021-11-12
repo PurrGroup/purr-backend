@@ -96,7 +96,6 @@ public class ArticleController {
         result.setPageNum(maxNum);
         result.setPageSize(pageSize);
         result.setCurrentPage(pageNum + 1);
-        ;
 
         return ResultVOUtil.success(result);
     }
