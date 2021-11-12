@@ -1,6 +1,9 @@
 package group.purr.purrbackend.service;
 
 import group.purr.purrbackend.dto.PageDTO;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface PageService {
     /**
@@ -13,6 +16,13 @@ public interface PageService {
 
     String getPageUrlByID(Long postID);
 
-    void setCommentStatus(Long id, Integer commentStatus);
+    Long getTotal();
 
+    List<PageDTO> getRecentPages(Pageable pageable);
+
+    Long getTotalExceptDeleted();
+
+    List<PageDTO> getRecentPagesExceptDeleted(Pageable pageable);
+
+    void setCommentStatus(Long id, Integer commentStatus);
 }

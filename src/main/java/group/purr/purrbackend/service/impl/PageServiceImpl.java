@@ -5,9 +5,12 @@ import group.purr.purrbackend.entity.Page;
 import group.purr.purrbackend.repository.PageRepository;
 import group.purr.purrbackend.service.PageService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class PageServiceImpl implements PageService {
@@ -37,6 +40,50 @@ public class PageServiceImpl implements PageService {
     public String getPageUrlByID(Long postID) {
         Page page = pageRepository.findByID(postID);
         return page.getUrlName();
+    }
+
+    @Override
+    public Long getTotal() {
+        return pageRepository.count();
+    }
+
+    @Override
+    public List<PageDTO> getRecentPages(Pageable pageable) {
+        org.springframework.data.domain.Page<Page> pages = pageRepository.findAll(pageable);
+        List<PageDTO> result = new ArrayList<>();
+
+        for (Page page : pages.getContent()){
+            PageDTO pageDTO = modelMapper.map(page, PageDTO.class);
+            pageDTO.setPingStatus(null);
+            pageDTO.setPinged(null);
+            pageDTO.setToPing(null);
+            pageDTO.setCommentStatus(null);
+            result.add(pageDTO);
+        }
+
+        return result;
+    }
+
+    @Override
+    public Long getTotalExceptDeleted() {
+        return pageRepository.countByDeleteTimeIsNull();
+    }
+
+    @Override
+    public List<PageDTO> getRecentPagesExceptDeleted(Pageable pageable) {
+        org.springframework.data.domain.Page<Page> pages = pageRepository.findAllByDeleteTimeIsNull(pageable);
+        List<PageDTO> result = new ArrayList<>();
+
+        for (Page page : pages.getContent()) {
+            PageDTO pageDTO = modelMapper.map(page, PageDTO.class);
+            pageDTO.setCommentStatus(null);
+            pageDTO.setPingStatus(null);
+            pageDTO.setToPing(null);
+            pageDTO.setPinged(null);
+            result.add(pageDTO);
+        }
+
+        return result;
     }
 
     @Override

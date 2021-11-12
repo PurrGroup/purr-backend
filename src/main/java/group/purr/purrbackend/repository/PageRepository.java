@@ -1,8 +1,11 @@
 package group.purr.purrbackend.repository;
 
 import group.purr.purrbackend.entity.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface PageRepository extends JpaRepository<Page, String> {
     @Query(value = "select SUM(thumb_count) FROM page", nativeQuery = true)
@@ -12,4 +15,8 @@ public interface PageRepository extends JpaRepository<Page, String> {
     Long sumByView();
 
     Page findByID(Long id);
+
+    org.springframework.data.domain.Page<Page> findAllByDeleteTimeIsNull(Pageable pageable);
+
+    Long countByDeleteTimeIsNull();
 }
