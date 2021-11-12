@@ -23,4 +23,6 @@ public interface PageService {
     Long getTotalExceptDeleted();
 
     List<PageDTO> getRecentPagesExceptDeleted(Pageable pageable);
+
+    void setCommentStatus(Long id, Integer commentStatus);
 }

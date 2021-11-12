@@ -27,15 +27,15 @@ public class LinkController {
     }
 
     @GetMapping("/recent")
-    public ResultVO getRecentList(@RequestParam(value = "curPage")Integer pageNum,
-                                  @RequestParam(value = "pageSize")Integer pageSize){
+    public ResultVO getRecentList(@RequestParam(value = "curPage") Integer pageNum,
+                                  @RequestParam(value = "pageSize") Integer pageSize) {
 
-        if(pageSize <= 0) throw new DenialOfServiceException();
+        if (pageSize <= 0) throw new DenialOfServiceException();
 
         Long total = linkService.getTotalCount();
         int maxNum = (int) Math.ceil((double) total / pageSize);
 
-        if(pageNum > maxNum){
+        if (pageNum > maxNum) {
             pageNum = maxNum;
         }
         pageNum = Math.max(pageNum - 1, 0);
@@ -56,14 +56,14 @@ public class LinkController {
 
     @GetMapping("/admin/recent")
     public ResultVO getRecentListAuthorized(@RequestParam(value = "curPage") Integer pageNum,
-                                            @RequestParam(value = "pageSize") Integer pageSize){
+                                            @RequestParam(value = "pageSize") Integer pageSize) {
 
-        if(pageSize <= 0) throw new DenialOfServiceException();
+        if (pageSize <= 0) throw new DenialOfServiceException();
 
         Long total = linkService.getTotalCount();
         int maxNum = (int) Math.ceil((double) total / pageSize);
 
-        if(pageNum > maxNum){
+        if (pageNum > maxNum) {
             pageNum = maxNum;
         }
         pageNum = Math.max(pageNum - 1, 0);

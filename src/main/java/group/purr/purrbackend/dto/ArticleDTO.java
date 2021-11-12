@@ -2,7 +2,6 @@ package group.purr.purrbackend.dto;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 import java.util.Date;
 import java.util.List;
 

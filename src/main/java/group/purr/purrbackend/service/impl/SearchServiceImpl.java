@@ -1,8 +1,14 @@
 package group.purr.purrbackend.service.impl;
 
 import group.purr.purrbackend.dto.SearchDTO;
-import group.purr.purrbackend.entity.ESEntity.*;
-import group.purr.purrbackend.repository.ESRepository.*;
+import group.purr.purrbackend.entity.ESEntity.ElasticArticle;
+import group.purr.purrbackend.entity.ESEntity.ElasticComment;
+import group.purr.purrbackend.entity.ESEntity.ElasticMoment;
+import group.purr.purrbackend.entity.ESEntity.ElasticPage;
+import group.purr.purrbackend.repository.ESRepository.ElasticArticleRepository;
+import group.purr.purrbackend.repository.ESRepository.ElasticCommentRepository;
+import group.purr.purrbackend.repository.ESRepository.ElasticMomentRepository;
+import group.purr.purrbackend.repository.ESRepository.ElasticPageRepository;
 import group.purr.purrbackend.service.SearchService;
 import group.purr.purrbackend.utils.ESUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -74,19 +80,19 @@ public class SearchServiceImpl implements SearchService {
         List<SearchDTO> comments = searchCommentByKeyword(keyword, pageable);
         List<SearchDTO> moments = searchMomentByKeyword(keyword, pageable);
 
-        for (SearchDTO article : articles){
+        for (SearchDTO article : articles) {
             result.add(article);
         }
 
-        for (SearchDTO page : pages){
+        for (SearchDTO page : pages) {
             result.add(page);
         }
 
-        for (SearchDTO comment : comments){
+        for (SearchDTO comment : comments) {
             result.add(comment);
         }
 
-        for (SearchDTO moment : moments){
+        for (SearchDTO moment : moments) {
             result.add(moment);
         }
 
@@ -102,19 +108,19 @@ public class SearchServiceImpl implements SearchService {
         List<SearchDTO> comments = searchCommentByKeyword(keyword, pageable);
         List<SearchDTO> moments = searchMomentByKeyword(keyword, pageable);
 
-        for (SearchDTO article : articles){
+        for (SearchDTO article : articles) {
             result.add(article);
         }
 
-        for (SearchDTO page : pages){
+        for (SearchDTO page : pages) {
             result.add(page);
         }
 
-        for (SearchDTO comment : comments){
+        for (SearchDTO comment : comments) {
             result.add(comment);
         }
 
-        for (SearchDTO moment : moments){
+        for (SearchDTO moment : moments) {
             result.add(moment);
         }
 
@@ -140,7 +146,7 @@ public class SearchServiceImpl implements SearchService {
         articleNotDeletedCount = articles.stream().count();
         List<SearchDTO> result = new ArrayList<>();
 
-        for (ElasticArticle article : articles){
+        for (ElasticArticle article : articles) {
             SearchDTO searchDTO = ESUtil.formatArticleToSearch(article);
             result.add(searchDTO);
         }
@@ -169,7 +175,7 @@ public class SearchServiceImpl implements SearchService {
         articlePublicCount = articles.stream().count();
         List<SearchDTO> result = new ArrayList<>();
 
-        for (ElasticArticle article : articles){
+        for (ElasticArticle article : articles) {
             SearchDTO searchDTO = ESUtil.formatArticleToSearch(article);
             result.add(searchDTO);
         }
@@ -197,7 +203,7 @@ public class SearchServiceImpl implements SearchService {
         pagePublicCount = pages.stream().count();
         List<SearchDTO> result = new ArrayList<>();
 
-        for (ElasticPage page : pages){
+        for (ElasticPage page : pages) {
             SearchDTO searchDTO = ESUtil.formatPageToSearch(page);
             result.add(searchDTO);
         }
@@ -224,7 +230,7 @@ public class SearchServiceImpl implements SearchService {
         pageNotDeletedCount = pages.stream().count();
         List<SearchDTO> result = new ArrayList<>();
 
-        for (ElasticPage page : pages){
+        for (ElasticPage page : pages) {
             SearchDTO searchDTO = ESUtil.formatPageToSearch(page);
             result.add(searchDTO);
         }
@@ -246,7 +252,7 @@ public class SearchServiceImpl implements SearchService {
         commentCount = comments.stream().count();
         List<SearchDTO> result = new ArrayList<>();
 
-        for (ElasticComment comment : comments){
+        for (ElasticComment comment : comments) {
             SearchDTO searchDTO = ESUtil.formatCommentToSearch(comment);
             result.add(searchDTO);
         }
@@ -268,7 +274,7 @@ public class SearchServiceImpl implements SearchService {
         momentCount = moments.stream().count();
         List<SearchDTO> result = new ArrayList<>();
 
-        for (ElasticMoment moment : moments){
+        for (ElasticMoment moment : moments) {
             SearchDTO searchDTO = ESUtil.formatMomentToSearch(moment);
             result.add(searchDTO);
         }

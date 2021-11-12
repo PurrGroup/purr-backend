@@ -5,6 +5,7 @@ import group.purr.purrbackend.exception.http.UnAuthorizedException;
 
 public class AccessTokenExpiredException extends UnAuthorizedException {
     private static final ResultEnum result = ResultEnum.ACCESS_TOKEN_EXPIRED;
+
     public AccessTokenExpiredException() {
         super(result);
     }

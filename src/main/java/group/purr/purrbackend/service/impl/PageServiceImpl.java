@@ -1,7 +1,6 @@
 package group.purr.purrbackend.service.impl;
 
 import group.purr.purrbackend.dto.PageDTO;
-import group.purr.purrbackend.entity.Article;
 import group.purr.purrbackend.entity.Page;
 import group.purr.purrbackend.repository.PageRepository;
 import group.purr.purrbackend.service.PageService;
@@ -75,7 +74,7 @@ public class PageServiceImpl implements PageService {
         org.springframework.data.domain.Page<Page> pages = pageRepository.findAllByDeleteTimeIsNull(pageable);
         List<PageDTO> result = new ArrayList<>();
 
-        for (Page page : pages.getContent()){
+        for (Page page : pages.getContent()) {
             PageDTO pageDTO = modelMapper.map(page, PageDTO.class);
             pageDTO.setCommentStatus(null);
             pageDTO.setPingStatus(null);
@@ -85,5 +84,13 @@ public class PageServiceImpl implements PageService {
         }
 
         return result;
+    }
+
+    @Override
+    public void setCommentStatus(Long id, Integer commentStatus) {
+        Page page = pageRepository.findByID(id);
+        page.setCommentStatus(commentStatus);
+
+        pageRepository.save(page);
     }
 }

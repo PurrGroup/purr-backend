@@ -41,7 +41,7 @@ public class MomentServiceImpl implements MomentService {
 
         List<MomentDTO> result = new ArrayList<>();
 
-        for (Moment moment: moments.getContent()){
+        for (Moment moment : moments.getContent()) {
             result.add(modelMapper.map(moment, MomentDTO.class));
         }
 

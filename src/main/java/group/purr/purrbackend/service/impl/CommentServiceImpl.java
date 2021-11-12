@@ -7,9 +7,7 @@ import group.purr.purrbackend.entity.Comment;
 import group.purr.purrbackend.repository.ArticleRepository;
 import group.purr.purrbackend.repository.CommentRepository;
 import group.purr.purrbackend.repository.PageRepository;
-import group.purr.purrbackend.service.ArticleService;
 import group.purr.purrbackend.service.CommentService;
-import group.purr.purrbackend.service.PageService;
 import group.purr.purrbackend.utils.PurrUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -86,26 +84,23 @@ public class CommentServiceImpl implements CommentService {
     }
 
 
-    private List<String> getPostUrl(Long postID, Integer postCategory){
+    private List<String> getPostUrl(Long postID, Integer postCategory) {
         String postUrl;
         String postName;
         List<String> post = new ArrayList<>();
 
-        if(postCategory==0){
+        if (postCategory == 0) {
             Article article = articleRepository.findByID(postID);
             postUrl = article.getLinkName();
             postName = article.getName();
-        }
-        else if(postCategory==1){
+        } else if (postCategory == 1) {
             group.purr.purrbackend.entity.Page page = pageRepository.findByID(postID);
             postUrl = page.getUrlName();
             postName = page.getName();
-        }
-        else if(postCategory==2){
+        } else if (postCategory == 2) {
             postUrl = MagicConstants.DEFAULT_MENUITEM_COMMENT_URL;
             postName = MagicConstants.DEFAULT_MENUITEM_COMMENT_NAME;
-        }
-        else{
+        } else {
             return null;
         }
 

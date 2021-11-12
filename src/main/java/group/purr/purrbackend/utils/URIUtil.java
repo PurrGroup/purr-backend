@@ -12,6 +12,13 @@ import java.net.URLEncoder;
  */
 public class URIUtil {
     /**
+     * Private constructor to prevent this class from being instantiated.
+     */
+    private URIUtil() {
+        super();
+    }
+
+    /**
      * Decodes the passed UTF-8 String using an algorithm that's compatible with
      * JavaScript's <code>decodeURIComponent</code> function. Returns
      * <code>null</code> if the String is <code>null</code>.
@@ -65,12 +72,5 @@ public class URIUtil {
         }
 
         return result;
-    }
-
-    /**
-     * Private constructor to prevent this class from being instantiated.
-     */
-    private URIUtil() {
-        super();
     }
 }

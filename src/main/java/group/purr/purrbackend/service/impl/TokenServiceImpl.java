@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class TokenServiceImpl implements TokenService {
     @Override
     public Boolean checkTokenAuthorizationHeader(String header) {
-        if(StringUtils.isBlank(header)){
+        if (StringUtils.isBlank(header)) {
             log.error("token为空");
             return false;
         }

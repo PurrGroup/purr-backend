@@ -5,6 +5,7 @@ import group.purr.purrbackend.exception.http.IAMATeapotException;
 
 public class WrongPasswordException extends IAMATeapotException {
     private static final ResultEnum result = ResultEnum.WRONG_PASSWORD;
+
     public WrongPasswordException() {
         super(result);
     }

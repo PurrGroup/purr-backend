@@ -48,7 +48,7 @@ public class LinkServiceImpl implements LinkService {
 
         List<LinkDTO> result = new ArrayList<>();
 
-        for (Link link : links.getContent()){
+        for (Link link : links.getContent()) {
             link.setLinkRel(null);
             link.setLinkRss(null);
             link.setCiteCount(null);

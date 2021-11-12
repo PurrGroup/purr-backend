@@ -27,9 +27,9 @@ public class SearchController {
     @GetMapping("/searchByKeyword")
     public ResultVO searchByKeyword(@RequestParam(value = "curPage") Integer pageNum,
                                     @RequestParam(value = "pageSize") Integer pageSize,
-                                    @RequestParam(value = "keyword") String keyword){
+                                    @RequestParam(value = "keyword") String keyword) {
 
-        if(pageSize <= 0) throw new DenialOfServiceException();
+        if (pageSize <= 0) throw new DenialOfServiceException();
 
         pageNum = Math.max(pageNum - 1, 0);
 
@@ -52,9 +52,9 @@ public class SearchController {
     @GetMapping("/admin/searchByKeyword")
     public ResultVO searchAuthorized(@RequestParam(value = "curPage") Integer pageNum,
                                      @RequestParam(value = "pageSize") Integer pageSize,
-                                     @RequestParam(value = "keyword") String keyword){
+                                     @RequestParam(value = "keyword") String keyword) {
 
-        if(pageSize <= 0) throw new DenialOfServiceException();
+        if (pageSize <= 0) throw new DenialOfServiceException();
 
         pageNum = Math.max(pageNum - 1, 0);
 

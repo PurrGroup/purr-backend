@@ -2,7 +2,6 @@ package group.purr.purrbackend.controller;
 
 import group.purr.purrbackend.dto.MomentDTO;
 import group.purr.purrbackend.dto.PageableMoment;
-import group.purr.purrbackend.entity.Moment;
 import group.purr.purrbackend.exception.DenialOfServiceException;
 import group.purr.purrbackend.service.MomentService;
 import group.purr.purrbackend.utils.ResultVOUtil;
@@ -31,15 +30,15 @@ public class MomentController {
     }
 
     @GetMapping("/recent")
-    public ResultVO getRecentMoments(@RequestParam(value = "curPage")Integer pageNum,
-                                     @RequestParam(value = "pageSize")Integer pageSize){
+    public ResultVO getRecentMoments(@RequestParam(value = "curPage") Integer pageNum,
+                                     @RequestParam(value = "pageSize") Integer pageSize) {
 
-        if(pageSize <= 0) throw new DenialOfServiceException();
+        if (pageSize <= 0) throw new DenialOfServiceException();
 
         Long total = momentService.getTotalCount();
         int maxNum = (int) Math.ceil((double) total / pageSize);
 
-        if(pageNum > maxNum){
+        if (pageNum > maxNum) {
             pageNum = maxNum;
         }
         pageNum = Math.max(pageNum - 1, 0);
@@ -59,15 +58,15 @@ public class MomentController {
     }
 
     @GetMapping("/admin/recent")
-    public ResultVO getRecentMomentsAuthorized(@RequestParam(value = "curPage")Integer pageNum,
-                                     @RequestParam(value = "pageSize")Integer pageSize){
+    public ResultVO getRecentMomentsAuthorized(@RequestParam(value = "curPage") Integer pageNum,
+                                               @RequestParam(value = "pageSize") Integer pageSize) {
 
-        if(pageSize <= 0) throw new DenialOfServiceException();
+        if (pageSize <= 0) throw new DenialOfServiceException();
 
         Long total = momentService.getTotalCount();
         int maxNum = (int) Math.ceil((double) total / pageSize);
 
-        if(pageNum > maxNum){
+        if (pageNum > maxNum) {
             pageNum = maxNum;
         }
         pageNum = Math.max(pageNum - 1, 0);

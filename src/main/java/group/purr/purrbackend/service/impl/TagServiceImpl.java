@@ -52,7 +52,7 @@ public class TagServiceImpl implements TagService {
         Page<Tag> tags = tagRepository.findAllByDeleteTimeIsNull(pageable);
 
         List<TagDTO> result = new ArrayList<>();
-        for (Tag tag : tags.getContent()){
+        for (Tag tag : tags.getContent()) {
             TagDTO dto = modelMapper.map(tag, TagDTO.class);
             result.add(dto);
         }

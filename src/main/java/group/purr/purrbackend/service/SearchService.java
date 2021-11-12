@@ -1,9 +1,7 @@
 package group.purr.purrbackend.service;
 
 import group.purr.purrbackend.dto.SearchDTO;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 
 import java.util.List;
 

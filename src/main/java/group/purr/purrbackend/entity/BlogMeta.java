@@ -1,9 +1,6 @@
 package group.purr.purrbackend.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
@@ -14,13 +11,16 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class BlogMeta {
 
     @Id
     private String optionKey;
 
     private String optionValue;
+
 
     @Override
     public boolean equals(Object o) {
@@ -34,4 +34,6 @@ public class BlogMeta {
     public int hashCode() {
         return 0;
     }
+
+
 }
