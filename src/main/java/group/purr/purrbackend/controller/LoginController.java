@@ -137,4 +137,27 @@ public class LoginController {
         return ResultVOUtil.success(accessToken);
     }
 
+    @PostMapping("/token/check")
+    public ResultVO checkToken(@RequestBody JSONObject json){
+        String token = json.getString("token");
+
+        if(!tokenService.checkTokenAuthorizationHeader(token)){
+            return ResultVOUtil.success(false);
+        }
+
+        Jws<Claims> jws = JwtUtils.parserToken(token, TokenConstants.secretKey);
+        if(jws == null){
+            return ResultVOUtil.success(false);
+        }
+
+        String encryptedPassword = authorService.getEncryptedPassword();
+        if(!encryptedPassword.equals(jws.getBody().get(TokenConstants.userKey, String.class)))
+            return ResultVOUtil.success(false);
+
+        if(JwtUtils.checkIsExpired(jws))
+            return ResultVOUtil.success(false);
+
+        return ResultVOUtil.success(true);
+    }
+
 }
