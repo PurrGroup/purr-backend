@@ -37,5 +37,5 @@ public class LinkDTO {
 
     private String linkRss;
 
-
+    private Integer category;
 }

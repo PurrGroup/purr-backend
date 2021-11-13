@@ -81,4 +81,9 @@ public class LinkController {
 
         return ResultVOUtil.success(result);
     }
+
+    @GetMapping("/focus")
+    public ResultVO getFocusLinks(){
+        return ResultVOUtil.success(linkService.getFocus());
+    }
 }

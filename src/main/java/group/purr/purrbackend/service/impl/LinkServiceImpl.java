@@ -68,4 +68,24 @@ public class LinkServiceImpl implements LinkService {
         return linkRepository.count();
     }
 
+    @Override
+    public List<LinkDTO> getFocus() {
+        List<Link> links = linkRepository.findAllByCategoryOrderByUpdateTimeDesc(1);
+        Integer count = 0;
+        List<LinkDTO> result = new ArrayList<>();
+
+        for (Link link : links){
+            if(link.getDeleteTime() != null) continue;
+            count ++;
+            if(count > 3) break;
+
+            LinkDTO linkDTO = modelMapper.map(link, LinkDTO.class);
+            linkDTO.setLinkRss(null);
+            linkDTO.setLinkRel(null);
+            result.add(linkDTO);
+        }
+
+        return result;
+    }
+
 }

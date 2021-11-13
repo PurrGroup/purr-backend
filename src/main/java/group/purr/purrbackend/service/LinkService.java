@@ -13,4 +13,6 @@ public interface LinkService {
     List<LinkDTO> getRecentLinks(Pageable pageable);
 
     Long getTotalCount();
+
+    List<LinkDTO> getFocus();
 }
