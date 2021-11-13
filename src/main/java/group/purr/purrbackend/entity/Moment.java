@@ -37,8 +37,8 @@ public class Moment {
     @Column(nullable = false, columnDefinition = "INTEGER UNSIGNED")
     private Integer thumbCount;
 
-    @Column(nullable = false, columnDefinition = "INTEGER UNSIGNED")
-    private Integer backgroundColor;
+    @Column(nullable = false)
+    private String backgroundColor;
 
     @Column(nullable = false, columnDefinition = "TINYTEXT")
     private String annotation;
