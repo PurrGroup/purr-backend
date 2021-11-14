@@ -13,4 +13,6 @@ public interface TagService {
     Long getTotalCount();
 
     List<TagDTO> getRecentTags(Pageable pageable);
+
+    List<TagDTO> getTagsByKeyword(String keyword);
 }

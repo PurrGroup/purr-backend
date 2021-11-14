@@ -1,8 +1,10 @@
 package group.purr.purrbackend.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import group.purr.purrbackend.dto.MomentDTO;
 import group.purr.purrbackend.dto.PageableMoment;
 import group.purr.purrbackend.exception.DenialOfServiceException;
+import group.purr.purrbackend.service.MetaService;
 import group.purr.purrbackend.service.MomentService;
 import group.purr.purrbackend.utils.ResultVOUtil;
 import group.purr.purrbackend.vo.ResultVO;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin
@@ -24,9 +27,12 @@ public class MomentController {
 
     final ModelMapper modelMapper;
 
-    public MomentController(MomentService momentService, ModelMapper modelMapper) {
+    final MetaService metaService;
+
+    public MomentController(MomentService momentService, ModelMapper modelMapper, MetaService metaService) {
         this.momentService = momentService;
         this.modelMapper = modelMapper;
+        this.metaService = metaService;
     }
 
     @GetMapping("/recent")
@@ -83,5 +89,27 @@ public class MomentController {
         result.setCurrentPage(pageNum - 1);
 
         return ResultVOUtil.success(result);
+    }
+
+    @PostMapping("/edit")
+    public ResultVO editMoment(@RequestBody JSONObject json){
+        MomentDTO momentDTO = JSONObject.toJavaObject(json, MomentDTO.class);
+
+        if(momentDTO.getID() == -1) {
+            momentDTO.setID(null);
+            momentDTO.setThumbCount(0);
+            if(momentDTO.getUpdateTime() == null)
+                momentDTO.setUpdateTime(momentDTO.getCreateTime());
+
+            if(momentDTO.getAnnotation() == null)
+                momentDTO.setAnnotation(metaService.getProfile().getBlogTitle());
+        }
+        else{
+            momentDTO.setUpdateTime(new Date());
+        }
+
+        momentService.editMoment(momentDTO);
+
+        return ResultVOUtil.success(true);
     }
 }

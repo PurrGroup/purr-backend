@@ -20,6 +20,8 @@ public interface ArticleService {
 
     void deleteArticleById(Long articleId);
 
+    void undoDeleteArticleById(Long articleId);
+
     void deleteAll();
 
     void addTag(Long articleID, Long tagID);

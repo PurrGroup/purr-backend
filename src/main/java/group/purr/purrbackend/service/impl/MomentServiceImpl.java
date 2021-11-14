@@ -52,4 +52,10 @@ public class MomentServiceImpl implements MomentService {
     public Long getTotalCount() {
         return momentRepository.count();
     }
+
+    @Override
+    public void editMoment(MomentDTO momentDTO) {
+        Moment moment = modelMapper.map(momentDTO, Moment.class);
+        momentRepository.saveAndFlush(moment);
+    }
 }

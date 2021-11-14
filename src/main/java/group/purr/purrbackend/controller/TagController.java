@@ -51,4 +51,12 @@ public class TagController {
 
         return ResultVOUtil.success(result);
     }
+
+    @GetMapping("/searchByKeyword")
+    public ResultVO getTagsByKeyword(@RequestParam(value = "keyword") String keyword){
+
+        List<TagDTO> tags = tagService.getTagsByKeyword(keyword);
+
+        return ResultVOUtil.success(tags);
+    }
 }

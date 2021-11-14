@@ -60,4 +60,19 @@ public class TagServiceImpl implements TagService {
         return result;
     }
 
+    @Override
+    public List<TagDTO> getTagsByKeyword(String keyword) {
+        List<Tag> tags = tagRepository.findAllByNameLikeAndDeleteTimeIsNull("%"+keyword+"%");
+        List<TagDTO> result = new ArrayList<>();
+
+        for (Tag tag : tags){
+            TagDTO tagDTO = modelMapper.map(tag, TagDTO.class);
+            tagDTO.setLinkRel(null);
+            tagDTO.setLinkRss(null);
+            result.add(tagDTO);
+        }
+
+        return result;
+    }
+
 }
