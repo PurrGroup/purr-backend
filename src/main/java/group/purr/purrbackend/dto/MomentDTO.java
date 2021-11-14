@@ -16,7 +16,7 @@ public class MomentDTO {
 
     private Integer thumbCount;
 
-    private Integer backgroundColor;
+    private String backgroundColor;
 
     private String annotation;
 
