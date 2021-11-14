@@ -11,4 +11,6 @@ public interface MomentService {
     List<MomentDTO> getRecentMoments(Pageable pageable);
 
     Long getTotalCount();
+
+    void editMoment(MomentDTO momentDTO);
 }

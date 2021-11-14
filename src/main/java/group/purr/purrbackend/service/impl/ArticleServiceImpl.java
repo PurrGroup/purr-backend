@@ -111,6 +111,13 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public void undoDeleteArticleById(Long articleId) {
+        Article article = articleRepository.findByID(articleId);
+        article.setDeleteTime(null);
+        articleRepository.save(article);
+    }
+
+    @Override
     public void deleteAll() {
         articleRepository.deleteAll();
         contentRepository.deleteAll();

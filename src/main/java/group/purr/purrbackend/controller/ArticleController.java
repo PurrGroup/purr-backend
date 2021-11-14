@@ -216,9 +216,15 @@ public class ArticleController {
         return ResultVOUtil.success(true);
     }
 
-    @GetMapping("/delete")
+    @GetMapping("/admin/delete")
     public ResultVO deleteArticle(@RequestParam(value = "id") Long id) {
         articleService.deleteArticleById(id);
+        return ResultVOUtil.success(true);
+    }
+
+    @GetMapping("deleteUndo")
+    public ResultVO UndoDeleteArticle(@RequestParam(value = "id") Long id){
+        articleService.undoDeleteArticleById(id);
         return ResultVOUtil.success(true);
     }
 
