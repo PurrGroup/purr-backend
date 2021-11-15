@@ -52,7 +52,7 @@ public class PageServiceImpl implements PageService {
         org.springframework.data.domain.Page<Page> pages = pageRepository.findAll(pageable);
         List<PageDTO> result = new ArrayList<>();
 
-        for (Page page : pages.getContent()){
+        for (Page page : pages.getContent()) {
             PageDTO pageDTO = modelMapper.map(page, PageDTO.class);
             pageDTO.setPingStatus(null);
             pageDTO.setPinged(null);

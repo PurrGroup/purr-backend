@@ -26,7 +26,6 @@ import java.util.Date;
 /**
  * 登录验证、登陆保持、登出、token刷新
  */
-@CrossOrigin
 @RestController
 @RequestMapping("/api")
 @Slf4j
@@ -138,23 +137,23 @@ public class LoginController {
     }
 
     @PostMapping("/token/check")
-    public ResultVO checkToken(@RequestBody JSONObject json){
+    public ResultVO checkToken(@RequestBody JSONObject json) {
         String token = json.getString("token");
 
-        if(!tokenService.checkTokenAuthorizationHeader(token)){
+        if (!tokenService.checkTokenAuthorizationHeader(token)) {
             return ResultVOUtil.success(false);
         }
 
         Jws<Claims> jws = JwtUtils.parserToken(token, TokenConstants.secretKey);
-        if(jws == null){
+        if (jws == null) {
             return ResultVOUtil.success(false);
         }
 
         String encryptedPassword = authorService.getEncryptedPassword();
-        if(!encryptedPassword.equals(jws.getBody().get(TokenConstants.userKey, String.class)))
+        if (!encryptedPassword.equals(jws.getBody().get(TokenConstants.userKey, String.class)))
             return ResultVOUtil.success(false);
 
-        if(JwtUtils.checkIsExpired(jws))
+        if (JwtUtils.checkIsExpired(jws))
             return ResultVOUtil.success(false);
 
         return ResultVOUtil.success(true);

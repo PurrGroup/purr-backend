@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/article")
 @Slf4j
@@ -222,7 +221,7 @@ public class ArticleController {
     }
 
     @GetMapping("deleteUndo")
-    public ResultVO UndoDeleteArticle(@RequestParam(value = "id") Long id){
+    public ResultVO UndoDeleteArticle(@RequestParam(value = "id") Long id) {
         articleService.undoDeleteArticleById(id);
         return ResultVOUtil.success(true);
     }

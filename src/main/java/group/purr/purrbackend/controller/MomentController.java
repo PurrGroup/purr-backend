@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/moment")
 @Slf4j
@@ -92,19 +91,18 @@ public class MomentController {
     }
 
     @PostMapping("/edit")
-    public ResultVO editMoment(@RequestBody JSONObject json){
+    public ResultVO editMoment(@RequestBody JSONObject json) {
         MomentDTO momentDTO = JSONObject.toJavaObject(json, MomentDTO.class);
 
-        if(momentDTO.getID() == -1) {
+        if (momentDTO.getID() == -1) {
             momentDTO.setID(null);
             momentDTO.setThumbCount(0);
-            if(momentDTO.getUpdateTime() == null)
+            if (momentDTO.getUpdateTime() == null)
                 momentDTO.setUpdateTime(momentDTO.getCreateTime());
 
-            if(momentDTO.getAnnotation() == null)
+            if (momentDTO.getAnnotation() == null)
                 momentDTO.setAnnotation(metaService.getProfile().getBlogTitle());
-        }
-        else{
+        } else {
             momentDTO.setUpdateTime(new Date());
         }
 

@@ -74,10 +74,10 @@ public class LinkServiceImpl implements LinkService {
         Integer count = 0;
         List<LinkDTO> result = new ArrayList<>();
 
-        for (Link link : links){
-            if(link.getDeleteTime() != null) continue;
-            count ++;
-            if(count > 3) break;
+        for (Link link : links) {
+            if (link.getDeleteTime() != null) continue;
+            count++;
+            if (count > 3) break;
 
             LinkDTO linkDTO = modelMapper.map(link, LinkDTO.class);
             linkDTO.setLinkRss(null);

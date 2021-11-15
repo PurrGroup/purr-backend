@@ -10,11 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/tag")
 @Slf4j
@@ -53,7 +55,7 @@ public class TagController {
     }
 
     @GetMapping("/searchByKeyword")
-    public ResultVO getTagsByKeyword(@RequestParam(value = "keyword") String keyword){
+    public ResultVO getTagsByKeyword(@RequestParam(value = "keyword") String keyword) {
 
         List<TagDTO> tags = tagService.getTagsByKeyword(keyword);
 

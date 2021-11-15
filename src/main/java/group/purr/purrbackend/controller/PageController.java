@@ -10,11 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/page")
 @Slf4j
@@ -27,13 +29,13 @@ public class PageController {
 
     @GetMapping("/admin/recent")
     public ResultVO getRecentPages(@RequestParam(value = "curPage") Integer pageNum,
-                                   @RequestParam(value = "pageSize") Integer pageSize){
-        if(pageSize <= 0) throw new DenialOfServiceException();
+                                   @RequestParam(value = "pageSize") Integer pageSize) {
+        if (pageSize <= 0) throw new DenialOfServiceException();
 
         Long total = pageService.getTotal();
         int maxNum = (int) Math.ceil((double) total / pageSize);
 
-        if(pageNum > maxNum){
+        if (pageNum > maxNum) {
             pageNum = maxNum;
         }
         pageNum = Math.max(pageNum - 1, 0);
