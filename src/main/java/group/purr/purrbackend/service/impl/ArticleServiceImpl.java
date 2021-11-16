@@ -1,6 +1,7 @@
 package group.purr.purrbackend.service.impl;
 
 import group.purr.purrbackend.dto.ArticleDTO;
+import group.purr.purrbackend.dto.RelatedArticleDTO;
 import group.purr.purrbackend.dto.TagDTO;
 import group.purr.purrbackend.entity.*;
 import group.purr.purrbackend.repository.ArticleRepository;
@@ -13,12 +14,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -249,6 +252,41 @@ public class ArticleServiceImpl implements ArticleService {
         articleDTO.setContent(content.getContent());
 
         return articleDTO;
+    }
+
+    @Override
+    public Optional<ArticleDTO> getArticleDetailByLinkName(String linkName) {
+        Article article = articleRepository.findByLinkName(linkName);
+        // 不存在或者已被删除
+        if (article == null || article.getDeleteTime() != null) return Optional.empty();
+        ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
+
+        List<TagDTO> tags = findTagsByArticle(article.getID());
+        Content content = contentRepository.findByID(article.getID());
+        articleDTO.setTags(tags);
+        if (content != null) {
+            articleDTO.setContent(content.getContent());
+        } else {
+            articleDTO.setContent("");
+        }
+
+        return Optional.of(articleDTO);
+    }
+
+    @Override
+    @NonNull
+    public Optional<RelatedArticleDTO> getPreviousAndNextArticles(String linkName) {
+        Article article = articleRepository.findByLinkName(linkName);
+        if (article == null || article.getDeleteTime() != null) return Optional.empty();
+
+        Optional<RelatedArticleDTO> rel = Optional.of(new RelatedArticleDTO());
+        Date opTime = article.getUpdateTime() != null ? article.getUpdateTime() : article.getCreateTime();
+        Optional<Article> prevArticle = articleRepository.findTopByUpdateTimeLessThanOrderByUpdateTimeDesc(opTime);
+        Optional<Article> nextArticle = articleRepository.findTopByUpdateTimeGreaterThanOrderByUpdateTimeAsc(opTime);
+
+        prevArticle.ifPresent((prevArticleModel) -> rel.get().setPrev(modelMapper.map(prevArticleModel, ArticleDTO.class)));
+        nextArticle.ifPresent((nextArticleModel) -> rel.get().setNext(modelMapper.map(nextArticleModel, ArticleDTO.class)));
+        return rel;
     }
 
     @Override

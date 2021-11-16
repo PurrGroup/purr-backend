@@ -43,6 +43,8 @@ public enum ResultEnum {
 
     WRONG_PASSWORD("A1103", "密码错误", "密码输入错误，请重新输入密码"),
 
+    CONTENT_NOT_EXIST("A1104", "内容不存在", "啊哦(oﾟvﾟ)ノ，请求内容不存在"),
+
     UPLOAD_FILE_ERROR("A0700", "上传文件异常", "上传文件失败, 请重新上传"),
 
     ILLEGAL_CATEGORY("A0420", "类型参数不合法", "类型参数不符合要求，请重新请求"),
