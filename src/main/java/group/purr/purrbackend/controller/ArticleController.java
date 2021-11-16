@@ -4,6 +4,7 @@ package group.purr.purrbackend.controller;
 import com.alibaba.fastjson.JSONObject;
 import group.purr.purrbackend.dto.ArticleDTO;
 import group.purr.purrbackend.dto.PageableArticle;
+import group.purr.purrbackend.dto.RelatedArticleDTO;
 import group.purr.purrbackend.enumerate.ResultEnum;
 import group.purr.purrbackend.exception.DenialOfServiceException;
 import group.purr.purrbackend.service.ArticleService;
@@ -111,9 +112,21 @@ public class ArticleController {
         return ResultVOUtil.success(articles.subList(0, Math.min(10, articles.size())));
     }
 
+//    @GetMapping("/details")
+//    public ResultVO getArticleDetail(@RequestParam(value = "id") Long id) {
+//        return ResultVOUtil.success(articleService.getArticleByID(id));
+//    }
+
     @GetMapping("/details")
-    public ResultVO getArticleDetail(@RequestParam(value = "id") Long id) {
-        return ResultVOUtil.success(articleService.getArticleByID(id));
+    public ResultVO getArticleDetailByLinkName(@RequestParam(value = "linkName") String linkName) {
+        Optional<ArticleDTO> articleDTO = articleService.getArticleDetailByLinkName(linkName);
+        return articleDTO.map(ResultVOUtil::success).orElseGet(() -> ResultVOUtil.error(ResultEnum.CONTENT_NOT_EXIST));
+    }
+
+    @GetMapping("/previous-and-next")
+    public ResultVO getPreviousAndNextArticles(@RequestParam(value = "linkName") String linkName) {
+        Optional<RelatedArticleDTO> rel = articleService.getPreviousAndNextArticles(linkName);
+        return rel.map(ResultVOUtil::success).orElseGet(() -> ResultVOUtil.error(ResultEnum.CONTENT_NOT_EXIST));
     }
 
     @PostMapping("/validate")
