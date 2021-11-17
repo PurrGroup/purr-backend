@@ -1,6 +1,6 @@
 package group.purr.purrbackend.controller.interceptor;
 
-import group.purr.purrbackend.constant.TokenConstants;
+import group.purr.purrbackend.constant.PurrConfigConstants;
 import group.purr.purrbackend.exception.AccessTokenExpiredException;
 import group.purr.purrbackend.exception.DenialOfServiceException;
 import group.purr.purrbackend.security.JwtUtils;
@@ -33,7 +33,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String authorizationHeader = request.getHeader(TokenConstants.accessHeaderName);
+        String authorizationHeader = request.getHeader(PurrConfigConstants.accessHeaderName);
 
         // 判断token是否合法
         if (!tokenService.checkTokenAuthorizationHeader(authorizationHeader)) {
@@ -43,7 +43,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
 
         // 获取token内容
         String token = getTokenContent(authorizationHeader);
-        Jws<Claims> jws = JwtUtils.parserToken(token, TokenConstants.secretKey);
+        Jws<Claims> jws = JwtUtils.parserToken(token, PurrConfigConstants.secretKey);
 
         if (jws == null) {
             log.error("当前请求未携带token");
@@ -52,7 +52,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
 
         // 从数据库读取加密后的密码
         String encryptedPassword = authorService.getEncryptedPassword();
-        String passInRequest = jws.getBody().get(TokenConstants.userKey, String.class);
+        String passInRequest = jws.getBody().get(PurrConfigConstants.userKey, String.class);
         // 密码验证不正确
         if (!encryptedPassword.equals(passInRequest)) {
             log.error(String.format("登录凭证不符，encryptedPassword: %s, passInRequest: %s", encryptedPassword, passInRequest));
