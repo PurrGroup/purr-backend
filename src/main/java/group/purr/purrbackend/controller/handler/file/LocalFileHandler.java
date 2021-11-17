@@ -49,8 +49,12 @@ public class LocalFileHandler implements FileHandler {
                 fileAttributes.getFileType(), uploadFolderPath);
 
         String url = uploadFolderPath + FILE_SEPARATOR + fileAttributes.getName() + "." + fileAttributes.getFileType();
-        Path uploadFilePath = Paths.get(url);
 
+        Calendar cal = Calendar.getInstance();
+        String month = String.valueOf(cal.get(Calendar.MONTH) + 1);
+        String year = String.valueOf(cal.get(Calendar.YEAR));
+        String absoluteUrl = FileSystems.getDefault().getPath(rootPath).normalize().toAbsolutePath() + FILE_SEPARATOR + year + FILE_SEPARATOR + month + FILE_SEPARATOR + fileAttributes.getName() + "." + fileAttributes.getFileType();
+        Path uploadFilePath = Paths.get(absoluteUrl);
         // Upload file to `uploadFilePath`
         // Don't catch the exceptions, as it will be automatically handled by the Global Exception handler of SpringMVC
         Files.createFile(uploadFilePath);
@@ -58,7 +62,8 @@ public class LocalFileHandler implements FileHandler {
 
         // Generate thumbnail
         String thumbNailUrl = uploadFolderPath + FILE_SEPARATOR + fileAttributes.getName() + "_thumbnail." + fileAttributes.getFileType();
-        generateThumbnail(thumbNailUrl, file.getInputStream());
+        String absoluteThumbUrl = FileSystems.getDefault().getPath(rootPath).normalize().toAbsolutePath() + FILE_SEPARATOR + year + FILE_SEPARATOR + month + FILE_SEPARATOR + fileAttributes.getName() + "_thumbnail." + fileAttributes.getFileType();
+        generateThumbnail(absoluteThumbUrl, file.getInputStream());
 
         log.info("Uploaded file: [{}] to directory: [{}] successfully",
                 fileAttributes.getName(), uploadFolderPath);
@@ -86,7 +91,7 @@ public class LocalFileHandler implements FileHandler {
         } else if (createFolder == -2) {
             throw new InternalServerErrorException(ResultEnum.NO_PERMISSION);
         } else {
-            return folderPath;
+            return rootPath.substring(rootPath.indexOf(".")+1) + FILE_SEPARATOR + year + FILE_SEPARATOR + month;
         }
     }
 
@@ -110,6 +115,7 @@ public class LocalFileHandler implements FileHandler {
             type = mimeType.split("/")[1];
         }
         String fileName = PurrUtils.getUniqueKey();
+        String originalName = file.getOriginalFilename();
 
         Long bytes = file.getSize();
         String size = String.valueOf(bytes);
@@ -135,6 +141,7 @@ public class LocalFileHandler implements FileHandler {
         result.setSize(size);
         result.setImageHeight(height);
         result.setImageWidth(width);
+        result.setOriginalName(originalName);
         return result;
     }
 

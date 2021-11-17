@@ -78,8 +78,8 @@ public class MediaServiceImpl implements MediaService {
 
             // Save media
             Media media = modelMapper.map(result, Media.class);
-            mediaRepository.save(media);
-
+            Media temp = mediaRepository.save(media);
+            result.setID(temp.getID());
             return result;
         }
 

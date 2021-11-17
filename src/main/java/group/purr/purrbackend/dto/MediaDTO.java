@@ -24,7 +24,7 @@ public class MediaDTO {
     private String name;
 
     /**
-     * 以b为单位
+     * 以byte为单位
      */
     private String size;
 
@@ -33,6 +33,8 @@ public class MediaDTO {
     private Integer imageWidth;
 
     private String thumbnailPath;
+
+    private String originalName;
 
 
 }
