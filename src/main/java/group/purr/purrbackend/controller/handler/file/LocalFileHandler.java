@@ -1,12 +1,12 @@
 package group.purr.purrbackend.controller.handler.file;
 
+import group.purr.purrbackend.constant.PurrConfigConstants;
 import group.purr.purrbackend.controller.handler.FileHandler;
 import group.purr.purrbackend.dto.MediaDTO;
 import group.purr.purrbackend.enumerate.ResultEnum;
 import group.purr.purrbackend.exception.http.InternalServerErrorException;
 import group.purr.purrbackend.utils.PurrUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,12 +29,6 @@ public class LocalFileHandler implements FileHandler {
 
     private static final String FILE_SEPARATOR = File.separator;
 
-    private Environment env;
-
-    public LocalFileHandler(Environment env) {
-        this.env = env;
-    }
-
     public LocalFileHandler() {
     }
 
@@ -43,7 +37,7 @@ public class LocalFileHandler implements FileHandler {
 
         Assert.notNull(file, "Multipart file must not be null");
 
-        String rootPath = env.getProperty("purr.media.path");
+        String rootPath = PurrConfigConstants.uploadPath;
 
         // create upload folder
         String uploadFolderPath = tryCreateUploadPath(rootPath);
