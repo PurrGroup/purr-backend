@@ -55,15 +55,21 @@ public class LocalFileHandler implements FileHandler {
         String year = String.valueOf(cal.get(Calendar.YEAR));
         String absoluteUrl = FileSystems.getDefault().getPath(rootPath).normalize().toAbsolutePath() + FILE_SEPARATOR + year + FILE_SEPARATOR + month + FILE_SEPARATOR + fileAttributes.getName() + "." + fileAttributes.getFileType();
         Path uploadFilePath = Paths.get(absoluteUrl);
+
         // Upload file to `uploadFilePath`
         // Don't catch the exceptions, as it will be automatically handled by the Global Exception handler of SpringMVC
         Files.createFile(uploadFilePath);
         file.transferTo(uploadFilePath);
 
-        // Generate thumbnail
-        String thumbNailUrl = uploadFolderPath + FILE_SEPARATOR + fileAttributes.getName() + "_thumbnail." + fileAttributes.getFileType();
-        String absoluteThumbUrl = FileSystems.getDefault().getPath(rootPath).normalize().toAbsolutePath() + FILE_SEPARATOR + year + FILE_SEPARATOR + month + FILE_SEPARATOR + fileAttributes.getName() + "_thumbnail." + fileAttributes.getFileType();
-        generateThumbnail(absoluteThumbUrl, file.getInputStream());
+        log.info("上传文件成功, fileCategory: " + fileAttributes.getFileCategory() + ", fileType: " + fileAttributes.getFileType());
+
+        String thumbNailUrl = "";
+        if("image".equals(fileAttributes.getFileCategory())) {
+            // Generate thumbnail
+            thumbNailUrl = uploadFolderPath + FILE_SEPARATOR + fileAttributes.getName() + "_thumbnail." + fileAttributes.getFileType();
+            String absoluteThumbUrl = FileSystems.getDefault().getPath(rootPath).normalize().toAbsolutePath() + FILE_SEPARATOR + year + FILE_SEPARATOR + month + FILE_SEPARATOR + fileAttributes.getName() + "_thumbnail." + fileAttributes.getFileType();
+            generateThumbnail(absoluteThumbUrl, file.getInputStream());
+        }
 
         log.info("Uploaded file: [{}] to directory: [{}] successfully",
                 fileAttributes.getName(), uploadFolderPath);
