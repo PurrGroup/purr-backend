@@ -247,7 +247,7 @@ public class ArticleController {
 
         if (pageSize <= 0) throw new DenialOfServiceException();
 
-        Set<ArticleDTO> articles = new TreeSet<>((o1, o2) -> o1.updateTime.before(o2.updateTime) ? -1 : 1);
+        Set<ArticleDTO> articles = new TreeSet<>((o1, o2) -> o1.updateTime.before(o2.updateTime) ? 1 : -1);
 
         if (tagList.size() == 0) {
             List<ArticleDTO> articleDTOS = articleService.getAllArticles();

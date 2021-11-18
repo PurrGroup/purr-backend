@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/media")
@@ -149,10 +146,12 @@ public class MediaController {
         }
         curPage = Math.max(curPage - 1, 0);
 
-        List<MediaDTO> data = new ArrayList(mediaDTOS);
+        Collections.sort(mediaDTOS, (o1, o2) -> o1.getCreateTime().before(o2.getCreateTime()) ? 1 : -1);
+
+//        List<MediaDTO> data = new ArrayList(mediaDTOS);
 
         PageableMedia result = new PageableMedia();
-        result.setData(data.subList(curPage * pageSize, Math.min((curPage + 1) * pageSize, totalNum)));
+        result.setData(mediaDTOS.subList(curPage * pageSize, Math.min((curPage + 1) * pageSize, totalNum)));
         result.setCurrentPage(curPage + 1);
         result.setPageSize(pageSize);
         result.setPageNum(maxNum);
