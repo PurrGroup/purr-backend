@@ -146,7 +146,7 @@ public class MediaController {
         }
         curPage = Math.max(curPage - 1, 0);
 
-        Collections.sort(mediaDTOS, (o1, o2) -> o1.getCreateTime().before(o2.getCreateTime()) ? -1 : 1);
+        Collections.sort(mediaDTOS, (o1, o2) -> o1.getCreateTime().before(o2.getCreateTime()) ? 1 : -1);
 
 //        List<MediaDTO> data = new ArrayList(mediaDTOS);
 
