@@ -20,6 +20,7 @@ target/
 *.ipr
 .mvn
 src/**/application-prod.properties
+media
 
 ### NetBeans ###
 /nbproject/private/

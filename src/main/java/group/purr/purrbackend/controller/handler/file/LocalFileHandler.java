@@ -1,12 +1,12 @@
 package group.purr.purrbackend.controller.handler.file;
 
+import group.purr.purrbackend.constant.PurrConfigConstants;
 import group.purr.purrbackend.controller.handler.FileHandler;
 import group.purr.purrbackend.dto.MediaDTO;
 import group.purr.purrbackend.enumerate.ResultEnum;
 import group.purr.purrbackend.exception.http.InternalServerErrorException;
 import group.purr.purrbackend.utils.PurrUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,12 +29,6 @@ public class LocalFileHandler implements FileHandler {
 
     private static final String FILE_SEPARATOR = File.separator;
 
-    private Environment env;
-
-    public LocalFileHandler(Environment env) {
-        this.env = env;
-    }
-
     public LocalFileHandler() {
     }
 
@@ -43,7 +37,7 @@ public class LocalFileHandler implements FileHandler {
 
         Assert.notNull(file, "Multipart file must not be null");
 
-        String rootPath = env.getProperty("purr.media.path");
+        String rootPath = PurrConfigConstants.uploadPath;
 
         // create upload folder
         String uploadFolderPath = tryCreateUploadPath(rootPath);
@@ -55,16 +49,27 @@ public class LocalFileHandler implements FileHandler {
                 fileAttributes.getFileType(), uploadFolderPath);
 
         String url = uploadFolderPath + FILE_SEPARATOR + fileAttributes.getName() + "." + fileAttributes.getFileType();
-        Path uploadFilePath = Paths.get(url);
+
+        Calendar cal = Calendar.getInstance();
+        String month = String.valueOf(cal.get(Calendar.MONTH) + 1);
+        String year = String.valueOf(cal.get(Calendar.YEAR));
+        String absoluteUrl = FileSystems.getDefault().getPath(rootPath).normalize().toAbsolutePath() + FILE_SEPARATOR + year + FILE_SEPARATOR + month + FILE_SEPARATOR + fileAttributes.getName() + "." + fileAttributes.getFileType();
+        Path uploadFilePath = Paths.get(absoluteUrl);
 
         // Upload file to `uploadFilePath`
         // Don't catch the exceptions, as it will be automatically handled by the Global Exception handler of SpringMVC
         Files.createFile(uploadFilePath);
         file.transferTo(uploadFilePath);
 
-        // Generate thumbnail
-        String thumbNailUrl = uploadFolderPath + FILE_SEPARATOR + fileAttributes.getName() + "_thumbnail." + fileAttributes.getFileType();
-        generateThumbnail(thumbNailUrl, file.getInputStream());
+        log.info("上传文件成功, fileCategory: " + fileAttributes.getFileCategory() + ", fileType: " + fileAttributes.getFileType());
+
+        String thumbNailUrl = "";
+        if("image".equals(fileAttributes.getFileCategory())) {
+            // Generate thumbnail
+            thumbNailUrl = uploadFolderPath + FILE_SEPARATOR + fileAttributes.getName() + "_thumbnail." + fileAttributes.getFileType();
+            String absoluteThumbUrl = FileSystems.getDefault().getPath(rootPath).normalize().toAbsolutePath() + FILE_SEPARATOR + year + FILE_SEPARATOR + month + FILE_SEPARATOR + fileAttributes.getName() + "_thumbnail." + fileAttributes.getFileType();
+            generateThumbnail(absoluteThumbUrl, file.getInputStream());
+        }
 
         log.info("Uploaded file: [{}] to directory: [{}] successfully",
                 fileAttributes.getName(), uploadFolderPath);
@@ -92,7 +97,7 @@ public class LocalFileHandler implements FileHandler {
         } else if (createFolder == -2) {
             throw new InternalServerErrorException(ResultEnum.NO_PERMISSION);
         } else {
-            return folderPath;
+            return rootPath.substring(rootPath.indexOf(".")+1) + FILE_SEPARATOR + year + FILE_SEPARATOR + month;
         }
     }
 
@@ -116,6 +121,7 @@ public class LocalFileHandler implements FileHandler {
             type = mimeType.split("/")[1];
         }
         String fileName = PurrUtils.getUniqueKey();
+        String originalName = file.getOriginalFilename();
 
         Long bytes = file.getSize();
         String size = String.valueOf(bytes);
@@ -141,6 +147,7 @@ public class LocalFileHandler implements FileHandler {
         result.setSize(size);
         result.setImageHeight(height);
         result.setImageWidth(width);
+        result.setOriginalName(originalName);
         return result;
     }
 

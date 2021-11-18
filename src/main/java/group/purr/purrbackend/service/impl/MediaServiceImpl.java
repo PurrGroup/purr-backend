@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -60,12 +61,11 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaDTO upload(MultipartFile file) throws IOException {
-        String host = blogMetaRepository.findBlogMetaByOptionKey(BlogMetaConstants.RESOURCES_HOST)
-                .orElse(BlogMeta.builder()
-                        .optionKey(BlogMetaConstants.RESOURCES_HOST)
-                        .optionValue("0")
-                        .build())
-                .getOptionValue();
+        String host = "0";
+        Optional<BlogMeta> blogMeta = blogMetaRepository.findBlogMetaByOptionKey(BlogMetaConstants.RESOURCES_HOST);
+        if (blogMeta.isPresent()) {
+            host = blogMeta.get().getOptionValue();
+        }
 
         if (host.equals("0")) {
             FileHandler lfh = new LocalFileHandler();
@@ -78,8 +78,8 @@ public class MediaServiceImpl implements MediaService {
 
             // Save media
             Media media = modelMapper.map(result, Media.class);
-            mediaRepository.save(media);
-
+            Media temp = mediaRepository.save(media);
+            result.setID(temp.getID());
             return result;
         }
 

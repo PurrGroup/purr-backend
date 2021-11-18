@@ -1,6 +1,6 @@
 package group.purr.purrbackend.security;
 
-import group.purr.purrbackend.constant.TokenConstants;
+import group.purr.purrbackend.constant.PurrConfigConstants;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultJws;
 
@@ -42,7 +42,7 @@ public class JwtUtils {
 //    }
 
     public static Date getExpiredTimeFromToken(String token) {
-        Claims claims = Jwts.parser().setSigningKey(TokenConstants.secretKey).parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parser().setSigningKey(PurrConfigConstants.secretKey).parseClaimsJws(token).getBody();
         return claims.getExpiration();
     }
 }

@@ -1,7 +1,7 @@
 package group.purr.purrbackend.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import group.purr.purrbackend.constant.TokenConstants;
+import group.purr.purrbackend.constant.PurrConfigConstants;
 import group.purr.purrbackend.dto.TokenDTO;
 import group.purr.purrbackend.exception.DenialOfServiceException;
 import group.purr.purrbackend.exception.RefreshTokenExpiredException;
@@ -81,14 +81,14 @@ public class LoginController {
 
         // 登陆成功返回access-token和refresh-token
         String accessToken = JwtUtils.tokenGeneration(encryptedPassword,
-                TokenConstants.userKey,
-                TokenConstants.accessTokenExpireSecond,
-                TokenConstants.secretKey);
+                PurrConfigConstants.userKey,
+                PurrConfigConstants.accessTokenExpireSecond,
+                PurrConfigConstants.secretKey);
 
         String refreshToken = JwtUtils.tokenGeneration(encryptedPassword,
-                TokenConstants.userKey,
-                TokenConstants.refreshTokenExpiredSecond,
-                TokenConstants.secretKey);
+                PurrConfigConstants.userKey,
+                PurrConfigConstants.refreshTokenExpiredSecond,
+                PurrConfigConstants.secretKey);
 
         Date expiredTime = JwtUtils.getExpiredTimeFromToken(refreshToken);
 
@@ -102,21 +102,21 @@ public class LoginController {
 
     @GetMapping("/token/refresh")
     public ResultVO refresh(HttpServletRequest request) {
-        String refreshHeader = request.getHeader(TokenConstants.accessHeaderName);
+        String refreshHeader = request.getHeader(PurrConfigConstants.accessHeaderName);
 
         if (!tokenService.checkTokenAuthorizationHeader(refreshHeader)) {
             log.error("非系统签发token");
             throw new DenialOfServiceException();
         }
 
-        Jws<Claims> jws = JwtUtils.parserToken(refreshHeader, TokenConstants.secretKey);
+        Jws<Claims> jws = JwtUtils.parserToken(refreshHeader, PurrConfigConstants.secretKey);
         if (jws == null) {
             log.error("token为空");
             throw new DenialOfServiceException();
         }
 
         String encryptedPassword = authorService.getEncryptedPassword();
-        if (!encryptedPassword.equals(jws.getBody().get(TokenConstants.userKey, String.class))) {
+        if (!encryptedPassword.equals(jws.getBody().get(PurrConfigConstants.userKey, String.class))) {
             log.error("登陆凭证不符");
             throw new DenialOfServiceException();
         }
@@ -127,10 +127,10 @@ public class LoginController {
         }
 
         String accessToken = JwtUtils.tokenGeneration(
-                jws.getBody().get(TokenConstants.userKey),
-                TokenConstants.userKey,
-                TokenConstants.accessTokenExpireSecond,
-                TokenConstants.secretKey
+                jws.getBody().get(PurrConfigConstants.userKey),
+                PurrConfigConstants.userKey,
+                PurrConfigConstants.accessTokenExpireSecond,
+                PurrConfigConstants.secretKey
         );
 
         return ResultVOUtil.success(accessToken);
@@ -144,13 +144,13 @@ public class LoginController {
             return ResultVOUtil.success(false);
         }
 
-        Jws<Claims> jws = JwtUtils.parserToken(token, TokenConstants.secretKey);
+        Jws<Claims> jws = JwtUtils.parserToken(token, PurrConfigConstants.secretKey);
         if (jws == null) {
             return ResultVOUtil.success(false);
         }
 
         String encryptedPassword = authorService.getEncryptedPassword();
-        if (!encryptedPassword.equals(jws.getBody().get(TokenConstants.userKey, String.class)))
+        if (!encryptedPassword.equals(jws.getBody().get(PurrConfigConstants.userKey, String.class)))
             return ResultVOUtil.success(false);
 
         if (JwtUtils.checkIsExpired(jws))

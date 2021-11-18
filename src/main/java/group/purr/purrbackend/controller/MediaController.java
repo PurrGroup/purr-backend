@@ -106,7 +106,7 @@ public class MediaController {
     @PostMapping("/condition")
     public ResultVO getMediaByStatusAndCategoryByPage(@RequestBody JSONObject jsonObject) {
         Integer status = jsonObject.getInteger("status");  // -1表示不筛选，0表示选择回收站中的，1表示选择未被删除的
-        JSONArray categorys = jsonObject.getJSONArray("categorys");
+        JSONArray categories = jsonObject.getJSONArray("categories");
         Integer curPage = jsonObject.getInteger("curPage");
         Integer pageSize = jsonObject.getInteger("pageSize");
 
@@ -118,7 +118,7 @@ public class MediaController {
         }
 
         Set<String> categorySet = new HashSet<>();
-        for (Object obj : categorys) {
+        for (Object obj : categories) {
             categorySet.add(obj.toString());
         }
 
@@ -158,7 +158,7 @@ public class MediaController {
 
         return ResultVOUtil.success(result);
 
-//        PageableMedia result = mediaService.findAllMediaByCondition(curPage, pageSize, categorys, status);
+//        PageableMedia result = mediaService.findAllMediaByCondition(curPage, pageSize, categories, status);
 //
 //        return ResultVOUtil.success(result);
     }

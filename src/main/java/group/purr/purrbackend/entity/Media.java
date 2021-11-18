@@ -53,6 +53,8 @@ public class Media {
     @Column(nullable = false)
     private String name;
 
+    private String originalName;
+
     /**
      * b
      */
