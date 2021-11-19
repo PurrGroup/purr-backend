@@ -13,7 +13,7 @@ public class PurrMvcConfiguration implements WebMvcConfigurer {
 
     private final Environment env;
     private static final String FILE_PROTOCOL = "file:///";
-    private static final String WORK_DIR = "~/.purr";
+    private static final String WORK_DIR = "/usr/share/nginx/html";
     private static final String FILE_SEPARATOR = File.separator;
 
     public PurrMvcConfiguration(Environment env) {
@@ -28,12 +28,14 @@ public class PurrMvcConfiguration implements WebMvcConfigurer {
         String mediaDir = FileSystems.getDefault().getPath(mediaPath).normalize().toAbsolutePath() + FILE_SEPARATOR;
         String workDir = FileSystems.getDefault().getPath(WORK_DIR).normalize().toAbsolutePath() + FILE_SEPARATOR;
 
+        System.out.println(FILE_PROTOCOL + workDir);
+
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/META-INF/resources/")
                 .addResourceLocations("classpath:/resources/")
                 .addResourceLocations("classpath:/static/")
                 .addResourceLocations("classpath:/public/")
-                .addResourceLocations(FILE_PROTOCOL + workDir + "static");
+                .addResourceLocations(FILE_PROTOCOL + workDir);
 
         registry.addResourceHandler("/media/**")
                 .addResourceLocations(FILE_PROTOCOL + mediaDir);
