@@ -28,8 +28,6 @@ public class PurrMvcConfiguration implements WebMvcConfigurer {
         String mediaDir = FileSystems.getDefault().getPath(mediaPath).normalize().toAbsolutePath() + FILE_SEPARATOR;
         String workDir = FileSystems.getDefault().getPath(WORK_DIR).normalize().toAbsolutePath() + FILE_SEPARATOR;
 
-        System.out.println(FILE_PROTOCOL + workDir);
-
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/META-INF/resources/")
                 .addResourceLocations("classpath:/resources/")
