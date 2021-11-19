@@ -112,10 +112,10 @@ public class ArticleController {
         return ResultVOUtil.success(articles.subList(0, Math.min(10, articles.size())));
     }
 
-//    @GetMapping("/details")
-//    public ResultVO getArticleDetail(@RequestParam(value = "id") Long id) {
-//        return ResultVOUtil.success(articleService.getArticleByID(id));
-//    }
+    @GetMapping("/detail")
+    public ResultVO getArticleDetail(@RequestParam(value = "id") Long id) {
+        return ResultVOUtil.success(articleService.getArticleByID(id));
+    }
 
     @GetMapping("/details")
     public ResultVO getArticleDetailByLinkName(@RequestParam(value = "linkName") String linkName) {
