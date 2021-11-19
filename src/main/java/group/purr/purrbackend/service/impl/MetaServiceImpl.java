@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class MetaServiceImpl implements MetaService {
@@ -109,13 +110,15 @@ public class MetaServiceImpl implements MetaService {
 
     @Override
     public String getArticleLinkNamePrefix() {
-        BlogMeta option = blogmetaRepository.findBlogMetaByOptionKey(BlogMetaConstants.ARTICLE_PREFIX_OPTION).orElse(new BlogMeta());
-        return PurrUtils.getArticleLinkNamePrefix(option.getOptionValue());
+        Optional<BlogMeta> option = blogmetaRepository.findBlogMetaByOptionKey(BlogMetaConstants.ARTICLE_PREFIX_OPTION);
+        String optionValue = option.map(BlogMeta::getOptionValue).orElseGet(() -> "0");
+        return PurrUtils.getArticleLinkNamePrefix(optionValue);
     }
 
     @Override
     public String getPageLinkNamePrefix() {
-        BlogMeta option = blogmetaRepository.findBlogMetaByOptionKey(BlogMetaConstants.PAGE_PREFIX_OPTION).orElse(new BlogMeta());
-        return PurrUtils.getPageLinkNamePrefix(option.getOptionValue());
+        Optional<BlogMeta> option = blogmetaRepository.findBlogMetaByOptionKey(BlogMetaConstants.PAGE_PREFIX_OPTION);
+        String optionValue = option.map(BlogMeta::getOptionValue).orElseGet(() -> "0");
+        return PurrUtils.getPageLinkNamePrefix(optionValue);
     }
 }

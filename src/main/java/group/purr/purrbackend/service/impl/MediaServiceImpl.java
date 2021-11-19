@@ -103,6 +103,12 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
+    public Optional<MediaDTO> findMediaByLinkName(String linkName) {
+        Optional<Media> mediaN = mediaRepository.findByUrl(linkName);
+        return mediaN.map(media -> modelMapper.map(media, MediaDTO.class));
+    }
+
+    @Override
     public List<String> findAllCategory() {
 
         List<String> result = mediaRepository.findAllCategory();
