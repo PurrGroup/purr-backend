@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MediaRepository extends JpaRepository<Media, String> {
 
@@ -13,6 +14,8 @@ public interface MediaRepository extends JpaRepository<Media, String> {
     Long countByDeleteTimeNotNull();
 
     Long countByFileCategory(String category);
+
+    Optional<Media> findByUrl(String linkName);
 
     @Query(value = "select count(file_category) from media", nativeQuery = true)
     Long countAll();

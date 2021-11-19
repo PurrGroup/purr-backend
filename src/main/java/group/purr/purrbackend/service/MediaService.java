@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public interface MediaService {
     MediaDTO saveMedia(String url, String category, String type, Integer host, String originalFilename, String size, Integer height, Integer width, String thumbNailUrl);
@@ -20,6 +21,8 @@ public interface MediaService {
      * @return
      */
     MediaDTO checkIDAndGetDetail(String id);
+
+    Optional<MediaDTO> findMediaByLinkName(String linkName);
 
     List<String> findAllCategory();
 

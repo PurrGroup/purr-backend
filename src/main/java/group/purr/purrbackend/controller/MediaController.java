@@ -66,6 +66,12 @@ public class MediaController {
         return ResultVOUtil.success(result);
     }
 
+    @GetMapping("/details")
+    public ResultVO getMediaDetailByLinkName(@RequestParam(value="linkName")String linkName) {
+        Optional<MediaDTO> mediaDTON = mediaService.findMediaByLinkName(linkName);
+        return mediaDTON.map(ResultVOUtil::success).orElseGet(() -> ResultVOUtil.error(ResultEnum.CONTENT_NOT_EXIST));
+    }
+
     /**
      * 分页获取所有媒体（不包括已删除的媒体或在回收站中的媒体）
      *

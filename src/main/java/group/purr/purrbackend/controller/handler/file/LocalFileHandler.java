@@ -64,7 +64,7 @@ public class LocalFileHandler implements FileHandler {
         log.info("上传文件成功, fileCategory: " + fileAttributes.getFileCategory() + ", fileType: " + fileAttributes.getFileType());
 
         String thumbNailUrl = "";
-        if("image".equals(fileAttributes.getFileCategory())) {
+        if ("image".equals(fileAttributes.getFileCategory())) {
             // Generate thumbnail
             thumbNailUrl = uploadFolderPath + FILE_SEPARATOR + fileAttributes.getName() + "_thumbnail." + fileAttributes.getFileType();
             String absoluteThumbUrl = FileSystems.getDefault().getPath(rootPath).normalize().toAbsolutePath() + FILE_SEPARATOR + year + FILE_SEPARATOR + month + FILE_SEPARATOR + fileAttributes.getName() + "_thumbnail." + fileAttributes.getFileType();
@@ -97,7 +97,7 @@ public class LocalFileHandler implements FileHandler {
         } else if (createFolder == -2) {
             throw new InternalServerErrorException(ResultEnum.NO_PERMISSION);
         } else {
-            return rootPath.substring(rootPath.indexOf(".")+1) + FILE_SEPARATOR + year + FILE_SEPARATOR + month;
+            return rootPath.substring(rootPath.indexOf(".") + 1) + FILE_SEPARATOR + year + FILE_SEPARATOR + month;
         }
     }
 

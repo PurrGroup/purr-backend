@@ -11,10 +11,10 @@ import java.nio.file.FileSystems;
 @Configuration
 public class PurrMvcConfiguration implements WebMvcConfigurer {
 
-    private final Environment env;
     private static final String FILE_PROTOCOL = "file:///";
     private static final String WORK_DIR = "/usr/share/nginx/html";
     private static final String FILE_SEPARATOR = File.separator;
+    private final Environment env;
 
     public PurrMvcConfiguration(Environment env) {
         this.env = env;
