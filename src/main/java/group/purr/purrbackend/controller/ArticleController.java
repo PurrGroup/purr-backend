@@ -202,6 +202,7 @@ public class ArticleController {
             article.setIsOriginal(1);
             article.setCommentStatus(1);
             article.setTarget("_self");
+            article.setId(null);
 
             Long articleId = articleService.createArticle(article);
 

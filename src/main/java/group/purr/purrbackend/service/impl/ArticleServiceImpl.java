@@ -66,6 +66,13 @@ public class ArticleServiceImpl implements ArticleService {
             article.setShareCount(0);
             article.setCommentCount(0);
         }
+        else{
+            Article origin = articleRepository.findByID(article.getID());
+            article.setViewCount(origin.getViewCount());
+            article.setThumbCount(origin.getThumbCount());
+            article.setShareCount(origin.getShareCount());
+            article.setCommentCount(origin.getCommentCount());
+        }
         Article result = articleRepository.saveAndFlush(article);
 
         Content content = new Content();

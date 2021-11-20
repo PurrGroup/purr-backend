@@ -49,15 +49,10 @@ public class LinkServiceImpl implements LinkService {
         List<LinkDTO> result = new ArrayList<>();
 
         for (Link link : links.getContent()) {
-            link.setLinkRel(null);
-            link.setLinkRss(null);
-            link.setCiteCount(null);
-            link.setVisitCount(null);
-            link.setUpdateTime(null);
-            link.setCreateTime(null);
-            link.setDeleteTime(null);
-            link.setDescription(null);
-            result.add(modelMapper.map(link, LinkDTO.class));
+            LinkDTO linkDTO = modelMapper.map(link, LinkDTO.class);
+            linkDTO.setLinkRss(null);
+            linkDTO.setLinkRel(null);
+            result.add(linkDTO);
         }
 
         return result;
