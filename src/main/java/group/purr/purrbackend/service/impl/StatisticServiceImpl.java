@@ -92,7 +92,7 @@ public class StatisticServiceImpl implements StatisticService {
         Calendar calendar = Calendar.getInstance();
 
         calendar.setTime(currentDate);
-        calendar.add(Calendar.DAY_OF_MONTH, -6);
+        calendar.add(Calendar.DAY_OF_MONTH, -13);
         date = calendar.getTime();
         beginTime = simpleDateFormat.format(date);
 
