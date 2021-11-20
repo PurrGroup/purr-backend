@@ -54,6 +54,8 @@ public class ArticleDTO {
 
     public String content;
 
+    public String html;
+
     public List<TagDTO> tags;
 
     private Integer copyright;
