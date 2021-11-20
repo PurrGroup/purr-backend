@@ -51,6 +51,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Long createArticle(ArticleDTO articleDTO) {
+        log.info("begin create article");
+        log.info("article: " + articleDTO.toString());
         Date date = articleDTO.getCreateTime();
 
         Article article = modelMapper.map(articleDTO, Article.class);
@@ -58,11 +60,18 @@ public class ArticleServiceImpl implements ArticleService {
         if (date == null)
             article.setCreateTime(currentTime);
         article.setUpdateTime(currentTime);
+        if(article.getID() == null) {
+            article.setViewCount(0);
+            article.setThumbCount(0);
+            article.setShareCount(0);
+            article.setCommentCount(0);
+        }
         Article result = articleRepository.saveAndFlush(article);
 
         Content content = new Content();
         content.setID(result.getID());
         content.setContent(articleDTO.getContent());
+        content.setHtml(articleDTO.getHtml());
         if (date == null)
             content.setCreateTime(currentTime);
         else
@@ -84,6 +93,7 @@ public class ArticleServiceImpl implements ArticleService {
         log.info("before save content");
         Content content = contentRepository.findByID(article.getID());
         content.setContent(articleDTO.getContent());
+        content.setHtml(articleDTO.getHtml());
         content.setUpdateTime(currentTime);
         contentRepository.save(content);
     }
@@ -250,6 +260,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         articleDTO.setTags(tags);
         articleDTO.setContent(content.getContent());
+        articleDTO.setHtml(content.getHtml());
 
         return articleDTO;
     }
@@ -266,8 +277,10 @@ public class ArticleServiceImpl implements ArticleService {
         articleDTO.setTags(tags);
         if (content != null) {
             articleDTO.setContent(content.getContent());
+            articleDTO.setHtml(content.getHtml());
         } else {
             articleDTO.setContent("");
+            articleDTO.setHtml("");
         }
 
         return Optional.of(articleDTO);

@@ -175,6 +175,9 @@ public class ArticleController {
         if (id != -1) {
             articleService.deleteArticleTags(id);
         }
+        else{
+            article.setId(null);
+        }
 
         Long articleId = articleService.createArticle(article);
 
@@ -196,7 +199,6 @@ public class ArticleController {
 
         if (id == -1) { // 新草稿
             article.setStatus(0); //草稿
-            article.setCommentStatus(0);
             article.setIsOriginal(1);
             article.setCommentStatus(1);
             article.setTarget("_self");

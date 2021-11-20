@@ -30,6 +30,9 @@ public class Content {
     @Column(columnDefinition = "LONGTEXT")
     private String content;
 
+    @Column(columnDefinition = "LONGTEXT")
+    private String html;
+
     @Column(nullable = false, columnDefinition = "DATETIME")
     private Date createTime;
 
