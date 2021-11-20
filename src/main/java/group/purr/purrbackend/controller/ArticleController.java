@@ -135,7 +135,7 @@ public class ArticleController {
         String linkName = json.getString("linkName");
         String prefix = metaService.getArticleLinkNamePrefix();
 
-        if (linkName.equals("")) {
+        if ("".equals(linkName)) {
             linkName = prefix + name;
             log.info("name->linkName: " + linkName);
             if (linkName.getBytes(StandardCharsets.UTF_8).length > 255)
