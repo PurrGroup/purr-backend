@@ -59,8 +59,8 @@ public class Link {
 
     private String linkRss;
 
-    @Column(columnDefinition = "TINYINT")
-    private Integer category;
+    @Column(columnDefinition = "TINYTEXT")
+    private String category;
 
     @Override
     public boolean equals(Object o) {

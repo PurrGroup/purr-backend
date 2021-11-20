@@ -70,7 +70,7 @@ public class LinkServiceImpl implements LinkService {
 
     @Override
     public List<LinkDTO> getFocus() {
-        List<Link> links = linkRepository.findAllByCategoryOrderByUpdateTimeDesc(1);
+        List<Link> links = linkRepository.findAllByCategoryOrderByUpdateTimeDesc("聚焦");
         Integer count = 0;
         List<LinkDTO> result = new ArrayList<>();
 
