@@ -31,7 +31,11 @@ public class TagServiceImpl implements TagService {
     public Long createBy(TagDTO tagDTO) {
         Tag tag = modelMapper.map(tagDTO, Tag.class);
         Date currentTime = new Date();
-        tag.setCreateTime(currentTime);
+        if(tagDTO.getID() == null) {
+            tag.setCreateTime(currentTime);
+            tag.setVisitCount(0);
+            tag.setCiteCount(0);
+        }
         tag.setUpdateTime(currentTime);
         Tag result = tagRepository.saveAndFlush(tag);
         return result.getID();

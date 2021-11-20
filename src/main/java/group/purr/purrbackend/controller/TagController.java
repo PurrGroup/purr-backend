@@ -1,5 +1,7 @@
 package group.purr.purrbackend.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import group.purr.purrbackend.dto.ArticleDTO;
 import group.purr.purrbackend.dto.PageableTag;
 import group.purr.purrbackend.dto.TagDTO;
 import group.purr.purrbackend.exception.DenialOfServiceException;
@@ -10,10 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -60,5 +59,15 @@ public class TagController {
         List<TagDTO> tags = tagService.getTagsByKeyword(keyword);
 
         return ResultVOUtil.success(tags);
+    }
+
+    @PutMapping("/admin/create")
+    public ResultVO createNewTag(@RequestBody JSONObject json){
+        TagDTO tagDTO = JSONObject.toJavaObject(json, TagDTO.class);
+        log.info(tagDTO.toString());
+        if(tagDTO.getID() != null && tagDTO.getID() == -1)
+            tagDTO.setID(null);
+        tagService.createBy(tagDTO);
+        return ResultVOUtil.success(true);
     }
 }
