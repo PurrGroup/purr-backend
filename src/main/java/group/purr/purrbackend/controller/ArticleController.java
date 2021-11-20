@@ -165,11 +165,12 @@ public class ArticleController {
 
         ArticleDTO article = JSONObject.toJavaObject(json, ArticleDTO.class);
 
-        if (article.getTarget().equals("0"))
-            article.setTarget("_self");
-        else
-            article.setTarget("_blank");
+//        if (article.getTarget().equals("0"))
+//            article.setTarget("_self");
+//        else
+//            article.setTarget("_blank");
         article.setCreateTime(new Date(createTime));
+        article.setStatus(1);
 
         if (id != -1) {
             articleService.deleteArticleTags(id);
