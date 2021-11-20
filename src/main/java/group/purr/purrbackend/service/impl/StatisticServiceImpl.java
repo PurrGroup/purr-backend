@@ -101,7 +101,7 @@ public class StatisticServiceImpl implements StatisticService {
         List<Visit> latestVisitCount = visitRepository.selectByTime(beginTime, endTime);
         int length = latestVisitCount.size();
 
-        for (; length < 7; length++)
+        for (; length < 14; length++)
             latestViewCount.add(new Long(0L));
 
         for (Visit visit : latestVisitCount) {
